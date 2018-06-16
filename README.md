@@ -1,5 +1,7 @@
 # Magic Table
 [![Build Status](https://api.travis-ci.org/mvakili/ngx-datatable.svg?branch=master)](https://travis-ci.org/mvakili/ngx-magic-table)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8790db0a2c60f28e2b81/maintainability)](https://codeclimate.com/github/mvakili/ngx-magic/maintainability)
+[![npm version](https://badge.fury.io/js/ngx-magic-table.svg)](https://badge.fury.io/js/ngx-magic-table)
 
 
 Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`, provides sort, arrange columns, custom header, cell templates and grouping columns
@@ -30,10 +32,8 @@ import { NgxMagicTableModule } from 'ngx-magic-table';
 Make sure you have included `bootstrap` and `font-awesome` styles
 ```json
 "styles": [
-    ...
     "node_modules/bootstrap/dist/css/bootstrap.min.css",
-    "node_modules/font-awesome/css/font-awesome.css",
-    ...
+    "node_modules/font-awesome/css/font-awesome.css"
 ],
 ```
 
