@@ -6,7 +6,7 @@ node_js:
 
 addons:
   code_climate:
-    repo_token: be0d4eb28896062ed176b9b07859cfba24033f9bc9caaad20749ea32fd5c5bf4
+    repo_token: 61f46d272b2e82f0c958fb6989acfb3ba174bacbb55529ba9c4e0c1ba66b47cb
     chrome: stable
 
 before_install:
