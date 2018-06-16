@@ -6,6 +6,10 @@
 
 Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`, provides sort, arrange columns, custom header, cell templates and grouping columns
 
+## Demo
+
+Try [Demo](https://stackblitz.com/edit/angular-cyry7o?file=src%2Fapp%2Fapp.component.html) 
+
 
 ## Getting start
 Install package:
@@ -55,7 +59,7 @@ Use `<ngx-magic-table>`
     (perPageChange)="logAll($event)"
     (pageChange)="logAll($event)"
 
-    (selectChange)="logAll($event)"
+    (selectedChange)="logAll($event)"
     selectedClass="table-secondary"
 
     (columnsArrageChange)="logAll($event)"

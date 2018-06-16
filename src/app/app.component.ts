@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   
   public count: Number = 1;
-  protected data: Array<any> = [
+  public data: Array<any> = [
     {
       Id: '1',
       Name: 'Nabi',
@@ -22,82 +22,82 @@ export class AppComponent {
     {
       Id: '3',
       Name: 'Parastoo',
-      Phone: '260'
+      Phone: '364289'
     },
     {
       Id: '4',
       Name: 'Reza',
-      Phone: '5432'
+      Phone: '422358'
     },
     {
       Id: '5',
       Name: 'Karim',
-      Phone: '8053'
+      Phone: '62027892'
     },
     {
-      Id: '5',
-      Name: 'Karim',
-      Phone: '8053'
+      Id: '6',
+      Name: 'Ali',
+      Phone: '4545363'
     },
     {
-      Id: '5',
-      Name: 'Karim',
-      Phone: '8053'
+      Id: '7',
+      Name: 'Ramin',
+      Phone: '10554'
     },
     {
-      Id: '5',
-      Name: 'Karim',
-      Phone: '8053'
+      Id: '8',
+      Name: 'John',
+      Phone: '22456'
     },
     {
-      Id: '5',
-      Name: 'Karim',
-      Phone: '8053'
+      Id: '9',
+      Name: 'Test',
+      Phone: '8942'
     },
     {
-      Id: '5',
-      Name: 'Karim',
-      Phone: '8053'
+      Id: '10',
+      Name: 'Ronaldo',
+      Phone: '7862'
     },
     {
-      Id: '5',
-      Name: 'Karim',
-      Phone: '8053'
+      Id: '11',
+      Name: 'Messi',
+      Phone: '7856532'
     },
     {
-      Id: '5',
-      Name: 'Karim',
-      Phone: '8053'
+      Id: '12',
+      Name: 'Totti',
+      Phone: '45689'
     },
     {
-      Id: '5',
-      Name: 'Karim',
-      Phone: '8053'
+      Id: '13',
+      Name: 'Iniesta',
+      Phone: '045325'
     },
     {
-      Id: '5',
-      Name: 'Karim',
-      Phone: '8053'
+      Id: '14',
+      Name: 'Arash',
+      Phone: '45221045'
     },
     {
-      Id: '5',
+      Id: '15',
       Name: 'Karim',
-      Phone: '8053'
+      Phone: '0453456'
     },
     {
-      Id: '5',
-      Name: 'Karim',
-      Phone: '8053'
+      Id: '16',
+      Name: 'Kazim',
+      Phone: '24543'
     },
     {
-      Id: '5',
-      Name: 'Karim',
-      Phone: '8053'
+      Id: '17',
+      Name: 'Behlul',
+      Phone: '655438'
     },
     {
-      Id: '5',
+      Id: '18',
       Name: 'Karim',
-      Phone: '8053'
+      Phone: '23123'
     }
   ];
   ngOnInit() {
