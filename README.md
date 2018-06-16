@@ -1,6 +1,8 @@
 # Magic Table
+[![Build Status](https://api.travis-ci.org/mvakili/ngx-datatable.svg?branch=master)](https://travis-ci.org/mvakili/ngx-magic-table)
 
-Angular 6 smart DataGrid based on Bootstrap and Font Awesome, provides sort, arrange columns, custom header, cell templates and grouping columns
+
+Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`, provides sort, arrange columns, custom header, cell templates and grouping columns
 
 
 ## Getting start
@@ -8,7 +10,7 @@ Install package:
 ```bash
     npm i ngx-magic-table
 ```
-Add NgxTemplatableModule inside your AppModule
+Add `NgxTemplatableModule` inside your AppModule
 ```typescript
 import { NgxMagicTableModule } from 'ngx-magic-table';
 
@@ -25,6 +27,16 @@ import { NgxMagicTableModule } from 'ngx-magic-table';
   ...
 })
 ```
+Make sure you have included `bootstrap` and `font-awesome` styles
+```json
+"styles": [
+    ...
+    "node_modules/bootstrap/dist/css/bootstrap.min.css",
+    "node_modules/font-awesome/css/font-awesome.css",
+    ...
+],
+```
+
 Use `<ngx-magic-table>`
 ```html
 <ngx-magic-table
@@ -76,10 +88,13 @@ Use `<ngx-magic-table>`
 ## Next up
 
 - Detailed documentation will be ready soon
-- Source code will be available on github soon
 
-## Contact
+## Issues
 
-[Github](https://github.com/mvakili)
+[Github Issues](https://github.com/mvakili/ngx-magic/issues)
+
+## Making a Contribution
+Any contribution is welcomed
+
 ## License
-MIT
+[MIT](https://github.com/mvakili/ngx-magic/blob/master/LICENSE)
