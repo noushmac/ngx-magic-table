@@ -1,0 +1,14 @@
+table thead th {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+[draggable=true] {
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+select.btn-sm {
+    padding: 0.1rem;
+    display: inline-flex;
+}

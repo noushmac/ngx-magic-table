@@ -1,0 +1,26 @@
+{
+  "name": "ngx-magic-table",
+  "author": "mvakili",
+  "version": "0.6.3",
+  "keywords": [
+    "angular",
+    "datatable",
+    "template",
+    "angular 6",
+    "sort",
+    "smart table"
+  ],
+  "private": false,
+  "description": "Angular 6 smart Datatable, provides sort, arrange column, custom header and cells templating, grouping columns",
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "ngx-pagination": "^3.1.1",
+    "angular-uid": "^0.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mvakili/ngx-magic.git"
+  }
+}
