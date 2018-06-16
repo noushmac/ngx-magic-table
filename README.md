@@ -2,7 +2,8 @@
 
 [![Build Status](https://api.travis-ci.org/mvakili/ngx-magic-table.svg?branch=master)](https://travis-ci.org/mvakili/ngx-magic-table)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9bdb33820bfdaa028c78/maintainability)](https://codeclimate.com/github/mvakili/ngx-magic-table/maintainability)
-[![npm version](https://badge.fury.io/js/ngx-magic-table.svg)](https://badge.fury.io/js/ngx-magic-table)
+[![npm version](https://img.shields.io/npm/v/ngx-magic-table.svg)](https://img.shields.io/npm/v/ngx-magic-table.svg)
+[![npm downloads](https://img.shields.io/npm/dt/ngx-magic-table.svg)](https://img.shields.io/npm/dt/ngx-magic-table.svg)
 
 
 Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`, provides sort, arrange columns, custom header, cell templates and grouping columns
