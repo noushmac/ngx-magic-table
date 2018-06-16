@@ -1,5 +1,5 @@
 # Magic Table
-[![Build Status](https://api.travis-ci.org/mvakili/ngx-magic.svg?branch=master)](https://travis-ci.org/mvakili/ngx-magic-table)
+[![Build Status](https://api.travis-ci.org/mvakili/ngx-magic.svg?branch=master)](https://travis-ci.org/mvakili/ngx-magic)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8790db0a2c60f28e2b81/maintainability)](https://codeclimate.com/github/mvakili/ngx-magic/maintainability)
 [![npm version](https://badge.fury.io/js/ngx-magic-table.svg)](https://badge.fury.io/js/ngx-magic-table)
 
