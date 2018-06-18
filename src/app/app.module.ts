@@ -4,10 +4,12 @@ import { NgxMagicTableModule } from 'ngx-magic-table';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FormsModule
   ],
   imports: [
     BrowserModule,
