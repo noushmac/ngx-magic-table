@@ -5,7 +5,17 @@
           <th *ngFor="let cell of cellRow" [id]="uid+'-'+cell.name+'-head'" [draggable]="cell.template.draggable" (drop)="drop(cell)"
             (dragover)="allowDrop($event)" (dragstart)="drag(cell)" [attr.colspan]="cell.colSpan" [attr.rowspan]="cell.rowSpan"
             (click)="sortToggle(cell)">
-            <ng-template [ngTemplateOutlet]="cell.template.header" [ngTemplateOutletContext]="{cell: cell, direction: (cell.name === sort) ? sortDirection : undefined}"></ng-template>
+            <ng-template  [ngTemplateOutlet]="cell.template.header" [ngTemplateOutletContext]="{cell: cell, direction: (cell.name === sort) ? sortDirection : undefined}"></ng-template>
+            <div ngbDropdown *ngIf="cell.template.filter" (click)="$event.stopPropagation()" class="dropdown float-right">
+              <button ngbDropdownToggle type="button" [ngClass]="[cell.filters.length == 0 ? 'btn-default' : 'btn-warning']" class="btn " [id]="uid + '-' +cell.name + '-filter'" >
+                <i class="fa fa-filter"></i>
+              </button>
+              <div ngbDropdownMenu [aria-labelledby]="uid + '-' +cell.name + '-filter'" class="dropdown-menu" (click)="$event.stopPropagation()">
+                <div class="container">
+                  <ng-template [ngTemplateOutlet]="cell.template.filter" [ngTemplateOutletContext]="{cell: cell, rows: rows}"></ng-template>
+                </div>
+              </div>
+            </div>
           </th>
         </tr>
       </thead>

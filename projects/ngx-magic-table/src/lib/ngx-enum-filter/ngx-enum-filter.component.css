@@ -1,0 +1,9 @@
+.input-group {
+    width: 300px;
+}
+.input-group-addon {
+    display: inline-flex;
+}
+.form-control {
+    display: inline-flex;
+}

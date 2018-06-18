@@ -21,6 +21,7 @@ export class NgxColumnTemplateComponent implements AfterContentInit {
 
   public header: TemplateRef<any>;
   public body: TemplateRef<any>;
+  public filter: TemplateRef<any>;
 
 
   static normalizeIndexes(templates: NgxColumnTemplateComponent[] ) {
@@ -41,6 +42,8 @@ export class NgxColumnTemplateComponent implements AfterContentInit {
     this.header = h ? h.template : undefined;
     const b = this.templates.find(t => t.name === 'body');
     this.body = b ? b.template : undefined;
+    const f = this.templates.find(t => t.name === 'filter');
+    this.filter = f ? f.template : undefined;
   }
 
   ngOnChanges(changes: SimpleChanges) {

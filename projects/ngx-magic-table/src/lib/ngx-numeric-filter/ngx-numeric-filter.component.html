@@ -1,0 +1,16 @@
+<ng-container *ngFor="let f of filterValue; let i = index">
+  <div class="input-group mb-3" style="">
+    <select class="input-group-addon btn btn-secondary btn-sm dropdown-toggle" [(ngModel)]="f.filterType">
+      <option *ngFor="let p of NumericFilter.values()" class="btn btn-sm btn-secondary">{{p}}</option>
+    </select>
+    <input type="text" class="form-control" placeholder="" [(ngModel)]="f.filterValue">
+    <button class="btn btn-link" (click)="removeRow(i)">
+      <i class="fa fa-minus"></i>
+    </button>
+  </div>
+</ng-container>
+<button class="btn btn-link" (click)="addRow()">
+  <i class="fa fa-plus"></i>
+</button>
+
+<button class="btn btn-primary" (click)="apply()">Apply</button>
