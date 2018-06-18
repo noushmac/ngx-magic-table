@@ -13,10 +13,12 @@ export class NgxColumnTemplateComponent implements AfterContentInit {
   @Input() index: Number = 0;
   @Input() sortable: Boolean = true;
   @Input() draggable: Boolean = true;
-
+  @Input() collection: String = '';
 
   @Output() changed = new EventEmitter();
 
+
+  public filters: any[] = [];
   @ContentChildren(NamedTemplateDirective) templates: QueryList<NamedTemplateDirective>;
 
   public header: TemplateRef<any>;

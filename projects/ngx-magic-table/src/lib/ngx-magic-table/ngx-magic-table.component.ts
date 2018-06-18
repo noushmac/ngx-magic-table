@@ -56,7 +56,8 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
   @Output() selectedChange = new EventEmitter<T>();
   @Output() columnsArrangeChange = new EventEmitter();
-
+  public Math = Math;
+  public Arr = Array;
   public templatesArray: NgxColumnTemplateComponent[];
   public head: Array<HeaderItem> = new Array<HeaderItem>();
   public cells: Array<Array<HeaderCell>> = new Array<Array<HeaderCell>>();
@@ -70,6 +71,33 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     NgxColumnTemplateComponent.normalizeIndexes(this.templatesArray);
     this.templatesArray.forEach(i => i.changed.subscribe(() => this.reArrangeColumns()));
     this.generateCells();
+  }
+
+  public getLcm(row: any): number {
+    const lcm = this.lcmOfList(
+      this.lowerCells.map(i => {
+        return (i.template.collection === '') ?  1 : Math.max(row[i.template.collection.toString()].length, 1);
+      })
+    );
+    return lcm;
+  }
+
+  public gcd(a, b): number {
+    if (b === 0) {
+        return a; // so that the recursion does not go on forever
+    } else {
+        return this.gcd(b, a % b);
+    }
+  }
+
+  public lcmOfList(arr): number {
+    const d = this;
+    const t = arr.reduce((a, b) => d.lcm(a, b));
+    return t;
+  }
+
+  public lcm(a, b): number {
+    return a * b / this.gcd(a, b);
   }
 
   public allowDrop(x: any) {

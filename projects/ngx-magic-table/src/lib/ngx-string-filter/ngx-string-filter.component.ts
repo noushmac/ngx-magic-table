@@ -11,7 +11,7 @@ export class NgxStringFilterComponent implements OnInit {
   @Input() cell: HeaderCell;
 
   @Output() filterChange= new EventEmitter();
-  
+
   public StringFilter = StringFilter;
   public filterValue = [];
   constructor() { }
@@ -30,7 +30,7 @@ export class NgxStringFilterComponent implements OnInit {
   }
   public apply() {
     const f = this.filterValue.filter(i => i.filterType != undefined && i.filterValue != '');
-    this.cell.filters = f;
+    this.cell.template.filters = f;
     this.filterChange.emit({name: this.cell.name, filters: f});
   }
 }

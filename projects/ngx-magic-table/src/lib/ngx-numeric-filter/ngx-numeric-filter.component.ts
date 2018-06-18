@@ -10,8 +10,8 @@ export class NgxNumericFilterComponent implements OnInit {
   @Input() rows: any[];
   @Input() cell: HeaderCell;
 
-  @Output() filterChange= new EventEmitter();
-  
+  @Output() filterChange = new EventEmitter();
+
   public NumericFilter = NumericFilter;
   public filterValue = [];
   constructor() { }
@@ -25,12 +25,12 @@ export class NgxNumericFilterComponent implements OnInit {
     this.apply();
   }
   public addRow() {
-    this.filterValue.push({filterType: NumericFilter.filters.equals, filterValue: ''})
+    this.filterValue.push({filterType: NumericFilter.filters.equals, filterValue: ''});
     this.apply();
   }
   public apply() {
-    const f = this.filterValue.filter(i => i.filterType != undefined && i.filterValue != '');
-    this.cell.filters = f;
+    const f = this.filterValue.filter(i => i.filterType !== undefined && i.filterValue !== '');
+    this.cell.template.filters = f;
     this.filterChange.emit({name: this.cell.name, filters: f});
   }
 }

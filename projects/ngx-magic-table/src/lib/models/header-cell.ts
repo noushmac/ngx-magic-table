@@ -7,7 +7,6 @@ export class HeaderCell {
     public colSpan: Number = 1;
     public rowSpan: Number = 1;
     public sortable: any = true;
-    public filters: any[] = [];
     public template: NgxColumnTemplateComponent;
     public constructor(init?: Partial<HeaderCell>) {
         Object.assign(this, init);

@@ -19,15 +19,15 @@
         (selectedChange)="logAll($event)"
         selectedClass="table-secondary"
 
-        (columnsArrageChange)="logAll($event)"
+        (columnsArrangeChange)="logAll($event)"
         >
 
         <ngx-column-template name="Numbers" index="1" [sortable]="false" >
             <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}}  </ng-template>
 
-            <ng-template let-rows="rows" let-cell="cell" name="filter">
+            <!-- <ng-template let-rows="rows" let-cell="cell" name="filter">
                 <ngx-string-filter [rows]="rows" [cell]="cell" (filterChange)="logAll($event)"></ngx-string-filter>
-            </ng-template>
+            </ng-template> -->
 
         </ngx-column-template>
 
@@ -43,6 +43,16 @@
             <ng-template let-row="row" let-cell="cell" name="body">{{row.Id}}</ng-template>
             <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction" [ngClass]="direction == 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'" ></i> </ng-template>
         </ngx-column-template>
+
+        <ngx-column-template name="Data" parent="Numbers" collection="Data" index="1" [draggable]="false">
+            <ng-template let-row="row" let-cell="cell" let-index="index" name="body" >{{row.Data[index]}}</ng-template>
+            <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction" [ngClass]="direction == 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'" ></i> </ng-template>
+        </ngx-column-template>
+
+        <ngx-column-template name="Data2" parent="Numbers" collection="Data2" index="1" [draggable]="false">
+                <ng-template let-row="row" let-cell="cell" let-index="index" name="body" >{{row.Data2[index]}}</ng-template>
+                <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction" [ngClass]="direction == 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'" ></i> </ng-template>
+            </ngx-column-template>
 
         <ngx-column-template name="Name"  index="1" [draggable]="false">
             <ng-template let-row="row" let-cell="cell" name="body">{{row.Name}}</ng-template>
