@@ -2,7 +2,7 @@
   <table class="table table-bordered">
     <thead>
       <tr *ngFor="let cellRow of cells">
-        <th *ngFor="let cell of cellRow" class="sticky-top" [id]="uid+'-'+cell.name+'-head'" [draggable]="cell.template.draggable" (drop)="drop(cell)"
+        <th *ngFor="let cell of cellRow" [id]="uid+'-'+cell.name+'-head'" [draggable]="cell.template.draggable" (drop)="drop(cell)"
           (dragover)="allowDrop($event)" (dragstart)="drag(cell)" [attr.colspan]="cell.colSpan" [attr.rowspan]="cell.rowSpan"
           (click)="sortToggle(cell)">
           <ng-template [ngTemplateOutlet]="cell.template.header" [ngTemplateOutletContext]="{cell: cell, direction: (cell.name === sort) ? sortDirection : undefined}"></ng-template>
