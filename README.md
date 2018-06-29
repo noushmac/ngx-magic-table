@@ -54,32 +54,44 @@ Use `<ngx-magic-table>`
     (sortChange)="logAll($event)"
 
     [paginated]="true"
-    [perPage]="5"
+    [perPage]="3"
     [customPaginate]="false"
     [currentPage]="2"
-    [perPages]="[5, 20, 50, 100]"
+    [perPages]="[3, 5, 20, 50, 100]"
     (perPageChange)="logAll($event)"
     (pageChange)="logAll($event)"
 
     (selectedChange)="logAll($event)"
     selectedClass="table-secondary"
 
-    (columnsArrageChange)="logAll($event)"
+    (columnsArrangeChange)="logAll($event)"
     >
 
     <ngx-column-template name="Numbers" index="1" [sortable]="false" >
         <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}}  </ng-template>
+
     </ngx-column-template>
 
     <ngx-column-template name="Phone" parent="Numbers" index="2" >
         <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction" [ngClass]="direction == 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'" ></i> </ng-template>
         <ng-template let-row="row" let-cell="cell" name="body">{{row.Phone}}</ng-template>
+
     </ngx-column-template>
 
     <ngx-column-template name="Id" parent="Numbers"  index="1" [draggable]="false">
         <ng-template let-row="row" let-cell="cell" name="body">{{row.Id}}</ng-template>
         <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction" [ngClass]="direction == 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'" ></i> </ng-template>
     </ngx-column-template>
+
+    <ngx-column-template name="Type" parent="Numbers" collection="Type" index="1" [draggable]="false">
+        <ng-template let-row="row" let-cell="cell" let-index="index" name="body" >{{row.Type[index]}}</ng-template>
+        <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction" [ngClass]="direction == 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'" ></i> </ng-template>
+    </ngx-column-template>
+
+    <ngx-column-template name="Size" parent="Numbers" collection="Size" index="1" [draggable]="false">
+            <ng-template let-row="row" let-cell="cell" let-index="index" name="body" >{{row.Size[index]}}</ng-template>
+            <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction" [ngClass]="direction == 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'" ></i> </ng-template>
+        </ngx-column-template>
 
     <ngx-column-template name="Name"  index="1" [draggable]="false">
         <ng-template let-row="row" let-cell="cell" name="body">{{row.Name}}</ng-template>
@@ -97,10 +109,10 @@ Use `<ngx-magic-table>`
 
 ## Issues
 
-[Github Issues](https://github.com/noushmac/ngx-magic/issues)
+[Github Issues](https://github.com/noushmac/ngx-magic-table/issues)
 
 ## Making a Contribution
 Any contribution is welcomed
 
 ## License
-[MIT](https://github.com/noushmac/ngx-magic/blob/master/LICENSE)
+[MIT](https://github.com/noushmac/ngx-magic-table/blob/master/LICENSE)
