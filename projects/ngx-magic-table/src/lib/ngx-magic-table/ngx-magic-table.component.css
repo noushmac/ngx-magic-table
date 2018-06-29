@@ -12,3 +12,7 @@ select.btn-sm {
     padding: 0.1rem;
     display: inline-flex;
 }
+
+table {
+    table-layout: fixed;
+}
