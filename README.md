@@ -1,7 +1,7 @@
 # Magic Table
 
-[![Build Status](https://api.travis-ci.org/mvakili/ngx-magic-table.svg?branch=master)](https://travis-ci.org/mvakili/ngx-magic-table)
-[![Maintainability](https://api.codeclimate.com/v1/badges/9bdb33820bfdaa028c78/maintainability)](https://codeclimate.com/github/mvakili/ngx-magic-table/maintainability)
+[![Build Status](https://api.travis-ci.org/noushmac/ngx-magic-table.svg?branch=master)](https://travis-ci.org/noushmac/ngx-magic-table)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9bdb33820bfdaa028c78/maintainability)](https://codeclimate.com/github/noushmac/ngx-magic-table/maintainability)
 [![npm version](https://img.shields.io/npm/v/ngx-magic-table.svg)](https://img.shields.io/npm/v/ngx-magic-table.svg)
 [![npm downloads](https://img.shields.io/npm/dt/ngx-magic-table.svg)](https://img.shields.io/npm/dt/ngx-magic-table.svg)
 
@@ -89,7 +89,7 @@ Use `<ngx-magic-table>`
 </ngx-magic-table>
 ```
 ## Preview
-![Preview](https://i.imgur.com/u6W2JBF.jpg)
+![Preview](https://imgur.com/V5Sy0HN.jpg)
 
 ## Next up
 
@@ -97,10 +97,10 @@ Use `<ngx-magic-table>`
 
 ## Issues
 
-[Github Issues](https://github.com/mvakili/ngx-magic/issues)
+[Github Issues](https://github.com/noushmac/ngx-magic/issues)
 
 ## Making a Contribution
 Any contribution is welcomed
 
 ## License
-[MIT](https://github.com/mvakili/ngx-magic/blob/master/LICENSE)
+[MIT](https://github.com/noushmac/ngx-magic/blob/master/LICENSE)

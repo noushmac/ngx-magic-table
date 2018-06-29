@@ -1,5 +1,5 @@
 <div>
-  <table class="table table-bordered table-bordered table-hover">
+  <table class="table table-bordered">
     <thead>
       <tr *ngFor="let cellRow of cells">
         <th *ngFor="let cell of cellRow" [id]="uid+'-'+cell.name+'-head'" [draggable]="cell.template.draggable" (drop)="drop(cell)"
