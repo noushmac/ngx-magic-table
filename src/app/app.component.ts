@@ -12,30 +12,88 @@ export class AppComponent {
     {
       Id: '1',
       Name: 'Nabi',
-      Phone: '3221',
-      Data: [
+      Phone: '+12 345 678',
+      Size: [
         'small', 'medium', 'large'
       ],
-      Data2: [
-        'Men', 'Women'
+      Type: [
+        'Man', 'Woman'
+      ]
+    }, {
+      Id: '2',
+      Name: 'Noushmac',
+      Phone: '+52 221 983',
+      Size: [
+        'small', 'medium', 'large', 'x large'
+      ],
+      Type: [
+        'Man', 'Woman', 'Child'
       ]
     },
     {
-      Id: '2',
-      Name: 'N1121abi',
-      Phone: '564',
-      Data: [
-        '55555', '5', '0gfh',
-        '55555', '5', '0gfh',
-        '55555', '5', '0gfh',
-        '55555', '5', '0gfh',
-        '55555', '5', '0gfh',
-        '55555', '5', '0gfh'
+      Id: '3',
+      Name: 'Kazim',
+      Phone: '+80 235 874',
+      Size: [
+        'small'
       ],
-      Data2: [
-        'awe', 'cxcbb',
-        'awe', 'cxcbb'
-
+      Type: [
+        'Man', 'NewBorn'
+      ]
+    },
+    {
+      Id: '4',
+      Name: 'Davood',
+      Phone: '+73 214 365',
+      Size: [
+        'small', 'large'
+      ],
+      Type: [
+        'Man', 'Woman'
+      ]
+    },
+    {
+      Id: '5',
+      Name: 'Mammad',
+      Phone: '+21 332 236',
+      Size: [
+        'small', 'large', 'x small'
+      ],
+      Type: [
+        'Man', 'Woman'
+      ]
+    },
+    {
+      Id: '6',
+      Name: 'Sarah',
+      Phone: '+21 324 236',
+      Size: [
+        'small'
+      ],
+      Type: [
+        'Woman'
+      ]
+    },
+    {
+      Id: '7',
+      Name: 'Davood',
+      Phone: '+73 214 365',
+      Size: [
+        'small', 'large'
+      ],
+      Type: [
+        'Man', 'Woman'
+      ]
+    },
+    {
+      Id: '8',
+      Name: 'Davood',
+      Phone: '+73 214 365',
+      Size: [
+        'small', 'large'
+      ],
+      Type: [
+        'Man', 'Woman'
       ]
     }
   ];
