@@ -10,7 +10,7 @@ Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`, provides sort,
 
 ## Demo
 
-Try [Demo](https://stackblitz.com/edit/angular-cyry7o?file=src%2Fapp%2Fapp.component.html) 
+Try [Demo](https://stackblitz.com/edit/angular-cyry7o?file=src%2Fapp%2Fapp.component.html)
 
 
 ## Getting start
@@ -18,7 +18,7 @@ Install package:
 ```bash
 npm i ngx-magic-table
 ```
-Add `NgxTemplatableModule` inside your AppModule
+Add `NgxMagicTableModule` inside your AppModule
 ```typescript
 import { NgxMagicTableModule } from 'ngx-magic-table';
 
@@ -28,7 +28,7 @@ import { NgxMagicTableModule } from 'ngx-magic-table';
   imports: [
     ...
 
-    NgxMagicTableModule, // import NgxMagicTableModule 
+    NgxMagicTableModule, // import NgxMagicTableModule
 
     ...
   ],
