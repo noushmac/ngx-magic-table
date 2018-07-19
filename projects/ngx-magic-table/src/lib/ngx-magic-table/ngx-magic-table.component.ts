@@ -34,7 +34,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.templatesArray = value.toArray();
   }
 
-  @Input() rows: Array<T>;
+  @Input() rows: Array<T> = [];
 
   @Input() paginated: Boolean = false;
   @Input() customSort: Boolean = true;

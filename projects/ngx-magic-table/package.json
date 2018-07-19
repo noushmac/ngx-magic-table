@@ -1,7 +1,7 @@
 {
   "name": "ngx-magic-table",
   "author": "mvakili",
-  "version": "0.6.3",
+  "version": "0.9.1",
   "keywords": [
     "angular",
     "datatable",
@@ -21,6 +21,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mvakili/ngx-magic.git"
+    "url": "git+https://github.com/noushmac/ngx-magic.git"
   }
 }
