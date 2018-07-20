@@ -4,7 +4,7 @@ import { NamedTemplateDirective } from './ngx-named-template/ngx-named-template.
 import { SortPipe } from './sort/sort.pipe';
 import { NgxColumnTemplateComponent } from './ngx-column-template/ngx-column-template.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { NgxNumericFilterComponent } from './ngx-numeric-filter/ngx-numeric-filter.component';
 import { NgxStringFilterComponent } from './ngx-string-filter/ngx-string-filter.component';
 import { NgxEnumFilterComponent } from './ngx-enum-filter/ngx-enum-filter.component';
@@ -15,12 +15,25 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     NgxPaginationModule,
-    BrowserModule,
+    CommonModule,
     NgbModule,
     FormsModule
   ],
-  declarations: [NgxMagicTableComponent, NamedTemplateDirective, SortPipe, NgxColumnTemplateComponent, NgxNumericFilterComponent, NgxStringFilterComponent, NgxEnumFilterComponent, NgxBooleanFilterComponent],
-  exports: [NgxMagicTableComponent, NgxColumnTemplateComponent, NamedTemplateDirective, NgxStringFilterComponent, NgxNumericFilterComponent, NgxBooleanFilterComponent, NgxEnumFilterComponent],
+  declarations: [NgxMagicTableComponent,
+    NamedTemplateDirective,
+    SortPipe,
+    NgxColumnTemplateComponent,
+    NgxNumericFilterComponent,
+    NgxStringFilterComponent,
+    NgxEnumFilterComponent,
+    NgxBooleanFilterComponent],
+  exports: [NgxMagicTableComponent,
+    NgxColumnTemplateComponent,
+    NamedTemplateDirective,
+    NgxStringFilterComponent,
+    NgxNumericFilterComponent,
+    NgxBooleanFilterComponent,
+    NgxEnumFilterComponent],
   schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class NgxMagicTableModule { }
