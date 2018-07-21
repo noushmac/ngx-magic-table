@@ -58,7 +58,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Output() columnsArrangeChange = new EventEmitter();
 
   @Input() tableClass: String = 'table table-bordered';
-  @Input() theadClass: String = '';
+  @Input() theadClass: String = 'thead-light';
   @Input() tbodyClass: String = '';
   @Input() trowClass: String = '';
   @Input() tcellClass: String = '';
