@@ -1,5 +1,5 @@
-import { PaginInput } from './../models/Pagin-input';
-import { SortInput } from './../models/sort-input';
+import { PagingInput } from '../models/Paging-input';
+import { SortInput } from '../models/sort-input';
 import {
   Component,
   OnInit,
@@ -52,9 +52,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Input() hidden: Boolean = false;
   @Input() selectedClass: String = 'table-secondary';
 
-  @Output() pageChange = new EventEmitter<PaginInput>();
+  @Output() pageChange = new EventEmitter<PagingInput>();
   @Output() sortChange = new EventEmitter<SortInput>();
-  @Output() pageSizeChange = new EventEmitter<PaginInput>();
+  @Output() pageSizeChange = new EventEmitter<PagingInput>();
 
   @Output() selectedChange = new EventEmitter<T>();
   @Output() columnsArrangeChange = new EventEmitter();
@@ -76,7 +76,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   public selectedRow: T;
   public draggingCell: HeaderCell;
   public sortInput: SortInput = new SortInput();
-  public paginInput: PaginInput = new PaginInput();
+  public pagingInput: PagingInput = new PagingInput();
 
 
   ngAfterContentInit() {
@@ -256,9 +256,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       this.pageSize = pageSize;
     }
 
-    this.paginInput.page = this.currentPage;
-    this.paginInput.PageSize = pageSize;
-    this.pageSizeChange.emit(this.paginInput
+    this.pagingInput.page = this.currentPage;
+    this.pagingInput.PageSize = pageSize;
+    this.pageSizeChange.emit(this.pagingInput
     //   {
     //   page: this.currentPage,
     //   perPage: pageSize,
@@ -276,11 +276,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       this.currentPage = page;
     }
 
-    this.paginInput.page = page;
-    this.paginInput.PageSize = this.pageSize;
+    this.pagingInput.page = page;
+    this.pagingInput.PageSize = this.pageSize;
 
 
-    this.pageChange.emit(this.paginInput
+    this.pageChange.emit(this.pagingInput
     //   {
     //   page: page,
     //   perPage: this.pageSize,
