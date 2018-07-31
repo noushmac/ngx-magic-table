@@ -250,7 +250,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     } else {
       this.perPage = perPage;
     }
-    this.pageChange.emit({
+    this.perPageChange.emit({
       page: this.currentPage,
       perPage: perPage,
       sort: this.sort,
