@@ -21,6 +21,7 @@ import { NgxColumnTemplateComponent } from '../ngx-column-template/ngx-column-te
 import { NamedTemplateDirective } from '../ngx-named-template/ngx-named-template.directive';
 import SortDirection from '../models/sort-direction';
 import guid from 'angular-uid';
+import { IPagingInput, ISortInput } from '../models/interface';
 
 
 @Component({
@@ -52,9 +53,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Input() hidden: Boolean = false;
   @Input() selectedClass: String = 'table-secondary';
 
-  @Output() pageChange = new EventEmitter<PagingInput>();
-  @Output() sortChange = new EventEmitter<SortInput>();
-  @Output() pageSizeChange = new EventEmitter<PagingInput>();
+  @Output() pageChange = new EventEmitter<IPagingInput>();
+  @Output() sortChange = new EventEmitter<ISortInput>();
+  @Output() pageSizeChange = new EventEmitter<IPagingInput>();
 
   @Output() selectedChange = new EventEmitter<T>();
   @Output() columnsArrangeChange = new EventEmitter();
@@ -126,13 +127,16 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.draggingCell = null;
 
     this.reArrangeColumns();
-    this.columnsArrangeChange.emit(this.templatesArray.map((t) => {
+    this.columnsArrangeChange.emit(
+      this.templatesArray.map((t) => {
       return {
         name: t.name,
         parent: t.parent,
         index: t.index
       };
-    }));
+    })
+  // this.templatesArray
+  );
   }
 
   public drag(x: HeaderCell) {
@@ -257,7 +261,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
 
     this.pagingInput.page = this.currentPage;
-    this.pagingInput.PageSize = pageSize;
+    this.pagingInput.pageSize = pageSize;
     this.pageSizeChange.emit(this.pagingInput
     //   {
     //   page: this.currentPage,
@@ -277,7 +281,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
 
     this.pagingInput.page = page;
-    this.pagingInput.PageSize = this.pageSize;
+    this.pagingInput.pageSize = this.pageSize;
 
 
     this.pageChange.emit(this.pagingInput
@@ -298,7 +302,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
     if (this.sort === cell.name) {
       newDirection = this.sortDirection === SortDirection.Ascending ?
-                      SortDirection.Descending : SortDirection.Ascending;
+                      SortDirection.Descending  : SortDirection.Ascending;
     } else {
       newDirection = SortDirection.Ascending;
     }

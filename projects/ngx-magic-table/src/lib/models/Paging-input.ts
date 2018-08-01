@@ -1,4 +1,5 @@
-export class PagingInput {
-  public page: Number;
-  public PageSize: Number;
+import { IPagingInput } from './interface';
+export class PagingInput implements IPagingInput {
+   page: Number;
+   pageSize: Number;
 }
