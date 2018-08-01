@@ -1,3 +1,5 @@
+import { PagingInput } from '../models/Paging-input';
+import { SortInput } from '../models/sort-input';
 import {
   Component,
   OnInit,
@@ -13,12 +15,13 @@ import {
   AfterContentChecked,
   AfterViewInit
 } from '@angular/core';
-import { HeaderItem } from './../models/header-item';
-import { HeaderCell } from './../models/header-cell';
-import { NgxColumnTemplateComponent } from './../ngx-column-template/ngx-column-template.component';
-import { NamedTemplateDirective } from './../ngx-named-template/ngx-named-template.directive';
-import SortDirection from './../models/sort-direction';
+import { HeaderItem } from '../models/header-item';
+import { HeaderCell } from '../models/header-cell';
+import { NgxColumnTemplateComponent } from '../ngx-column-template/ngx-column-template.component';
+import { NamedTemplateDirective } from '../ngx-named-template/ngx-named-template.directive';
+import SortDirection from '../models/sort-direction';
 import guid from 'angular-uid';
+import { IPagingInput, ISortInput } from '../models/interface';
 
 
 @Component({
@@ -40,9 +43,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Input() customSort: Boolean = true;
   @Input() customPaginate: Boolean = false;
   @Input() totalCount: Number = 0;
-  @Input() perPage: Number = 10;
+  @Input() pageSize: Number = 10;
   @Input() currentPage: Number = 1;
-  @Input() perPages: Number[] = [10, 20, 50, 100];
+  @Input() pageSizes: Number[] = [10, 20, 50, 100];
 
   @Input() sort: String = '';
   @Input() sortDirection: SortDirection = SortDirection.Ascending;
@@ -50,9 +53,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Input() hidden: Boolean = false;
   @Input() selectedClass: String = 'table-secondary';
 
-  @Output() pageChange = new EventEmitter();
-  @Output() sortChange = new EventEmitter();
-  @Output() perPageChange = new EventEmitter();
+  @Output() pageChange = new EventEmitter<IPagingInput>();
+  @Output() sortChange = new EventEmitter<ISortInput>();
+  @Output() pageSizeChange = new EventEmitter<IPagingInput>();
 
   @Output() selectedChange = new EventEmitter<T>();
   @Output() columnsArrangeChange = new EventEmitter();
@@ -72,7 +75,10 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   public depth = 0;
   public uid = guid();
   public selectedRow: T;
-  public  draggingCell: HeaderCell;
+  public draggingCell: HeaderCell;
+  public sortInput: SortInput = new SortInput();
+  public pagingInput: PagingInput = new PagingInput();
+
 
   ngAfterContentInit() {
     NgxColumnTemplateComponent.normalizeIndexes(this.templatesArray);
@@ -121,13 +127,16 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.draggingCell = null;
 
     this.reArrangeColumns();
-    this.columnsArrangeChange.emit(this.templatesArray.map((t) => {
+    this.columnsArrangeChange.emit(
+      this.templatesArray.map((t) => {
       return {
         name: t.name,
         parent: t.parent,
         index: t.index
       };
-    }));
+    })
+  // this.templatesArray
+  );
   }
 
   public drag(x: HeaderCell) {
@@ -243,19 +252,24 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.selectedChange.emit(this.selectedRow);
   }
 
-  public changePerPage(perPage: number) {
-    if (this.perPage === perPage) { return; }
+  public changePerPage(pageSize: number) {
+    if (this.pageSize === pageSize) { return; }
 
     if (this.customPaginate) {
     } else {
-      this.perPage = perPage;
+      this.pageSize = pageSize;
     }
-    this.pageChange.emit({
-      page: this.currentPage,
-      perPage: perPage,
-      sort: this.sort,
-      direction: this.sortDirection
-    });
+
+    this.pagingInput.page = this.currentPage;
+    this.pagingInput.pageSize = pageSize;
+    this.pageSizeChange.emit(this.pagingInput
+    //   {
+    //   page: this.currentPage,
+    //   perPage: pageSize,
+    //   sort: this.sort,
+    //   direction: this.sortDirection
+    // }
+  );
   }
 
   public selectPage(page: number) {
@@ -265,12 +279,19 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     } else {
       this.currentPage = page;
     }
-    this.pageChange.emit({
-      page: page,
-      perPage: this.perPage,
-      sort: this.sort,
-      direction: this.sortDirection
-    });
+
+    this.pagingInput.page = page;
+    this.pagingInput.pageSize = this.pageSize;
+
+
+    this.pageChange.emit(this.pagingInput
+    //   {
+    //   page: page,
+    //   perPage: this.pageSize,
+    //   sort: this.sort,
+    //   direction: this.sortDirection
+    // }
+  );
   }
 
 
@@ -281,7 +302,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
     if (this.sort === cell.name) {
       newDirection = this.sortDirection === SortDirection.Ascending ?
-                      SortDirection.Descending : SortDirection.Ascending;
+                      SortDirection.Descending  : SortDirection.Ascending;
     } else {
       newDirection = SortDirection.Ascending;
     }
@@ -290,13 +311,15 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       this.sort = cell.name;
       this.sortDirection = newDirection;
     }
-
-    this.sortChange.emit({
-      page: this.currentPage,
-      perPage: this.perPage,
-      sort: cell.name,
-      direction: newDirection
-    });
+    this.sortInput.sort = cell.name;
+    this.sortInput.direction = newDirection;
+    this.sortChange.emit(
+      this.sortInput
+      // page: this.currentPage,
+      // perPage: this.perPage,
+      // sort: cell.name,
+      // direction: newDirection
+    );
   }
 
   public reArrangeColumns() {
