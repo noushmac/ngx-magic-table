@@ -47,24 +47,25 @@ Use `<ngx-magic-table>`
 ```html
 <ngx-magic-table
     [rows]="data"
-
     [customSort]="false"
     sort="Phone"
-    sortDirection="desc"
+    sortDirection="0"
     (sortChange)="logAll($event)"
-
     [paginated]="true"
-    [perPage]="3"
+    [pageSize]="3"
     [customPaginate]="false"
     [currentPage]="2"
-    [perPages]="[3, 5, 20, 50, 100]"
-    (perPageChange)="logAll($event)"
+    [pageSizes]="[3, 5, 20, 50, 100]"
+    (pageSizeChange)="logAll($event)"
     (pageChange)="logAll($event)"
-
     (selectedChange)="logAll($event)"
     selectedClass="table-secondary"
-
     (columnsArrangeChange)="logAll($event)"
+    tableClass="table table-bordered"
+    theadClass="thead-light"
+    trowClass="table-primary"
+    tcellClass="text-center"
+    
     >
 
     <ngx-column-template name="Numbers" index="1" [sortable]="false" >
@@ -73,29 +74,29 @@ Use `<ngx-magic-table>`
     </ngx-column-template>
 
     <ngx-column-template name="Phone" parent="Numbers" index="2" >
-        <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction" [ngClass]="direction == 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'" ></i> </ng-template>
+        <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction!=null" [ngClass]="{'fa-arrow-up': (direction == 0), 'fa-arrow-down': (direction != 0)}" ></i> </ng-template>
         <ng-template let-row="row" let-cell="cell" name="body">{{row.Phone}}</ng-template>
 
     </ngx-column-template>
 
     <ngx-column-template name="Id" parent="Numbers"  index="1" [draggable]="false">
         <ng-template let-row="row" let-cell="cell" name="body">{{row.Id}}</ng-template>
-        <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction" [ngClass]="direction == 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'" ></i> </ng-template>
+        <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction!=null" [ngClass]="{'fa-arrow-up': (direction == 0), 'fa-arrow-down': (direction != 0)}" ></i> </ng-template>
     </ngx-column-template>
 
     <ngx-column-template name="Type" parent="Numbers" collection="Type" index="1" [draggable]="false">
         <ng-template let-row="row" let-cell="cell" let-index="index" name="body" >{{row.Type[index]}}</ng-template>
-        <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction" [ngClass]="direction == 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'" ></i> </ng-template>
+        <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction!=null" [ngClass]="{'fa-arrow-up': (direction == 0), 'fa-arrow-down': (direction != 0)}" ></i> </ng-template>
     </ngx-column-template>
 
     <ngx-column-template name="Size" parent="Numbers" collection="Size" index="1" [draggable]="false">
             <ng-template let-row="row" let-cell="cell" let-index="index" name="body" >{{row.Size[index]}}</ng-template>
-            <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction" [ngClass]="direction == 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'" ></i> </ng-template>
+            <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction!=null" [ngClass]="{'fa-arrow-up': (direction == 0), 'fa-arrow-down': (direction != 0)}" ></i> </ng-template>
         </ngx-column-template>
 
     <ngx-column-template name="Name"  index="1" [draggable]="false">
         <ng-template let-row="row" let-cell="cell" name="body">{{row.Name}}</ng-template>
-        <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction" [ngClass]="direction == 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'" ></i> </ng-template>
+        <ng-template let-cell="cell" let-direction="direction"  name="header">{{cell.name}} <i class="fa" *ngIf="direction!=null" [ngClass]="{'fa-arrow-up': (direction == 0), 'fa-arrow-down': (direction != 0)}" ></i> </ng-template>
     </ngx-column-template>
 
 </ngx-magic-table>
