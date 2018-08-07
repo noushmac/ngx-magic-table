@@ -1,10 +1,10 @@
 import SortDirection from './sort-direction';
 export interface IPagingInput {
-   page: Number;
-   pageSize: Number;
+   page: number;
+   pageSize: number;
 }
 
 export interface ISortInput {
-   sort: String;
+   sort: string;
    direction: SortDirection;
 }

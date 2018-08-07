@@ -2,6 +2,6 @@ import { ISortInput } from './interface';
 import SortDirection from './sort-direction';
 
 export class SortInput implements ISortInput {
-   sort: String;
+   sort: string;
    direction: SortDirection;
 }

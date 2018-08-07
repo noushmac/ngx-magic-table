@@ -12,7 +12,7 @@
                 [id]="cell.name + '-' + uid  + '-filter'">
                 <i class="fa fa-filter"></i>
               </button>
-              <div ngbDropdownMenu [aria-labelledby]="cell.name + '-' + uid  + '-filter'" class="dropdown-menu" (click)="$event.stopPropagation()">
+              <div  ngbDropdownMenu [aria-labelledby]="cell.name + '-' + uid  + '-filter'" class="dropdown-menu" (click)="$event.stopPropagation()">
                 <div class="container">
                   <ng-template [ngTemplateOutlet]="cell.template.filter" [ngTemplateOutletContext]="{cell: cell, rows: rows}"></ng-template>
                 </div>
