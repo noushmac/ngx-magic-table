@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IPagingInput } from 'ngx-magic-table/lib/models/interface';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
+  public sortDirection: SortDirection = SortDirection.Ascending;
+
   public count: Number = 1;
+  //  public data: Array<any> = [];
   public data: Array<any> = [
     {
       Id: '1',
@@ -110,8 +114,13 @@ export class AppComponent {
     alert(JSON.stringify(row));
   }
 
-  logAll(data: any) {
-    console.log('table triggered event');
+  logAll(data: IPagingInput) {
+    console.log('************************');
     console.log(data);
   }
+}
+export enum SortDirection {
+  Unspecified = -1,
+  Ascending = 0,
+  Descending = 1,
 }

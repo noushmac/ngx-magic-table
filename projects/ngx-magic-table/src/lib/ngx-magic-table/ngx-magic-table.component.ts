@@ -8,12 +8,18 @@ import {
   TemplateRef,
   QueryList,
   AfterContentInit,
-  ContentChild, Output,
+  ContentChild,
+  Output,
   EventEmitter,
   ViewChild,
   AfterViewChecked,
   AfterContentChecked,
-  AfterViewInit
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  Renderer,
+  HostListener,
+  Renderer2
 } from '@angular/core';
 import { HeaderItem } from '../models/header-item';
 import { HeaderCell } from '../models/header-cell';
@@ -23,21 +29,33 @@ import SortDirection from '../models/sort-direction';
 import guid from 'angular-uid';
 import { IPagingInput, ISortInput } from '../models/interface';
 
-
 @Component({
   selector: 'ngx-magic-table',
   templateUrl: './ngx-magic-table.component.html',
   styleUrls: ['./ngx-magic-table.component.css']
 })
 
-export class NgxMagicTableComponent<T> implements AfterContentInit {
 
+export class NgxMagicTableComponent<T> implements AfterContentInit {
   @ContentChildren(NgxColumnTemplateComponent)
   set templates(value: QueryList<NgxColumnTemplateComponent>) {
     this.templatesArray = value.toArray();
   }
 
-  @Input() rows: Array<T> = [];
+  color: string;
+  // @Input() rows: Array<T> = [];
+  @Input()
+  set rows(rows: Array<T>) {
+    if (!rows) {
+      this._rows = [];
+    } else {
+      this._rows = rows;
+    }
+  }
+  get rows(): Array<T> {
+    return this._rows;
+  }
+
 
   @Input() paginated: Boolean = false;
   @Input() customSort: Boolean = true;
@@ -45,7 +63,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Input() totalCount: Number = 0;
   @Input() pageSize: Number = 10;
   @Input() currentPage: Number = 1;
-  @Input() pageSizes: Number[] = [10, 20, 50, 100];
+  @Input() pageSizes: number[] = [10, 20, 50, 100];
 
   @Input() sort: String = '';
   @Input() sortDirection: SortDirection = SortDirection.Ascending;
@@ -66,6 +84,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Input() trowClass: String = '';
   @Input() tcellClass: String = '';
 
+  public _rows = Array<T>();
   public Math = Math;
   public Arr = Array;
   public templatesArray: NgxColumnTemplateComponent[];
@@ -79,17 +98,20 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   public sortInput: SortInput = new SortInput();
   public pagingInput: PagingInput = new PagingInput();
 
-
   ngAfterContentInit() {
     NgxColumnTemplateComponent.normalizeIndexes(this.templatesArray);
-    this.templatesArray.forEach(i => i.changed.subscribe(() => this.reArrangeColumns()));
+    this.templatesArray.forEach(i =>
+      i.changed.subscribe(() => this.reArrangeColumns())
+    );
     this.generateCells();
   }
 
   public getLcm(row: any): number {
     const lcm = this.lcmOfList(
       this.lowerCells.map(i => {
-        return (i.template.collection === '') ?  1 : Math.max(row[i.template.collection.toString()].length, 1);
+        return i.template.collection === ''
+          ? 1
+          : Math.max(row[i.template.collection.toString()].length, 1);
       })
     );
     return lcm;
@@ -97,9 +119,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
   public gcd(a, b): number {
     if (b === 0) {
-        return a; // so that the recursion does not go on forever
+      return a; // so that the recursion does not go on forever
     } else {
-        return this.gcd(b, a % b);
+      return this.gcd(b, a % b);
     }
   }
 
@@ -110,7 +132,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   }
 
   public lcm(a, b): number {
-    return a * b / this.gcd(a, b);
+    return (a * b) / this.gcd(a, b);
   }
 
   public allowDrop(x: any) {
@@ -118,8 +140,12 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   }
 
   public drop(x: HeaderCell) {
-    if (this.draggingCell == null) { return; }
-    if (this.draggingCell.template.parent !== x.template.parent) { return; }
+    if (this.draggingCell == null) {
+      return;
+    }
+    if (this.draggingCell.template.parent !== x.template.parent) {
+      return;
+    }
 
     const tmp = x.template.index;
     x.template.index = this.draggingCell.template.index;
@@ -128,15 +154,15 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
     this.reArrangeColumns();
     this.columnsArrangeChange.emit(
-      this.templatesArray.map((t) => {
-      return {
-        name: t.name,
-        parent: t.parent,
-        index: t.index
-      };
-    })
-  // this.templatesArray
-  );
+      this.templatesArray.map(t => {
+        return {
+          name: t.name,
+          parent: t.parent,
+          index: t.index
+        };
+      })
+      // this.templatesArray
+    );
   }
 
   public drag(x: HeaderCell) {
@@ -147,11 +173,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.head = [];
     this.generateHeaders();
 
-    this.depth = Math.max(...(
-      this.head.map((item) => {
+    this.depth = Math.max(
+      ...this.head.map(item => {
         return this.Depth(item);
       })
-    ));
+    );
 
     this.cells = [];
     this.lowerCells = [];
@@ -159,48 +185,66 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   }
 
   protected generateHeaders(): void {
-
-    this.templatesArray.filter(t => t.parent === '').sort((first, second) => {
-      if (first.index > second.index) { return -1; }
-      if (first.index < second.index) { return 1; }
-      return 0;
-    }).forEach(t => {
-      this.head.push({
-        Title: t.title,
-        Index: t.index,
-        Sortable: t.sortable,
-        Template: t,
-        Childs: this.generateHeaderChilds(t.name),
-        Name: t.name
+    this.templatesArray
+      .filter(t => t.parent === '')
+      .sort((first, second) => {
+        if (first.index > second.index) {
+          return -1;
+        }
+        if (first.index < second.index) {
+          return 1;
+        }
+        return 0;
+      })
+      .forEach(t => {
+        this.head.push({
+          Title: t.title,
+          Index: t.index,
+          Sortable: t.sortable,
+          Template: t,
+          Childs: this.generateHeaderChilds(t.name),
+          Name: t.name
+        });
       });
-    });
   }
 
   protected generateHeaderChilds(headerName: String): Array<HeaderItem> {
     const result = new Array<HeaderItem>();
-    this.templatesArray.filter(t => t.parent !== '' && t.parent === headerName).sort((first, second) => {
-      if (first.index > second.index) { return -1; }
-      if (first.index < second.index) { return 1; }
-      return 0;
-    }).forEach(t => {
-      result.push({
-        Title: t.title,
-        Index: t.index,
-        Sortable: t.sortable,
-        Template: t,
-        Childs: this.generateHeaderChilds(t.name),
-        Name: t.name
+    this.templatesArray
+      .filter(t => t.parent !== '' && t.parent === headerName)
+      .sort((first, second) => {
+        if (first.index > second.index) {
+          return -1;
+        }
+        if (first.index < second.index) {
+          return 1;
+        }
+        return 0;
+      })
+      .forEach(t => {
+        result.push({
+          Title: t.title,
+          Index: t.index,
+          Sortable: t.sortable,
+          Template: t,
+          Childs: this.generateHeaderChilds(t.name),
+          Name: t.name
+        });
       });
-    });
     return result;
   }
 
-  protected createHeaderCells(items: HeaderItem[], level: number, depth: number) {
+  protected createHeaderCells(
+    items: HeaderItem[],
+    level: number,
+    depth: number
+  ) {
     if (this.cells.length <= level) {
       this.cells.push(new Array<HeaderCell>());
     }
     const row = this.cells[level];
-    items.sort((first, second) => (first.Index.valueOf() - second.Index.valueOf()))
+    items
+      .sort((first, second) => first.Index.valueOf() - second.Index.valueOf())
       .map(h => {
         const c = new HeaderCell({
           name: h.Name,
@@ -209,11 +253,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
           sortable: h.Sortable,
           template: h.Template,
           colSpan: this.countHeaders(h),
-          rowSpan: (h.Childs.length > 0) ? 1 : depth - level
+          rowSpan: h.Childs.length > 0 ? 1 : depth - level
         });
-        row.push(
-          c
-        );
+        row.push(c);
         if (h.Childs.length > 0) {
           this.createHeaderCells(h.Childs, level + 1, depth);
         } else {
@@ -224,7 +266,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
   protected countHeaders(item: HeaderItem): number {
     if (item.Childs.length) {
-      const headerCount = item.Childs.map((child) => {
+      const headerCount = item.Childs.map(child => {
         return this.countHeaders(child);
       });
       return headerCount.reduce((a, b) => a + b, 0);
@@ -235,11 +277,10 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
   protected Depth(item: HeaderItem): number {
     if (item.Childs.length) {
-      const depth = Math.max(...(
-        item.Childs.map((child) => {
+      const depth = Math.max(
+        ...item.Childs.map(child => {
           return this.Depth(child);
         })
-      )
       );
       return depth + 1;
     } else {
@@ -253,27 +294,32 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   }
 
   public changePerPage(pageSize: number) {
-    if (this.pageSize === pageSize) { return; }
+    if (this.pageSize === pageSize) {
+      return;
+    }
 
     if (this.customPaginate) {
     } else {
       this.pageSize = pageSize;
     }
 
-    this.pagingInput.page = this.currentPage;
+    this.pagingInput.page = this.currentPage as number;
     this.pagingInput.pageSize = pageSize;
-    this.pageSizeChange.emit(this.pagingInput
-    //   {
-    //   page: this.currentPage,
-    //   perPage: pageSize,
-    //   sort: this.sort,
-    //   direction: this.sortDirection
-    // }
-  );
+    this.pageSizeChange.emit(
+      this.pagingInput
+      //   {
+      //   page: this.currentPage,
+      //   perPage: pageSize,
+      //   sort: this.sort,
+      //   direction: this.sortDirection
+      // }
+    );
   }
 
   public selectPage(page: number) {
-    if (this.currentPage === page) { return; }
+    if (this.currentPage === page) {
+      return;
+    }
 
     if (this.customPaginate) {
     } else {
@@ -281,28 +327,31 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
 
     this.pagingInput.page = page;
-    this.pagingInput.pageSize = this.pageSize;
+    this.pagingInput.pageSize = this.pageSize as number;
 
-
-    this.pageChange.emit(this.pagingInput
-    //   {
-    //   page: page,
-    //   perPage: this.pageSize,
-    //   sort: this.sort,
-    //   direction: this.sortDirection
-    // }
-  );
+    this.pageChange.emit(
+      this.pagingInput
+      //   {
+      //   page: page,
+      //   perPage: this.pageSize,
+      //   sort: this.sort,
+      //   direction: this.sortDirection
+      // }
+    );
   }
 
-
   public sortToggle(cell: HeaderCell) {
-    if (cell.sortable === false) { return; }
+    if (cell.sortable === false) {
+      return;
+    }
 
     let newDirection: SortDirection;
 
     if (this.sort === cell.name) {
-      newDirection = this.sortDirection === SortDirection.Ascending ?
-                      SortDirection.Descending  : SortDirection.Ascending;
+      newDirection =
+        this.sortDirection === SortDirection.Ascending
+          ? SortDirection.Descending
+          : SortDirection.Ascending;
     } else {
       newDirection = SortDirection.Ascending;
     }
@@ -311,7 +360,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       this.sort = cell.name;
       this.sortDirection = newDirection;
     }
-    this.sortInput.sort = cell.name;
+    this.sortInput.sort = cell.name as string;
     this.sortInput.direction = newDirection;
     this.sortChange.emit(
       this.sortInput
@@ -323,7 +372,30 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   }
 
   public reArrangeColumns() {
-
     this.generateCells();
   }
+}
+
+@Directive({
+  selector: '[setDirection]'
+})
+export class DirectionDirective {
+  constructor(private renderer: Renderer2, private el: ElementRef) {
+   }
+
+   _direction: number;
+  @Input('setDirection')
+  set direction(direction: number) {
+      this._direction = direction;
+      this.renderer.removeClass(this.el.nativeElement, 'fa-arrow-down');
+      this.renderer.removeClass(this.el.nativeElement, 'fa-arrow-up');
+      if (this._direction != null) {
+        if (this._direction === 0) {
+          this.renderer.addClass(this.el.nativeElement, 'fa-arrow-up');
+        }
+        if (this._direction !== 0) {
+          this.renderer.addClass(this.el.nativeElement, 'fa-arrow-down');
+        }
+      }
+    }
 }
