@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IPagingInput } from 'ngx-magic-table/lib/models/interface';
+import { IPagingInput, ISortInput } from 'ngx-magic-table/lib/models/interface';
 
 @Component({
   selector: 'app-root',
@@ -114,10 +114,20 @@ export class AppComponent {
     alert(JSON.stringify(row));
   }
 
-  logAll(data: IPagingInput) {
-    console.log('************************');
+  pageSizesChange(data: IPagingInput) {
+    console.log('page:' + data.page + ' pageSize:' + data.pageSize);
+  }
+  sortChange(data: ISortInput) {
+    console.log('sort:' + data.sort + ' direction:' + data.direction);
+  }
+  pageChange(data: IPagingInput) {
+    console.log('page:' + data.page + ' pageSize:' + data.pageSize);
+  }
+
+  columnsArrangeChange(data: any) {
     console.log(data);
   }
+
 }
 export enum SortDirection {
   Unspecified = -1,

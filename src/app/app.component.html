@@ -1,8 +1,8 @@
 <div class="container">
 
   <ngx-magic-table [rows]="data" [customSort]="false" sort="Phone" sortDirection="SortDirection.Ascending" (sortChange)="logAll($event)"
-    [paginated]="true" [pageSize]="3" [customPaginate]="false" [currentPage]="2" [pageSizes]="[3, 5, 20, 50, 100]" (pageSizesChange)="logAll($event)"
-    (pageChange)="logAll($event)" tcellClass="text-center" trowClass="table-primary" (selectedChange)="logAll($event)" selectedClass="table-secondary" (columnsArrangeChange)="logAll($event)">
+    [paginated]="true" [pageSize]="3" [customPaginate]="false" [currentPage]="2" [pageSizes]="[3, 5, 20, 50, 100]" (pageSizesChange)="pageSizesChange($event)"
+    (pageChange)="pageChange($event)" tcellClass="text-center" trowClass="table-primary" (selectedChange)="selectChanged($event)" selectedClass="table-secondary" (columnsArrangeChange)="columnsArrangeChange($event)">
 
     <ngx-column-template name="Numbers" index="1" [sortable]="false">
       <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}} </ng-template>
