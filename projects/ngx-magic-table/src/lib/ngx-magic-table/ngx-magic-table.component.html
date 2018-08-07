@@ -50,7 +50,7 @@
       </ng-container>
     </tbody>
   </table>
-  <div [appHighlight]="color" class="btn-group" *ngIf="paginated">
+  <div class="btn-group" *ngIf="paginated">
     <pagination-controls (pageChange)="selectPage($event)" previousLabel="" nextLabel="" [id]="uid"></pagination-controls>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <div *ngIf="pageSizes.length" class="dropdown">
