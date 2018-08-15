@@ -1,5 +1,6 @@
 import { NgModule, NO_ERRORS_SCHEMA, Directive, Component } from '@angular/core';
-import { NgxMagicTableComponent, DirectionDirective } from './ngx-magic-table/ngx-magic-table.component';
+import { NgxMagicTableComponent} from './ngx-magic-table/ngx-magic-table.component';
+import { DirectionDirective} from './ngx-magic-table/ngx-direction-column.directive';
 import { NamedTemplateDirective } from './ngx-named-template/ngx-named-template.directive';
 import { SortPipe } from './sort/sort.pipe';
 import { NgxColumnTemplateComponent } from './ngx-column-template/ngx-column-template.component';

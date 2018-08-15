@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { PagingInput } from '../models/Paging-input';
 import { SortInput } from '../models/sort-input';
 import {
@@ -19,7 +20,8 @@ import {
   ElementRef,
   Renderer,
   HostListener,
-  Renderer2
+  Renderer2,
+  ViewChildren
 } from '@angular/core';
 import { HeaderItem } from '../models/header-item';
 import { HeaderCell } from '../models/header-cell';
@@ -29,21 +31,25 @@ import SortDirection from '../models/sort-direction';
 import guid from 'angular-uid';
 import { IPagingInput, ISortInput } from '../models/interface';
 
+
 @Component({
   selector: 'ngx-magic-table',
   templateUrl: './ngx-magic-table.component.html',
   styleUrls: ['./ngx-magic-table.component.css']
 })
-
-
 export class NgxMagicTableComponent<T> implements AfterContentInit {
   @ContentChildren(NgxColumnTemplateComponent)
   set templates(value: QueryList<NgxColumnTemplateComponent>) {
     this.templatesArray = value.toArray();
   }
 
-  color: string;
-  // @Input() rows: Array<T> = [];
+  constructor(private renderer: Renderer2, private el: ElementRef) {
+    this.unsubscribeMouseMove = null;
+    this.unsubscribeMouseUp = null;
+    this.tableWidth = 200;
+    this.isRTL = false;
+  }
+
   @Input()
   set rows(rows: Array<T>) {
     if (!rows) {
@@ -56,40 +62,65 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     return this._rows;
   }
 
+  @Input()
+  paginated: Boolean = false;
+  @Input()
+  customSort: Boolean = true;
+  @Input()
+  customPaginate: Boolean = false;
+  @Input()
+  totalCount: Number = 0;
+  @Input()
+  pageSize: Number = 10;
+  @Input()
+  currentPage: Number = 1;
+  @Input()
+  pageSizes: number[] = [10, 20, 50, 100];
 
-  @Input() paginated: Boolean = false;
-  @Input() customSort: Boolean = true;
-  @Input() customPaginate: Boolean = false;
-  @Input() totalCount: Number = 0;
-  @Input() pageSize: Number = 10;
-  @Input() currentPage: Number = 1;
-  @Input() pageSizes: number[] = [10, 20, 50, 100];
+  @Input()
+  sort: String = '';
+  @Input()
+  sortDirection: SortDirection = SortDirection.Ascending;
 
-  @Input() sort: String = '';
-  @Input() sortDirection: SortDirection = SortDirection.Ascending;
+  @Input()
+  hidden: Boolean = false;
+  @Input()
+  selectedClass: String = 'table-secondary';
 
-  @Input() hidden: Boolean = false;
-  @Input() selectedClass: String = 'table-secondary';
+  @Output()
+  pageChange = new EventEmitter<IPagingInput>();
+  @Output()
+  sortChange = new EventEmitter<ISortInput>();
+  @Output()
+  pageSizeChange = new EventEmitter<IPagingInput>();
 
-  @Output() pageChange = new EventEmitter<IPagingInput>();
-  @Output() sortChange = new EventEmitter<ISortInput>();
-  @Output() pageSizeChange = new EventEmitter<IPagingInput>();
+  @Output()
+  selectedChange = new EventEmitter<T>();
+  @Output()
+  columnsArrangeChange = new EventEmitter();
 
-  @Output() selectedChange = new EventEmitter<T>();
-  @Output() columnsArrangeChange = new EventEmitter();
+  @Input()
+  tableClass: String = 'table'; // table-bordered
+  @Input()
+  theadClass: String = 'thead-light';
+  @Input()
+  tbodyClass: String = '';
+  @Input()
+  trowClass: String = '';
+  @Input()
+  tcellClass: String = '';
+  @Input() isRTL: boolean;
 
-  @Input() tableClass: String = 'table table-bordered';
-  @Input() theadClass: String = 'thead-light';
-  @Input() tbodyClass: String = '';
-  @Input() trowClass: String = '';
-  @Input() tcellClass: String = '';
 
+
+
+  public tableWidth: number;
   public _rows = Array<T>();
   public Math = Math;
   public Arr = Array;
   public templatesArray: NgxColumnTemplateComponent[];
-  public head: Array<HeaderItem> = new Array<HeaderItem>();
   public cells: Array<Array<HeaderCell>> = new Array<Array<HeaderCell>>();
+  public head: Array<HeaderItem> = new Array<HeaderItem>();
   public lowerCells: Array<HeaderCell> = new Array<HeaderCell>();
   public depth = 0;
   public uid = guid();
@@ -98,10 +129,18 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   public sortInput: SortInput = new SortInput();
   public pagingInput: PagingInput = new PagingInput();
 
+  pixcelXBefore: number;
+  widthBefore: number;
+  widthAfter: number;
+  resizeElement: Element;
+  unsubscribeMouseMove: () => void;
+  unsubscribeMouseUp: () => void;
+  pixcelXAfter: number;
+
   ngAfterContentInit() {
     NgxColumnTemplateComponent.normalizeIndexes(this.templatesArray);
     this.templatesArray.forEach(i =>
-      i.changed.subscribe(() => this.reArrangeColumns())
+      i.changed.subscribe(() => this.generateCells())
     );
     this.generateCells();
   }
@@ -152,7 +191,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.draggingCell.template.index = tmp;
     this.draggingCell = null;
 
-    this.reArrangeColumns();
+    this.generateCells();
     this.columnsArrangeChange.emit(
       this.templatesArray.map(t => {
         return {
@@ -161,18 +200,16 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
           index: t.index
         };
       })
-      // this.templatesArray
     );
   }
 
   public drag(x: HeaderCell) {
     this.draggingCell = x;
   }
-
   protected generateCells() {
-    this.head = [];
-    this.generateHeaders();
-
+    this.head = this.generateHeaders();
+    this.tableWidth = this.head.map(i => +i.Width)
+      .reduce<number>((sum, current) => sum + current, 0);
     this.depth = Math.max(
       ...this.head.map(item => {
         return this.Depth(item);
@@ -184,34 +221,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.createHeaderCells(this.head, 0, this.depth);
   }
 
-  protected generateHeaders(): void {
-    this.templatesArray
-      .filter(t => t.parent === '')
-      .sort((first, second) => {
-        if (first.index > second.index) {
-          return -1;
-        }
-        if (first.index < second.index) {
-          return 1;
-        }
-        return 0;
-      })
-      .forEach(t => {
-        this.head.push({
-          Title: t.title,
-          Index: t.index,
-          Sortable: t.sortable,
-          Template: t,
-          Childs: this.generateHeaderChilds(t.name),
-          Name: t.name
-        });
-      });
-  }
 
-  protected generateHeaderChilds(headerName: String): Array<HeaderItem> {
+  protected generateHeaders(headerName: String = ''): Array<HeaderItem> {
     const result = new Array<HeaderItem>();
     this.templatesArray
-      .filter(t => t.parent !== '' && t.parent === headerName)
+      .filter(t => t.parent === headerName)
       .sort((first, second) => {
         if (first.index > second.index) {
           return -1;
@@ -222,14 +236,18 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
         return 0;
       })
       .forEach(t => {
-        result.push({
-          Title: t.title,
-          Index: t.index,
-          Sortable: t.sortable,
-          Template: t,
-          Childs: this.generateHeaderChilds(t.name),
-          Name: t.name
-        });
+        let item: HeaderItem;
+        item = new HeaderItem();
+        item.Title = t.title;
+        item.Index = +t.index;
+        item.Sortable = t.sortable;
+        item.Template = t;
+        item.Visible = t.visible;
+        item.Childs = this.generateHeaders(t.name);
+        item.Width = item.Childs.length === 0 ? +t.cellWidth : item.Childs.map(i => +i.Width)
+          .reduce<number>((sum, current) => sum + current, 0);
+        item.Name = t.name;
+        result.push(item);
       });
     return result;
   }
@@ -243,18 +261,19 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       this.cells.push(new Array<HeaderCell>());
     }
     const row = this.cells[level];
-    items
-      .sort((first, second) => first.Index.valueOf() - second.Index.valueOf())
+    items.sort((first, second) => first.Index.valueOf() - second.Index.valueOf())
       .map(h => {
-        const c = new HeaderCell({
-          name: h.Name,
-          index: h.Index,
-          title: h.Title,
-          sortable: h.Sortable,
-          template: h.Template,
-          colSpan: this.countHeaders(h),
-          rowSpan: h.Childs.length > 0 ? 1 : depth - level
-        });
+        const c = new HeaderCell();
+        c.name = h.Name;
+        c.index = h.Index;
+        c.title = h.Title;
+        c.visible = h.Visible;
+        c.cellWidth = h.Width;
+        c.sortable = h.Sortable;
+        c.template = h.Template;
+        c.HeaderItem = h;
+        c.colSpan = this.countHeaders(h);
+        c.rowSpan = h.Childs.length > 0 ? 1 : depth - level;
         row.push(c);
         if (h.Childs.length > 0) {
           this.createHeaderCells(h.Childs, level + 1, depth);
@@ -307,16 +326,12 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.pagingInput.pageSize = pageSize;
     this.pageSizeChange.emit(
       this.pagingInput
-      //   {
-      //   page: this.currentPage,
-      //   perPage: pageSize,
-      //   sort: this.sort,
-      //   direction: this.sortDirection
-      // }
     );
   }
 
   public selectPage(page: number) {
+    // console.log(this.thHeader.nativeElement);
+
     if (this.currentPage === page) {
       return;
     }
@@ -331,12 +346,6 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
     this.pageChange.emit(
       this.pagingInput
-      //   {
-      //   page: page,
-      //   perPage: this.pageSize,
-      //   sort: this.sort,
-      //   direction: this.sortDirection
-      // }
     );
   }
 
@@ -364,38 +373,69 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.sortInput.direction = newDirection;
     this.sortChange.emit(
       this.sortInput
-      // page: this.currentPage,
-      // perPage: this.perPage,
-      // sort: cell.name,
-      // direction: newDirection
     );
   }
 
-  public reArrangeColumns() {
-    this.generateCells();
-  }
-}
 
-@Directive({
-  selector: '[setDirection]'
-})
-export class DirectionDirective {
-  constructor(private renderer: Renderer2, private el: ElementRef) {
-   }
+  public resizeHandle(cell: HeaderCell, mEvent: MouseEvent) {
+    const tableWidthTemp = this.tableWidth;
+    this.pixcelXBefore = mEvent.x;
+    this.widthBefore = +cell.cellWidth;
+    const draggable = cell.template.draggable;
+    const sortable = cell.template.sortable;
+    let lastHeaderItem = cell.HeaderItem;
+    while (lastHeaderItem.Childs.length > 0) {
+      lastHeaderItem = lastHeaderItem.Childs[lastHeaderItem.Childs.length - 1];
+    }
+    const allCells = this.cells.reduce(function (a, b) { return a.concat(b); });
+    const lastCell = allCells.find(i => i.name === lastHeaderItem.Name);
 
-   _direction: number;
-  @Input('setDirection')
-  set direction(direction: number) {
-      this._direction = direction;
-      this.renderer.removeClass(this.el.nativeElement, 'fa-arrow-down');
-      this.renderer.removeClass(this.el.nativeElement, 'fa-arrow-up');
-      if (this._direction != null) {
-        if (this._direction === 0) {
-          this.renderer.addClass(this.el.nativeElement, 'fa-arrow-up');
+
+    const widthLastCell = +lastCell.cellWidth;
+    this.unsubscribeMouseMove = this.renderer.listen(
+      'body',
+      'mousemove',
+      event => {
+        cell.template.draggable = false;
+        cell.template.sortable = false;
+        let WidthAdd = event.x - this.pixcelXBefore;
+        if (this.isRTL) {
+          WidthAdd = this.pixcelXBefore - event.x;
         }
-        if (this._direction !== 0) {
-          this.renderer.addClass(this.el.nativeElement, 'fa-arrow-down');
+
+        if (lastCell.cellWidth >= 50) {
+          cell.cellWidth = this.widthBefore + (WidthAdd);
+          lastCell.cellWidth = widthLastCell + (WidthAdd);
+          this.tableWidth = tableWidthTemp + (WidthAdd);
         }
       }
-    }
+    );
+
+    this.unsubscribeMouseUp = this.renderer.listen('body', 'mouseup', event => {
+      if (lastCell.cellWidth < 50) {
+        lastCell.cellWidth = 50;
+      }
+      lastCell.template.cellWidth = lastCell.cellWidth;
+
+      if (cell.cellWidth < 50) {
+        cell.cellWidth = 50;
+      }
+      cell.template.cellWidth = cell.cellWidth;
+
+      cell.template.draggable = draggable;
+      cell.template.sortable = sortable;
+
+
+      if (this.unsubscribeMouseMove) {
+        this.unsubscribeMouseMove();
+        this.unsubscribeMouseMove = null;
+        this.generateCells();
+      }
+
+      if (this.unsubscribeMouseUp) {
+        this.unsubscribeMouseUp();
+        this.unsubscribeMouseUp = null;
+      }
+    });
+  }
 }
