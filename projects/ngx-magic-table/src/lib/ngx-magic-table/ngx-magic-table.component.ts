@@ -330,8 +330,6 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   }
 
   public selectPage(page: number) {
-    // console.log(this.thHeader.nativeElement);
-
     if (this.currentPage === page) {
       return;
     }
@@ -375,7 +373,6 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       this.sortInput
     );
   }
-
 
   public resizeHandle(cell: HeaderCell, mEvent: MouseEvent) {
     const tableWidthTemp = this.tableWidth;
