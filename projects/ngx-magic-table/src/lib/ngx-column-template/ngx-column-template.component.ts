@@ -1,4 +1,7 @@
-import { Component, Input, Output, EventEmitter, ContentChildren, TemplateRef, QueryList, SimpleChanges, AfterContentInit } from '@angular/core';
+import {
+  Component, Input, Output, EventEmitter, ContentChildren,
+  TemplateRef, QueryList, SimpleChanges, AfterContentInit, OnChanges
+} from '@angular/core';
 import { NamedTemplateDirective } from './../ngx-named-template/ngx-named-template.directive';
 
 @Component({
@@ -6,14 +9,16 @@ import { NamedTemplateDirective } from './../ngx-named-template/ngx-named-templa
   templateUrl: './ngx-column-template.component.html',
   styleUrls: ['./ngx-column-template.component.css']
 })
-export class NgxColumnTemplateComponent implements AfterContentInit {
-  @Input() name: String = '';
-  @Input() parent: String = '';
-  @Input() title: String = '';
-  @Input() index: Number = 0;
-  @Input() sortable: Boolean = true;
-  @Input() draggable: Boolean = true;
-  @Input() collection: String = '';
+export class NgxColumnTemplateComponent implements AfterContentInit, OnChanges {
+  @Input() name: string;
+  @Input() parent: string;
+  @Input() title: string;
+  @Input() index: number;
+  @Input() sortable: boolean;
+  @Input() draggable: boolean;
+  @Input() collection: string;
+  @Input() visible: boolean;
+  @Input() cellWidth: number;
 
   @Output() changed = new EventEmitter();
 
@@ -25,8 +30,19 @@ export class NgxColumnTemplateComponent implements AfterContentInit {
   public body: TemplateRef<any>;
   public filter: TemplateRef<any>;
 
+  public constructor() {
+    this.name = '';
+    this.parent = '';
+    this.title = '';
+    this.index = 0;
+    this.cellWidth = 100;
+    this.sortable = true;
+    this.draggable = true;
+    this.visible = true;
+    this.collection = '';
+  }
 
-  static normalizeIndexes(templates: NgxColumnTemplateComponent[] ) {
+  static normalizeIndexes(templates: NgxColumnTemplateComponent[]) {
     templates.sort((first, second) => {
       if (first.parent < second.parent) { return -1; }
       if (first.parent > second.parent) { return 1; }
@@ -48,7 +64,7 @@ export class NgxColumnTemplateComponent implements AfterContentInit {
     this.filter = f ? f.template : undefined;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     this.changed.emit(this);
   }
 

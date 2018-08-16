@@ -1,14 +1,24 @@
 import { NgxColumnTemplateComponent } from '../ngx-column-template/ngx-column-template.component';
+import { HeaderItem } from './header-item';
 
 export class HeaderCell {
-    public name: String;
-    public title: String = '';
-    public index: Number = 0;
-    public colSpan: Number = 1;
-    public rowSpan: Number = 1;
-    public sortable: any = true;
-    public template: NgxColumnTemplateComponent;
-    public constructor(init?: Partial<HeaderCell>) {
-        Object.assign(this, init);
-    }
+  public cellWidth: number;
+  public visible: boolean;
+  public name: string;
+  public title: string;
+  public index: number;
+  public colSpan: number;
+  public rowSpan: number;
+  public sortable: any;
+  public template: NgxColumnTemplateComponent;
+  public HeaderItem: HeaderItem;
+  public constructor(init?: Partial<HeaderCell>) {
+    Object.assign(this, init);
+    this.title = '';
+    this.index = 0;
+    this.colSpan = 1;
+    this.rowSpan = 1;
+    this.sortable = true;
+    this.visible = true;
+  }
 }
