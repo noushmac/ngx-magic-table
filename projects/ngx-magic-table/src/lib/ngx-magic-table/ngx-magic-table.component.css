@@ -45,6 +45,7 @@ table {
  */
 
 table.rz-table {
+  display: block;
   width: auto;
   table-layout: fixed;
   border-collapse: collapse;
@@ -56,7 +57,7 @@ table.rz-table th {
 }
 
 table.rz-table th .rz-handle {
-  width: 5px;
+  width: 2px;
   height: 100%;
   position: absolute;
   top: 0;
@@ -66,8 +67,8 @@ table.rz-table th .rz-handle {
     45deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.05) 2px,
-    rgba(0, 0, 0, 0.05) 4px
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
   );
 }
 
@@ -102,4 +103,27 @@ table.rz-table th .rz-handle:hover {
 
 .paging {
   width: 100%;
+}
+
+.paddingDiv {
+  padding: 10px;
+}
+
+.ngxThead {
+  display: block;
+  width: 100%;
+}
+.ngxTbody {
+  height: -webkit-fill-available;
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.table td, .table th {
+  word-break: break-all;
+ 
+}
+.table td {
+  border: 1px solid #797b7e;
 }
