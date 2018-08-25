@@ -1,62 +1,73 @@
-<div>
-  <table class="table table-bordered">
-    <thead>
-      <tr *ngFor="let cellRow of cells">
-        <th *ngFor="let cell of cellRow" [id]="uid+'-'+cell.name+'-head'" [draggable]="cell.template.draggable" (drop)="drop(cell)"
-          (dragover)="allowDrop($event)" (dragstart)="drag(cell)" [attr.colspan]="cell.colSpan" [attr.rowspan]="cell.rowSpan"
-          (click)="sortToggle(cell)">
-          <ng-template [ngTemplateOutlet]="cell.template.header" [ngTemplateOutletContext]="{cell: cell, direction: (cell.name === sort) ? sortDirection : undefined}"></ng-template>
-          <ng-container *ngIf="cell.template.filter">
-            <div ngbDropdown (click)="$event.stopPropagation()" class="dropdown float-right">
-              <button ngbDropdownToggle type="button" [ngClass]="[cell.template.filters.length == 0 ? 'btn-default' : 'btn-warning']" class="btn "
-                [id]="cell.name + '-' + uid  + '-filter'">
-                <i class="fa fa-filter"></i>
-              </button>
-              <div ngbDropdownMenu [aria-labelledby]="cell.name + '-' + uid  + '-filter'" class="dropdown-menu" (click)="$event.stopPropagation()">
-                <div class="container">
-                  <ng-template [ngTemplateOutlet]="cell.template.filter" [ngTemplateOutletContext]="{cell: cell, rows: rows}"></ng-template>
-                </div>
+<div [ngClass]="[isRTL ? 'rtl' : 'ltr']">
+  <div class="main">
+    <div class="paddingDiv" [style.width.px]="tableWidth">
+      <table [ngClass]="tableClass" class="rz-table">
+        <thead class="ngxThead" [ngClass]="theadClass">
+          <tr *ngFor="let cellRow of cells">
+            <th *ngFor="let cell of cellRow" [style.width.px]="cell.cellWidth" [attr.visible]="cell.visible" [name]="cell.name" [id]="uid+'-'+cell.name+'-head'"
+              [draggable]="cell.template.draggable" (drop)="drop(cell)" (dragover)="allowDrop($event)" (dragstart)="drag(cell)"
+              [attr.colspan]="cell.colSpan" [attr.rowspan]="cell.rowSpan">
+              <div [id]="cell.name+'resizable'" (mousedown)="resizeHandle(cell,$event)" class="rz-handle">
               </div>
-            </div>
-          </ng-container>
-
-        </th>
-      </tr>
-    </thead>
-    <tbody *ngIf="paginated">
-      <ng-container *ngFor="let row of rows | sort:{field: sort, direction: sortDirection, active: !customSort} | paginate: {
-        itemsPerPage: perPage,
+              <div (click)="sortToggle(cell)">
+                <ng-template [ngTemplateOutlet]="cell.template.header" [ngTemplateOutletContext]="{cell: cell, direction: (cell.name === sort) ? sortDirection : undefined}">
+                </ng-template>
+              </div>
+              <ng-container *ngIf="cell.template.filter">
+                <div ngbDropdown (click)="$event.stopPropagation()" class="dropdown float-right">
+                  <button ngbDropdownToggle type="button" [ngClass]="[cell.template.filters.length == 0 ? 'btn-default' : 'btn-warning']" class="btn "
+                    [id]="cell.name + '-' + uid  + '-filter'">
+                    <i class="fa fa-filter"></i>
+                  </button>
+                  <div ngbDropdownMenu [aria-labelledby]="cell.name + '-' + uid  + '-filter'" class="dropdown-menu" (click)="$event.stopPropagation()">
+                    <div class="container">
+                      <ng-template [ngTemplateOutlet]="cell.template.filter" [ngTemplateOutletContext]="{cell: cell, rows: rows}"></ng-template>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="ngxTbody" [ngClass]="tbodyClass" *ngIf="paginated">
+          <ng-container *ngFor="let row of rows | sort:{field: sort, direction: sortDirection, active: !customSort} | paginate: {
+        itemsPerPage: pageSize,
         currentPage: currentPage,
         totalItems: customPaginate ? totalCount : rows.length,
         id: uid }">
-        <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row === selectedRow ? selectedClass : '']">
-          <ng-container *ngFor="let cell of lowerCells">
-            <td *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0" [attr.rowspan]="getLcm(row) / (cell.template.collection !== '' ? Math.max(row[cell.template.collection].length, 1) : 1)">
-              <ng-template [ngTemplateOutlet]="cell.template.body" [ngTemplateOutletContext]="{row: row, cell: cell, index: ((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) / getLcm(row)}"></ng-template>
-            </td>
+            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row === selectedRow ? selectedClass : trowClass]">
+              <ng-container *ngFor="let cell of lowerCells">
+                <td [style.width.px]="cell.cellWidth" [ngClass]="tcellClass" *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
+                  [attr.rowspan]="getLcm(row) / (cell.template.collection !== '' ? Math.max(row[cell.template.collection].length, 1) : 1)">
+                  <ng-template [ngTemplateOutlet]="cell.template.body" [ngTemplateOutletContext]="{row: row, cell: cell, index: ((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) / getLcm(row)}"></ng-template>
+                </td>
+              </ng-container>
+            </tr>
           </ng-container>
-        </tr>
-      </ng-container>
-    </tbody>
-    <tbody *ngIf="!paginated">
-      <ng-container (click)="selectRow(row)" [ngClass]="[row === selectedRow ? selectedClass : '']" *ngFor="let row of rows | sort:{field: sort, direction: sortDirection, active: !customSort}">
-        <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index">
-          <ng-container *ngFor="let cell of lowerCells">
-            <td *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0" [attr.rowspan]="getLcm(row) / (cell.template.collection !== '' ? Math.max(row[cell.template.collection].length, 1) : 1)">
-              <ng-template [ngTemplateOutlet]="cell.template.body" [ngTemplateOutletContext]="{row: row, cell: cell, index: ((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) / getLcm(row)}"></ng-template>
-            </td>
+        </tbody>
+        <tbody [ngClass]="tbodyClass" *ngIf="!paginated">
+          <ng-container (click)="selectRow(row)" [ngClass]="[row === selectedRow ? selectedClass : trowClass ]" *ngFor="let row of rows | sort:{field: sort, direction: sortDirection, active: !customSort}">
+            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index">
+              <ng-container *ngFor="let cell of lowerCells">
+                <td [style.width.px]="cell.cellWidth"  [ngClass]="tcellClass" *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
+                  [attr.rowspan]="getLcm(row) / (cell.template.collection !== '' ? Math.max(row[cell.template.collection].length, 1) : 1)">
+                  <ng-template [ngTemplateOutlet]="cell.template.body" [ngTemplateOutletContext]="{row: row, cell: cell, index: ((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) / getLcm(row)}"></ng-template>
+                </td>
+              </ng-container>
+            </tr>
           </ng-container>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
-  <div class="btn-group" *ngIf="paginated">
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="btn-group paging" *ngIf="paginated">
     <pagination-controls (pageChange)="selectPage($event)" previousLabel="" nextLabel="" [id]="uid"></pagination-controls>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <div *ngIf="perPages.length" class="dropdown">
-      <select class="btn btn-secondary btn-sm dropdown-toggle" (change)="changePerPage($event.target.value)">
-        <option *ngFor="let p of perPages" class="btn btn-sm btn-secondary">{{p}}</option>
+    <div *ngIf="pageSizes.length" class="dropdown">
+      <select class="btn btn-secondary btn-sm dropdown-toggle" [value]='pageSize' (change)="changePerPage($event.target.value)">
+        <option *ngFor="let p of pageSizes" class="btn btn-sm btn-secondary">{{p}}</option>
       </select>
     </div>
   </div>
+
 </div>

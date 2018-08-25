@@ -1,18 +1,129 @@
 table thead th {
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }
-[draggable=true] {
-    -khtml-user-drag: element;
-    -webkit-user-drag: element;
+[draggable="true"] {
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
 }
 select.btn-sm {
-    padding: 0.1rem;
-    display: inline-flex;
+  padding: 0.1rem;
+  display: inline-flex;
 }
 
 table {
-    table-layout: fixed;
+  table-layout: fixed;
+}
+
+/********************************************************************/
+/********************************************************************/
+/* th {
+  padding: 0px !important;
+}
+
+.th-span {
+  display: inline-block;
+  padding: 5px;
+  width: 97%;
+}
+.th-section{
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+table {
+  table-layout: unset;
+} */
+
+/*
+ * angular-table-resize
+ * https://github.com/tympanix/angular-table-resize
+ * - minimal stylesheet
+ */
+
+table.rz-table {
+  display: block;
+  width: auto;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+table.rz-table th {
+  position: relative;
+  min-width: 25px;
+}
+
+table.rz-table th .rz-handle {
+  width: 2px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: ew-resize !important;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+}
+
+
+table.rz-table th .rz-handle:hover {
+  background: repeating-linear-gradient(
+    45deg,
+    #6c757d00,
+    #6c757d 2px,
+    #6c757d 2px,
+    #6c757d00 4px
+  );
+}
+
+
+.rtl table.rz-table th .rz-handle{  
+  right: auto;
+  left: 0;  
+}
+
+
+.rtl {  
+  direction: rtl !important;
+}
+.ltr {  
+  direction: ltr !important;
+}
+
+.main {
+  overflow: auto;
+}
+
+.paging {
+  width: 100%;
+}
+
+.paddingDiv {
+  padding: 10px;
+}
+
+.ngxThead {
+  display: block;
+  width: 100%;
+}
+.ngxTbody {
+  height: -webkit-fill-available;
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.table td, .table th {
+  word-break: break-all;
+ 
+}
+.table td {
+  border: 1px solid #797b7e;
 }
