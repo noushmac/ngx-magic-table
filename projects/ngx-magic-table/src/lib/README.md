@@ -4,7 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/9bdb33820bfdaa028c78/maintainability)](https://codeclimate.com/github/noushmac/ngx-magic-table/maintainability)
 [![npm version](https://img.shields.io/npm/v/ngx-magic-table.svg)](https://img.shields.io/npm/v/ngx-magic-table.svg)
 [![npm total downloads](https://img.shields.io/npm/dt/ngx-magic-table.svg)](https://img.shields.io/npm/dt/ngx-magic-table.svg)
-[![npm monthly downloads](https://img.shields.io/npm/dm/ngx-magic-table.svg)](https://img.shields.io/npm/dt/ngx-magic-table.svg)
+[![npm monthly downloads](https://img.shields.io/npm/dm/ngx-magic-table.svg)](https://img.shields.io/npm/dm/ngx-magic-table.svg)
 
 Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 
@@ -19,9 +19,12 @@ Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 - Filtering rows (under development)
 - Custom Styling
 
+## Preview
+![Preview](https://imgur.com/V5Sy0HN.jpg)
+
 ## Demo
 
-Try this [Demo](https://stackblitz.com/edit/angular-cyry7o?file=src%2Fapp%2Fapp.component.html)
+Try the [Demo](https://stackblitz.com/edit/angular-cyry7o?file=src%2Fapp%2Fapp.component.html)
 
 
 ## Getting started
@@ -218,8 +221,6 @@ Use `<ngx-magic-table>`
   </ngx-magic-table>
 
 ```
-## Preview
-![Preview](https://imgur.com/V5Sy0HN.jpg)
 
 ## Next up
 
