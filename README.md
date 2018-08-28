@@ -4,7 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/9bdb33820bfdaa028c78/maintainability)](https://codeclimate.com/github/noushmac/ngx-magic-table/maintainability)
 [![npm version](https://img.shields.io/npm/v/ngx-magic-table.svg)](https://img.shields.io/npm/v/ngx-magic-table.svg)
 [![npm total downloads](https://img.shields.io/npm/dt/ngx-magic-table.svg)](https://img.shields.io/npm/dt/ngx-magic-table.svg)
-[![npm monthly downloads](https://img.shields.io/npm/dm/ngx-magic-table.svg)](https://img.shields.io/npm/dt/ngx-magic-table.svg)
+[![npm monthly downloads](https://img.shields.io/npm/dm/ngx-magic-table.svg)](https://img.shields.io/npm/dm/ngx-magic-table.svg)
 
 Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 
