@@ -60,22 +60,23 @@ Make sure you have included `bootstrap` and `font-awesome` styles
 Use `<ngx-magic-table>`
 ```html
   <ngx-magic-table 
-    [isRTL]="false" 
-    [rows]="data" 
-    [customSort]="false" 
-    sort="Phone" 
-    sortDirection="SortDirection.Ascending" 
-    [paginated]="true"
-    [pageSize]="3" 
-    [customPaginate]="false"
-    [currentPage]="2" 
-    [pageSizes]="[3, 5, 20, 50, 100]" 
-    (pageSizesChange)="pageSizesChange($event)"
-    (pageChange)="pageChange($event)" tcellClass="text-center" 
-    trowClass="table-primary"
-    (selectedChange)="selectChanged($event)"
-    selectedClass="table-secondary" 
-    (columnsArrangeChange)="columnsArrangeChange($event)">
+  [isRTL]="false" 
+  [rows]="data" 
+  [customSort]="false" 
+  sort="Phone" 
+  sortDirection="SortDirection.Ascending" 
+  [paginated]="true"
+  [pageSize]="3" 
+  [customPaginate]="false" 
+  [currentPage]="2" 
+  [pageSizes]="[3, 5, 20, 50, 100]" 
+  (pageSizesChange)="pageSizesChange($event)"
+  (pageChange)="pageChange($event)" 
+  tcellClass="text-center" 
+  trowClass="table-primary" 
+  (selectedChange)="selectChanged($event)"
+  selectedClass="table-secondary" 
+  (columnsArrangeChange)="columnsArrangeChange($event)">
 
     <ngx-column-template 
       name="Numbers" 

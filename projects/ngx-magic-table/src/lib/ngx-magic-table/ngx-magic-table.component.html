@@ -1,13 +1,13 @@
 <div [ngClass]="[isRTL ? 'rtl' : 'ltr']">
   <div class="main">
     <div class="paddingDiv" [style.width.px]="tableWidth">
-      <table [ngClass]="tableClass" class="rz-table">
+      <table  [ngClass]="tableClass" class="rz-table">
         <thead class="ngxThead" [ngClass]="theadClass">
           <tr *ngFor="let cellRow of cells">
             <th *ngFor="let cell of cellRow" [style.width.px]="cell.cellWidth" [attr.visible]="cell.visible" [name]="cell.name" [id]="uid+'-'+cell.name+'-head'"
               [draggable]="cell.template.draggable" (drop)="drop(cell)" (dragover)="allowDrop($event)" (dragstart)="drag(cell)"
               [attr.colspan]="cell.colSpan" [attr.rowspan]="cell.rowSpan">
-              <div [id]="cell.name+'resizable'" (mousedown)="resizeHandle(cell,$event)" class="rz-handle">
+              <div [id]="cell.name+'resizable'" (mousedown)="resizeHandle(cell,$event,'tbody1')" class="rz-handle">
               </div>
               <div (click)="sortToggle(cell)">
                 <ng-template [ngTemplateOutlet]="cell.template.header" [ngTemplateOutletContext]="{cell: cell, direction: (cell.name === sort) ? sortDirection : undefined}">
@@ -29,15 +29,16 @@
             </th>
           </tr>
         </thead>
-        <tbody class="ngxTbody" [ngClass]="tbodyClass" *ngIf="paginated">
+        <tbody id="tbody1" (domChange)="onDomChange($event)" class="ngxTbody" [ngClass]="tbodyClass" *ngIf="paginated">
           <ng-container *ngFor="let row of rows | sort:{field: sort, direction: sortDirection, active: !customSort} | paginate: {
         itemsPerPage: pageSize,
         currentPage: currentPage,
         totalItems: customPaginate ? totalCount : rows.length,
         id: uid }">
             <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row === selectedRow ? selectedClass : trowClass]">
-              <ng-container *ngFor="let cell of lowerCells">
-                <td [style.width.px]="cell.cellWidth" [ngClass]="tcellClass" *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
+              <ng-container *ngFor="let cell of lowerCells; let lowerIndex = index">
+                <!-- [style.width.px]="cell.cellWidth" -->
+                <td [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)" [ngClass]="tcellClass" *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
                   [attr.rowspan]="getLcm(row) / (cell.template.collection !== '' ? Math.max(row[cell.template.collection].length, 1) : 1)">
                   <ng-template [ngTemplateOutlet]="cell.template.body" [ngTemplateOutletContext]="{row: row, cell: cell, index: ((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) / getLcm(row)}"></ng-template>
                 </td>
@@ -45,11 +46,11 @@
             </tr>
           </ng-container>
         </tbody>
-        <tbody [ngClass]="tbodyClass" *ngIf="!paginated">
-          <ng-container (click)="selectRow(row)" [ngClass]="[row === selectedRow ? selectedClass : trowClass ]" *ngFor="let row of rows | sort:{field: sort, direction: sortDirection, active: !customSort}">
-            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index">
-              <ng-container *ngFor="let cell of lowerCells">
-                <td [style.width.px]="cell.cellWidth"  [ngClass]="tcellClass" *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
+        <tbody id="tbody1" (domChange)="onDomChange($event)" class="ngxTbody" [ngClass]="tbodyClass" *ngIf="!paginated">
+          <ng-container  *ngFor="let row of rows | sort:{field: sort, direction: sortDirection, active: !customSort}">
+            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row === selectedRow ? selectedClass : trowClass ]">
+              <ng-container *ngFor="let cell of lowerCells; let lowerIndex = index">
+                <td [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)"  [ngClass]="tcellClass" *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
                   [attr.rowspan]="getLcm(row) / (cell.template.collection !== '' ? Math.max(row[cell.template.collection].length, 1) : 1)">
                   <ng-template [ngTemplateOutlet]="cell.template.body" [ngTemplateOutletContext]="{row: row, cell: cell, index: ((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) / getLcm(row)}"></ng-template>
                 </td>
