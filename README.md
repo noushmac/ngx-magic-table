@@ -19,6 +19,9 @@ Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 - Filtering rows (under development)
 - Custom Styling
 
+## Preview
+![Preview](https://imgur.com/V5Sy0HN.jpg)
+
 ## Demo
 
 Try the [Demo](https://stackblitz.com/edit/angular-cyry7o?file=src%2Fapp%2Fapp.component.html)
@@ -218,8 +221,6 @@ Use `<ngx-magic-table>`
   </ngx-magic-table>
 
 ```
-## Preview
-![Preview](https://imgur.com/V5Sy0HN.jpg)
 
 ## Next up
 
