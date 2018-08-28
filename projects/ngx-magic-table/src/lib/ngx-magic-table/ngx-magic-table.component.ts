@@ -112,7 +112,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   tcellClass: String = '';
   @Input() isRTL: boolean;
 
-  
+
   public scrollWidth: number;
   public tableWidth: number;
   public _rows = Array<T>();
@@ -143,7 +143,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       i.changed.subscribe(() => this.generateCells())
     );
     this.generateCells();
-    
+
   }
 
   public getLcm(row: any): number {
@@ -376,7 +376,6 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   }
 
   onDomChange(width: number): void {
-    console.log(width);
     this.scrollWidth = width;
   }
 
@@ -388,12 +387,10 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
 
   }
-  onResize(event: Event) {
-    console.log(event);
-  }
 
-  public resizeHandle(cell: HeaderCell, mEvent: MouseEvent) {
+  public resizeHandle(cell: HeaderCell, mEvent: MouseEvent, idTbody: string) {
     let self = this;
+    let tbodyId = idTbody;
     const tableWidthTemp = this.tableWidth;
     this.pixcelXBefore = mEvent.x;
     this.widthBefore = +cell.cellWidth;
@@ -441,8 +438,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       cell.template.draggable = draggable;
       cell.template.sortable = sortable;
 
-      
-      console.log(self);
+      let htmlElement = document.getElementById(tbodyId);
+      this.scrollWidth = htmlElement.offsetWidth - htmlElement.clientWidth;
+    
 
       if (this.unsubscribeMouseMove) {
         this.unsubscribeMouseMove();

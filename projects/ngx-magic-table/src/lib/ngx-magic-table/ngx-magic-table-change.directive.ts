@@ -12,24 +12,24 @@ export class DomChangeDirective implements OnDestroy {
 
   constructor(private elementRef: ElementRef) {
     const element = this.elementRef.nativeElement;
-    const childelement = this.elementRef.nativeElement.children;
-    for (let index = 0; index < childelement.length; index++) {
-        const element1 = childelement[index];
-        for (let index = 0; index < element1.length; index++) {
-            const element2 = element1[index];
-            this.changes.observe(element2, {
-                attributes: true,
-                childList: true,
-                characterData: true,
-              //    subtree: true,
-              //    attributeOldValue: true,
-              //    characterDataOldValue: true,
+    // const childelement = this.elementRef.nativeElement.children;
+    // for (let index = 0; index < childelement.length; index++) {
+    //     const element1 = childelement[index];
+    //     for (let index = 0; index < element1.length; index++) {
+    //         const element2 = element1[index];
+    //         this.changes.observe(element2, {
+    //             attributes: true,
+    //             childList: true,
+    //             characterData: true,
+    //           //    subtree: true,
+    //           //    attributeOldValue: true,
+    //           //    characterDataOldValue: true,
           
-              });
-        }
+    //           });
+    //     }
         
     
-    }
+    // }
 
     this.changes = new MutationObserver((mutations: MutationRecord[]) => {
         // mutations.forEach((mutation: MutationRecord) => this.domChange.emit(mutation));
@@ -42,7 +42,7 @@ export class DomChangeDirective implements OnDestroy {
       childList: true,
       characterData: true,
       attributeFilter: ['style'],
-      
+
     //    subtree: true,
     //    attributeOldValue: true,
     //    characterDataOldValue: true,
