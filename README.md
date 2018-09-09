@@ -6,6 +6,7 @@
 [![npm total downloads](https://img.shields.io/npm/dt/ngx-magic-table.svg)](https://img.shields.io/npm/dt/ngx-magic-table.svg)
 [![npm monthly downloads](https://img.shields.io/npm/dm/ngx-magic-table.svg)](https://img.shields.io/npm/dm/ngx-magic-table.svg)
 
+
 Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 
 ## Features
@@ -18,6 +19,11 @@ Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 - Grouping rows
 - Filtering rows (under development)
 - Custom Styling
+- Resize column
+- Visible column
+- List columns
+- Save table style
+- Load table style
 
 ## Preview
 ![Preview](https://imgur.com/V5Sy0HN.jpg)
@@ -59,12 +65,12 @@ Make sure you have included `bootstrap` and `font-awesome` styles
 
 Use `<ngx-magic-table>`
 ```html
-  <ngx-magic-table 
+<ngx-magic-table 
   [isRTL]="false" 
   [rows]="data" 
   [customSort]="false" 
   sort="Phone" 
-  sortDirection="SortDirection.Ascending" 
+  sortDirection="0" 
   [paginated]="true"
   [pageSize]="3" 
   [customPaginate]="false" 
@@ -76,9 +82,13 @@ Use `<ngx-magic-table>`
   trowClass="table-primary" 
   (selectedChange)="selectChanged($event)"
   selectedClass="table-secondary" 
-  (columnsArrangeChange)="columnsArrangeChange($event)">
-
-    <ngx-column-template 
+  (columnsArrangeChange)="columnsArrangeChange($event)"
+  [loadTable]="table" 
+  (saveTable)="saveTable($event)"
+  buttonListColumnStyle="btn btn-outline-info" 
+  buttonSaveTableStyle="btn btn-outline-info">
+ 
+<ngx-column-template 
       name="Numbers" 
       index="1"
       cellWidth="600"
@@ -98,7 +108,7 @@ Use `<ngx-magic-table>`
       parent="Numbers"
       index="2"
       cellWidth="150"
-      visible="true">
+      [visible]="true">
 
       <ng-template 
         let-cell="cell" 
@@ -123,7 +133,7 @@ Use `<ngx-magic-table>`
       index="1" 
       [draggable]="false" 
       cellWidth="150" 
-      visible="true">
+      [visible]="true">
       <ng-template 
         let-row="row" 
         let-cell="cell" 
@@ -148,7 +158,7 @@ Use `<ngx-magic-table>`
       index="1" 
       [draggable]="false" 
       cellWidth="150" 
-      visible="true">
+      [visible]="true">
 
       <ng-template 
         let-row="row" 
@@ -175,7 +185,7 @@ Use `<ngx-magic-table>`
       index="1" 
       [draggable]="false" 
       cellWidth="150" 
-      visible="true">
+      [visible]="true">
 
       <ng-template 
         let-row="row" 
@@ -200,7 +210,7 @@ Use `<ngx-magic-table>`
       index="1"
       [draggable]="false" 
       cellWidth="200" 
-      visible="true">
+      [visible]="true">
 
       <ng-template 
         let-row="row" 
@@ -220,6 +230,7 @@ Use `<ngx-magic-table>`
     </ngx-column-template>
 
   </ngx-magic-table>
+
 
 ```
 
