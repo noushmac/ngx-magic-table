@@ -61,7 +61,7 @@ table.rz-table th .rz-handle {
   height: 100%;
   position: absolute;
   top: 0;
-  right: 0;
+  right: -2px;
   cursor: ew-resize !important;
   background: repeating-linear-gradient(
     45deg,
@@ -86,7 +86,7 @@ table.rz-table th .rz-handle:hover {
 
 .rtl table.rz-table th .rz-handle{  
   right: auto;
-  left: 0;  
+  left: -2px;  
 }
 
 
@@ -103,6 +103,9 @@ table.rz-table th .rz-handle:hover {
 
 .paging {
   width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
 }
 
 .paddingDiv {
@@ -112,6 +115,9 @@ table.rz-table th .rz-handle:hover {
 .ngxThead {
   display: block;
   width: 100%;
+  border-collapse: separate;
+  border-spacing: 2px 0px;
+  background-color: #e9ecef;
 }
 .ngxTbody {
   height: -webkit-fill-available;
@@ -119,6 +125,13 @@ table.rz-table th .rz-handle:hover {
   overflow-y: auto;
   overflow-x: hidden;
 }
+.ltr .ngxTbody{  
+ direction: rtl;
+}
+.rtl .ngxTbody{
+  direction: ltr;
+}
+
 
 .table td, .table th {
   word-break: break-all;
@@ -126,4 +139,26 @@ table.rz-table th .rz-handle:hover {
 }
 .table td {
   border: 1px solid #797b7e;
+}
+
+.savetable {
+  position:  absolute;
+  top: 5px;
+}
+.ltr .savetable{  
+  right: 10px;
+}
+.rtl .savetable{
+  left: 10px; 
+}
+ul.ngx-pagination {
+  margin: 0px;
+}
+
+.rtl .table td  {
+  padding-left: 0; 
+}
+
+.ltr .table td  {
+  padding-right: 0; 
 }

@@ -1,4 +1,6 @@
 import { Directive, Input, Renderer2, ElementRef } from '@angular/core';
+import {OrderDirection} from './../models/enum';
+
 
 @Directive({
     selector: '[setDirection]'
@@ -12,10 +14,10 @@ export class DirectionDirective {
         this.renderer.removeClass(this.el.nativeElement, 'fa-arrow-down');
         this.renderer.removeClass(this.el.nativeElement, 'fa-arrow-up');
         if (this._direction != null) {
-            if (this._direction === 0) {
+            if (this._direction === OrderDirection.Descending) {
                 this.renderer.addClass(this.el.nativeElement, 'fa-arrow-up');
             }
-            if (this._direction !== 0) {
+            if (this._direction === OrderDirection.Ascending) {
                 this.renderer.addClass(this.el.nativeElement, 'fa-arrow-down');
             }
         }

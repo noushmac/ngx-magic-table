@@ -1,4 +1,4 @@
-import { NgModule, NO_ERRORS_SCHEMA, Directive, Component } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA, Directive, Component, ModuleWithProviders } from '@angular/core';
 import { NgxMagicTableComponent} from './ngx-magic-table/ngx-magic-table.component';
 import { DirectionDirective} from './ngx-magic-table/ngx-direction-column.directive';
 import { DomChangeDirective} from './ngx-magic-table/ngx-magic-table-change.directive';
@@ -13,13 +13,17 @@ import { NgxEnumFilterComponent } from './ngx-enum-filter/ngx-enum-filter.compon
 import { NgxBooleanFilterComponent } from './ngx-boolean-filter/ngx-boolean-filter.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { NgxMultiselectDropdownComponent } from './ngx-multiselect-dropdown/ngx-multiselect-dropdown.component';
+import { ListFilterPipe } from './ngx-multiselect-dropdown/list-filter.pipe';
+import { ClickOutsideDirective } from './ngx-multiselect-dropdown/click-outside.directive';
+// import { NgxMultiselectDropdownComponent } from './ngx-multiselect-dropdown/ngx-multiselect-dropdown.component';
 
 @NgModule({
   imports: [
     NgxPaginationModule,
     CommonModule,
     NgbModule,
-    FormsModule
+    FormsModule,
   ],
   declarations: [NgxMagicTableComponent,
     NamedTemplateDirective,
@@ -30,7 +34,10 @@ import { FormsModule } from '@angular/forms';
     NgxEnumFilterComponent,
     DirectionDirective,
     DomChangeDirective,
-    NgxBooleanFilterComponent],
+    NgxBooleanFilterComponent,
+    NgxMultiselectDropdownComponent,
+    ClickOutsideDirective,
+    ListFilterPipe],
   exports: [NgxMagicTableComponent,
     NgxColumnTemplateComponent,
     NamedTemplateDirective,
@@ -39,8 +46,17 @@ import { FormsModule } from '@angular/forms';
     DomChangeDirective,
     NgxNumericFilterComponent,
     NgxBooleanFilterComponent,
+    NgxMultiselectDropdownComponent,
     NgxEnumFilterComponent],
    
   schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class NgxMagicTableModule { }
+
+// export class NgxMultiselectDropdownComponent {
+//   static forRoot(): ModuleWithProviders {
+//     return {
+//       ngModule: NgxMultiselectDropdownComponent
+//     };
+//   }
+// }

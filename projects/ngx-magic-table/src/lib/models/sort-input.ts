@@ -1,7 +1,7 @@
 import { ISortInput } from './interface';
-import SortDirection from './sort-direction';
+import {OrderDirection} from './enum';
 
 export class SortInput implements ISortInput {
     sort: string;
-    direction: SortDirection;
+    direction: OrderDirection;
 }

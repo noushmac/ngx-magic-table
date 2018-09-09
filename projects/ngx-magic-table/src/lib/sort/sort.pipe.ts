@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import SortDirection  from '../models/sort-direction';
+import {OrderDirection}  from '../models/enum';
 
 @Pipe({
   name: 'sort'
@@ -11,7 +11,7 @@ export class SortPipe implements PipeTransform {
     const active = args.active || true;
     const direction = args.direction;
     if (active) {
-      if (direction === SortDirection.Ascending) {
+      if (direction === OrderDirection.Ascending) {
         rows.sort((a: any, b: any) => {
           if (a[field] < b[field]) {
             return -1;
