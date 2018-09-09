@@ -30,10 +30,10 @@ Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 
 ## Demo
 
-Try [Demo](https://stackblitz.com/edit/angular-cyry7o?file=src%2Fapp%2Fapp.component.html)
+Try the [Demo](https://stackblitz.com/edit/angular-cyry7o?file=src%2Fapp%2Fapp.component.html)
 
 
-## Getting start
+## Getting started
 Install package:
 ```bash
 npm i ngx-magic-table
@@ -88,19 +88,38 @@ Use `<ngx-magic-table>`
   buttonListColumnStyle="btn btn-outline-info" 
   buttonSaveTableStyle="btn btn-outline-info">
  
+
+  <ngx-magic-table 
+    [isRTL]="false" 
+    [rows]="data" 
+    [customSort]="false" 
+    sort="Phone" 
+    sortDirection="SortDirection.Ascending" 
+    [paginated]="true"
+    [pageSize]="3" 
+    [customPaginate]="false"
+    [currentPage]="2" 
+    [pageSizes]="[3, 5, 20, 50, 100]" 
+    (pageSizesChange)="pageSizesChange($event)"
+    (pageChange)="pageChange($event)" tcellClass="text-center" 
+    trowClass="table-primary"
+    (selectedChange)="selectChanged($event)"
+    selectedClass="table-secondary" 
+    (columnsArrangeChange)="columnsArrangeChange($event)">
+
     <ngx-column-template 
       name="Numbers" 
       index="1"
       cellWidth="600"
       [sortable]="false">
- 
+      
       <ng-template 
         let-cell="cell" 
         let-direction="direction" 
         name="header">
         {{cell.name}} 
       </ng-template>
- 
+
     </ngx-column-template>
  
     <ngx-column-template
@@ -110,6 +129,48 @@ Use `<ngx-magic-table>`
       cellWidth="150"
       [visible]="true">
  
+
+
+    </ngx-column-template>
+
+    <ngx-column-template
+      name="Phone"
+      parent="Numbers"
+      index="2"
+      cellWidth="150"
+      visible="true">
+
+      <ng-template 
+        let-cell="cell" 
+        let-direction="direction" 
+        name="header">
+        {{cell.name}}
+        <i class="fa" [setDirection]="direction"></i>
+      </ng-template>
+
+      <ng-template 
+        let-row="row" 
+        let-cell="cell" 
+        name="body">
+        {{row.Phone}}
+      </ng-template>
+
+    </ngx-column-template>
+
+    <ngx-column-template 
+      name="Id" 
+      parent="Numbers" 
+      index="1" 
+      [draggable]="false" 
+      cellWidth="150" 
+      visible="true">
+      <ng-template 
+        let-row="row" 
+        let-cell="cell" 
+        name="body">
+        {{row.Id}}
+      </ng-template>
+
       <ng-template 
         let-cell="cell" 
         let-direction="direction" 
@@ -141,6 +202,28 @@ Use `<ngx-magic-table>`
         {{row.Id}}
       </ng-template>
  
+
+
+    </ngx-column-template>
+
+    <ngx-column-template 
+      name="Type" 
+      parent="Numbers" 
+      collection="Type" 
+      index="1" 
+      [draggable]="false" 
+      cellWidth="150" 
+      visible="true">
+
+      <ng-template 
+        let-row="row" 
+        let-cell="cell" 
+        let-index="index" 
+        name="body">
+        {{row.Type[index]}}
+      </ng-template>
+
+
       <ng-template 
         let-cell="cell" 
         let-direction="direction" 
@@ -148,6 +231,7 @@ Use `<ngx-magic-table>`
         {{cell.name}}
         <i class="fa" [setDirection]="direction"></i>
       </ng-template>
+
  
     </ngx-column-template>
  
@@ -160,6 +244,20 @@ Use `<ngx-magic-table>`
       cellWidth="150" 
       [visible]="true">
  
+
+
+    </ngx-column-template>
+
+    <ngx-column-template 
+      name="Size" 
+      parent="Numbers" 
+      collection="Size"
+      index="1" 
+      [draggable]="false" 
+      cellWidth="150" 
+      visible="true">
+
+
       <ng-template 
         let-row="row" 
         let-cell="cell" 
@@ -168,6 +266,11 @@ Use `<ngx-magic-table>`
         {{row.Type[index]}}
       </ng-template>
  
+
+        {{row.Size[index]}}
+      </ng-template>
+
+
       <ng-template 
         let-cell="cell" 
         let-direction="direction" 
@@ -175,6 +278,7 @@ Use `<ngx-magic-table>`
         {{cell.name}}
         <i class="fa" [setDirection]="direction"></i>
       </ng-template>
+
  
     </ngx-column-template>
  
@@ -197,11 +301,33 @@ Use `<ngx-magic-table>`
  
       <ng-template 
         let-cell="cell" 
+
+
+    </ngx-column-template>
+
+    <ngx-column-template 
+      name="Name" 
+      index="1"
+      [draggable]="false" 
+      cellWidth="200" 
+      visible="true">
+
+      <ng-template 
+        let-row="row" 
+        let-cell="cell" 
+        name="body">
+        {{row.Name}}
+      </ng-template>
+
+      <ng-template 
+        let-cell="cell"  
+
         let-direction="direction" 
         name="header">
         {{cell.name}}
         <i class="fa" [setDirection]="direction"></i>
       </ng-template>
+
  
     </ngx-column-template>
  
@@ -231,9 +357,14 @@ Use `<ngx-magic-table>`
  
   </ngx-magic-table>
  
+
+
+    </ngx-column-template>
+
+  </ngx-magic-table>
+
+
 ```
-## Preview
-![Preview](https://imgur.com/V5Sy0HN.jpg)
 
 ## Next up
 
@@ -243,8 +374,8 @@ Use `<ngx-magic-table>`
 
 [Github Issues](https://github.com/noushmac/ngx-magic-table/issues)
 
-## Making a Contribution
-Any contribution is welcomed
+## Contribution
+Contribution is welcomed warmly ( specially in writing documentation)
 
 ## License
 [MIT](https://github.com/noushmac/ngx-magic-table/blob/master/LICENSE)
