@@ -91,14 +91,17 @@ table.rz-table th .rz-handle:hover {
 
 
 .rtl {  
-  direction: rtl !important;
+  /* direction: rtl !important; */
+  float: right !important;
 }
 .ltr {  
-  direction: ltr !important;
+  /* direction: ltr !important; */
+  float: left !important;
 }
 
-.main {
+.mainMagicTable {
   overflow: auto;
+  float: inherit;
 }
 
 .paging {
@@ -115,9 +118,9 @@ table.rz-table th .rz-handle:hover {
 .ngxThead {
   display: block;
   width: 100%;
-  border-collapse: separate;
+  /* border-collapse: separate;
   border-spacing: 2px 0px;
-  background-color: #e9ecef;
+  background-color: #e9ecef; */
 }
 .ngxTbody {
   height: -webkit-fill-available;
@@ -137,9 +140,9 @@ table.rz-table th .rz-handle:hover {
   word-break: break-all;
  
 }
-.table td {
+/* .table td {
   border: 1px solid #797b7e;
-}
+} */
 
 .savetable {
   position:  absolute;
@@ -155,10 +158,18 @@ ul.ngx-pagination {
   margin: 0px;
 }
 
-.rtl .table td  {
+/* .rtl .table td  {
   padding-left: 0; 
 }
 
 .ltr .table td  {
   padding-right: 0; 
+} */
+
+.rtl .paging  {
+    direction: rtl !important; 
+}
+
+.ltr .paging  {
+    direction: ltr !important;  
 }

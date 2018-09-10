@@ -24,13 +24,14 @@ Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 - List columns
 - Save table style
 - Load table style
+- Auto Size table
 
 ## Preview
 ![Preview](https://imgur.com/V5Sy0HN.jpg)
 
 ## Demo
 
-Try the [Demo](https://stackblitz.com/edit/angular-cyry7o?file=src%2Fapp%2Fapp.component.html)
+Try the [Demo](https://noushmac.github.io/ngx-magic-table/)
 
 
 ## Getting started
@@ -86,7 +87,8 @@ Use `<ngx-magic-table>`
   [loadTable]="table" 
   (saveTable)="saveTable($event)"
   buttonListColumnStyle="btn btn-outline-info" 
-  buttonSaveTableStyle="btn btn-outline-info">
+  buttonSaveTableStyle="btn btn-outline-info"
+  [autoSize] = "true">
  
 
   <ngx-magic-table 

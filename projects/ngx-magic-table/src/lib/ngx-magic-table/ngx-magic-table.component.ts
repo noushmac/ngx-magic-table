@@ -54,6 +54,8 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 		this.listcellsInfo = new Array<CellsInfo>();
 		this.buttonListColumnStyle = "btn btn-outline-info";
 		this.buttonSaveTableStyle = "btn btn-outline-info";
+		this.tableInfo = new Array<CellsInfo>();
+		this.autoSize = false;
 	}
 
 	@Input()
@@ -68,6 +70,8 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 		return this._rows;
 	}
 
+	@Input()
+	autoSize: Boolean ;
 	@Input() buttonSaveTableStyle: string;
 	@Input() buttonListColumnStyle: string;
 	@Input()
@@ -115,7 +119,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
 			this.tableInfo = array;
 		} else {
-
+			
 		}
 	}
 	@Input()
@@ -167,6 +171,12 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 		this.templatesArray.forEach(i =>
 			i.changed.subscribe(() => this.generateCells())
 		);
+
+		if(this.autoSize)
+		{
+			this.autoSizeCells();
+		}
+
 		for (let i = 0; i < this.tableInfo.length; i++) {
 			const element = this.tableInfo[i];
 			let template = this.templatesArray.filter(x => x.index === element.index);
@@ -178,6 +188,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 			template[0].visible = element.visible;
 			this.templatesArray[index] = template[0];
 		}
+
 		this.generateCells();
 
 		for (let index = 0; index < this.templatesArray.length; index++) {
@@ -274,6 +285,34 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 		this.createHeaderCells(this.head, 0, this.depth);
 	}
 
+	protected autoSizeCells()
+	{
+		let htmlElement = document.getElementById('MainMagicTableId');
+			let clientWidth =  htmlElement.clientWidth;
+		let rowCount=0;
+		for (let index = 0; index < this.templatesArray.length; index++) {
+			const element = this.templatesArray[index];
+			let childs=this.templatesArray
+			.filter(t => t.parent === element.name);
+			if(childs.length<1)
+			{
+				rowCount++;
+			}
+		}
+
+		let cellWidth=clientWidth/rowCount;
+		for (let index = 0; index < this.templatesArray.length; index++) {
+			const element = this.templatesArray[index];
+			let childs=this.templatesArray
+			.filter(t => t.parent === element.name);
+			if(childs.length<1)
+			{
+				element.cellWidth=cellWidth;
+				this.templatesArray[index] = element;
+			}
+			
+		}
+	}
 
 	protected generateHeaders(headerName: String = ''): Array<HeaderItem> {
 		const result = new Array<HeaderItem>();

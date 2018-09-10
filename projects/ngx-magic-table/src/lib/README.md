@@ -30,7 +30,7 @@ Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 
 ## Demo
 
-Try the [Demo](https://stackblitz.com/edit/angular-cyry7o?file=src%2Fapp%2Fapp.component.html)
+Try the [Demo](https://noushmac.github.io/ngx-magic-table/)
 
 
 ## Getting started

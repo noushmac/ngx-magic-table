@@ -56,7 +56,7 @@ export class AppComponent {
 				true,
 			visible
 				:
-				false
+				true
 		},
 		{
 			cellWidth
