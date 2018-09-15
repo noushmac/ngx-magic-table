@@ -1,5 +1,4 @@
 import { NgxColumnTemplateComponent } from '../ngx-column-template/ngx-column-template.component';
-import { HeaderCell } from 'ngx-magic-table/lib/models/header-cell';
 
 export class HeaderItem {
     public Width: number;

@@ -35,7 +35,7 @@ export class NgxColumnTemplateComponent implements AfterContentInit, OnChanges {
     this.parent = '';
     this.title = '';
     this.index = 0;
-    this.cellWidth = 100;
+    this.cellWidth = 0;
     this.sortable = true;
     this.draggable = true;
     this.visible = true;
