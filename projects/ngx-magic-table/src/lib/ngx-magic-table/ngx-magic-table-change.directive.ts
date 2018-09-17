@@ -6,6 +6,7 @@ import { Directive, ElementRef, EventEmitter, OnDestroy, Output } from '@angular
 export class DomChangeDirective implements OnDestroy {
   private changes: MutationObserver;
 
+
   @Output()
   public domChange = new EventEmitter();
 
@@ -16,16 +17,19 @@ export class DomChangeDirective implements OnDestroy {
       // mutations.forEach((mutation: MutationRecord) => this.domChange.emit(mutation));
       this.domChange.emit(this.elementRef);
     }
+
     );
 
     this.changes.observe(element, {
       attributes: true,
       childList: true,
       characterData: true,
+
       attributeOldValue: true
 
     });
   }
+
   ngOnDestroy(): void {
     this.changes.disconnect();
   }

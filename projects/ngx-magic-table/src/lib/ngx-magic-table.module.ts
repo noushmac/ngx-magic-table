@@ -38,6 +38,7 @@ import { ClickOutsideDirective } from './ngx-multiselect-dropdown/click-outside.
     NgxMultiselectDropdownComponent,
     ClickOutsideDirective,
     ListFilterPipe],
+
   exports: [NgxMagicTableComponent,
     NgxColumnTemplateComponent,
     NamedTemplateDirective,
