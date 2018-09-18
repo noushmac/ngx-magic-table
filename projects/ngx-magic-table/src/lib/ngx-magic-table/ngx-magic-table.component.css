@@ -92,17 +92,17 @@ table.rz-table th .rz-handle:hover {
 
 
 .rtl {  
-  /* direction: rtl !important; */
-  float: right !important;
+  direction: rtl !important;
+  /* float: right !important; */
 }
 .ltr {  
-  /* direction: ltr !important; */
-  float: left !important;
+  direction: ltr !important;
+  /* float: left !important; */
 }
 
 .mainMagicTable {
   overflow: auto;
-  float: inherit;
+  /* float: inherit; */
 }
 
 .paging {
