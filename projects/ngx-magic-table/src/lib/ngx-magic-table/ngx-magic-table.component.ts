@@ -29,6 +29,7 @@ import { NgxColumnTemplateComponent } from '../ngx-column-template/ngx-column-te
 import { NamedTemplateDirective } from '../ngx-named-template/ngx-named-template.directive';
 import { NgxMultiselectDropdownComponent } from '../ngx-multiselect-dropdown/ngx-multiselect-dropdown.component'
 import { OrderDirection } from '../models/enum';
+
 import guid from 'angular-uid';
 import { IPagingInput, ISortInput } from '../models/interface';
 import { CellsInfo } from '../models/cells-info'
@@ -73,6 +74,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
 	@Input()
 	autoSize: Boolean;
+
 	@Input() buttonSaveTableStyle: string;
 	@Input() buttonListColumnStyle: string;
 	@Input()
@@ -120,7 +122,6 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
 			this.tableInfo = array;
 		} else {
-
 		}
 	}
 	@Input()
@@ -143,6 +144,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 	public scrollWidth: number;
 	public tableWidth: number;
 	public mainWidth: number;
+
 	public _rows = Array<T>();
 	public Math = Math;
 	public Arr = Array;
@@ -156,7 +158,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 	public draggingCell: HeaderCell;
 	public sortInput: SortInput = new SortInput();
 	public pagingInput: PagingInput = new PagingInput();
-	
+  
 	pixcelXBefore: number;
 	widthBefore: number;
 	widthAfter: number;
@@ -282,7 +284,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 		this.lowerCells = [];
 		this.createHeaderCells(this.head, 0, this.depth);
 	}
-
+  
 	mainSize(): number {
 		let htmlElement = document.getElementById('MainMagicTableId');
 		return htmlElement.clientWidth;
@@ -295,6 +297,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 			let childs = this.templatesArray
 				.filter(t => t.parent === element.name);
 			if (childs.length < 1) {
+
 				rowCount++;
 			}
 		}
@@ -471,6 +474,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
 	onDomChange(element: ElementRef): void {
 		let width = element.nativeElement.offsetWidth - element.nativeElement.clientWidth;
+
 		this.scrollWidth = width;
 	}
 
@@ -536,6 +540,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 	}
 
 	onsaveTable() {
+
 		this.listcellsInfo = null;
 		this.listcellsInfo = new Array<CellsInfo>();
 		for (let i = 0; i < this.templatesArray.length; i++) {

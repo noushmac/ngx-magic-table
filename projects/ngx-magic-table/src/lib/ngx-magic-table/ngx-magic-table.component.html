@@ -1,3 +1,4 @@
+
 <div (domChange)="onMainDomChange($event)" [ngClass]="[isRTL ? 'rtl' : 'ltr']">
   <div id="MainMagicTableId" class="mainMagicTable">
     <div class="paddingDiv" [style.width.px]="tableWidth">
@@ -39,6 +40,7 @@
         totalItems: customPaginate ? totalCount : rows.length,
         id: uid }">
             <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row == selectedRow ? selectedClass : trowClass]">
+
               <ng-container *ngFor="let cell of inverseArray(lowerCells); let lowerIndex = index">
                 <td [ngStyle]="{'display': cell.visible === 'false' ? 'none' : ''}" [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                 class="{{tcellClass}}"  *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"

@@ -143,10 +143,12 @@ table.rz-table th .rz-handle:hover {
    direction: ltr;
  }
 
+
 .table td, .table th {
   word-break: break-all;
  
 }
+
 .table td {
   /* border: 1px solid #797b7e; */
   border: 1px solid #dee2e6;
