@@ -70,6 +70,7 @@ table.rz-table th .rz-handle {
     rgba(0, 0, 0, 0.15) 2px,
     rgba(0, 0, 0, 0.15) 4px
   );
+  z-index: 99999999;
 }
 
 
@@ -135,14 +136,23 @@ table.rz-table th .rz-handle:hover {
   direction: ltr;
 }
 
+.ltr .ngxThead{  
+  direction: rtl;
+ }
+ .rtl .ngxThead{
+   direction: ltr;
+ }
+
 
 .table td, .table th {
   word-break: break-all;
  
 }
-/* .table td {
-  border: 1px solid #797b7e;
-} */
+
+.table td {
+  /* border: 1px solid #797b7e; */
+  border: 1px solid #dee2e6;
+}
 
 .savetable {
   position:  absolute;

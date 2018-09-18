@@ -1,4 +1,5 @@
-<div [ngClass]="[isRTL ? 'rtl' : 'ltr']">
+
+<div (domChange)="onMainDomChange($event)" [ngClass]="[isRTL ? 'rtl' : 'ltr']">
   <div id="MainMagicTableId" class="mainMagicTable">
     <div class="paddingDiv" [style.width.px]="tableWidth">
       <table  [ngClass]="tableClass" class="rz-table">
@@ -38,7 +39,8 @@
         currentPage: currentPage,
         totalItems: customPaginate ? totalCount : rows.length,
         id: uid }">
-            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row === selectedRow ? selectedClass : trowClass]">
+            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row == selectedRow ? selectedClass : trowClass]">
+
               <ng-container *ngFor="let cell of inverseArray(lowerCells); let lowerIndex = index">
                 <td [ngStyle]="{'display': cell.visible === 'false' ? 'none' : ''}" [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                 class="{{tcellClass}}"  *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
@@ -52,7 +54,7 @@
         </tbody>
         <tbody id="tbody1" (domChange)="onDomChange($event)" class="ngxTbody" [ngClass]="tbodyClass" *ngIf="!paginated">
           <ng-container *ngFor="let row of rows | sort:{field: sort, direction: sortDirection, active: !customSort}">
-            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row === selectedRow ? selectedClass : trowClass ]">
+            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row == selectedRow ? selectedClass : trowClass ]">
               <ng-container *ngFor="let cell of inverseArray(lowerCells); let lowerIndex = index">
                 <td [ngStyle]="{'display': cell.visible === 'false' ? 'none' : ''}" [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                   [ngClass]="tcellClass" *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
@@ -73,7 +75,7 @@
       (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)">
     </lib-ngx-multiselect-dropdown>
     <div style="margin-left: 2px; margin-right: 2px">
-      <button (click)="SaveTable()" [ngClass]="buttonSaveTableStyle" title="Save Table">
+      <button (click)="onsaveTable()" [ngClass]="buttonSaveTableStyle" title="Save Table">
         <i class="fa fa-floppy-o"></i>
       </button>
     </div>

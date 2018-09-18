@@ -28,7 +28,8 @@ import { HeaderCell } from '../models/header-cell';
 import { NgxColumnTemplateComponent } from '../ngx-column-template/ngx-column-template.component';
 import { NamedTemplateDirective } from '../ngx-named-template/ngx-named-template.directive';
 import { NgxMultiselectDropdownComponent } from '../ngx-multiselect-dropdown/ngx-multiselect-dropdown.component'
-import {OrderDirection} from '../models/enum';
+import { OrderDirection } from '../models/enum';
+
 import guid from 'angular-uid';
 import { IPagingInput, ISortInput } from '../models/interface';
 import { CellsInfo } from '../models/cells-info'
@@ -49,13 +50,14 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 		this.unsubscribeMouseMove = null;
 		this.unsubscribeMouseUp = null;
 		this.tableWidth = 200;
+		this.mainWidth = 200;
 		this.isRTL = false;
 		this.scrollWidth = 0;
 		this.listcellsInfo = new Array<CellsInfo>();
 		this.buttonListColumnStyle = "btn btn-outline-info";
 		this.buttonSaveTableStyle = "btn btn-outline-info";
 		this.tableInfo = new Array<CellsInfo>();
-		this.autoSize = false;
+		this.autoSize = true;
 	}
 
 	@Input()
@@ -71,7 +73,8 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 	}
 
 	@Input()
-	autoSize: Boolean ;
+	autoSize: Boolean;
+
 	@Input() buttonSaveTableStyle: string;
 	@Input() buttonListColumnStyle: string;
 	@Input()
@@ -119,7 +122,6 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
 			this.tableInfo = array;
 		} else {
-			
 		}
 	}
 	@Input()
@@ -141,6 +143,8 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 	public listcellsInfo: Array<CellsInfo>;
 	public scrollWidth: number;
 	public tableWidth: number;
+	public mainWidth: number;
+
 	public _rows = Array<T>();
 	public Math = Math;
 	public Arr = Array;
@@ -154,9 +158,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 	public draggingCell: HeaderCell;
 	public sortInput: SortInput = new SortInput();
 	public pagingInput: PagingInput = new PagingInput();
-	// isLastColumnMouse = true;
-
-
+  
 	pixcelXBefore: number;
 	widthBefore: number;
 	widthAfter: number;
@@ -172,9 +174,8 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 			i.changed.subscribe(() => this.generateCells())
 		);
 
-		if(this.autoSize)
-		{
-			this.autoSizeCells();
+		if (this.autoSize) {
+			this.autoSizeCells(this.mainSize());
 		}
 
 		for (let i = 0; i < this.tableInfo.length; i++) {
@@ -205,7 +206,6 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 			itemsShowLimit: 2,
 			allowSearchFilter: true,
 		};
-
 	}
 
 	public getLcm(row: any): number {
@@ -284,33 +284,34 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 		this.lowerCells = [];
 		this.createHeaderCells(this.head, 0, this.depth);
 	}
-
-	protected autoSizeCells()
-	{
+  
+	mainSize(): number {
 		let htmlElement = document.getElementById('MainMagicTableId');
-			let clientWidth =  htmlElement.clientWidth;
-		let rowCount=0;
+		return htmlElement.clientWidth;
+	}
+	protected autoSizeCells(clientWidth: number) {
+
+		let rowCount = 0;
 		for (let index = 0; index < this.templatesArray.length; index++) {
 			const element = this.templatesArray[index];
-			let childs=this.templatesArray
-			.filter(t => t.parent === element.name);
-			if(childs.length<1)
-			{
+			let childs = this.templatesArray
+				.filter(t => t.parent === element.name);
+			if (childs.length < 1) {
+
 				rowCount++;
 			}
 		}
 
-		let cellWidth=clientWidth/rowCount;
+		let cellWidth = clientWidth / rowCount;
 		for (let index = 0; index < this.templatesArray.length; index++) {
 			const element = this.templatesArray[index];
-			let childs=this.templatesArray
-			.filter(t => t.parent === element.name);
-			if(childs.length<1)
-			{
-				element.cellWidth=cellWidth;
+			let childs = this.templatesArray
+				.filter(t => t.parent === element.name);
+			if (childs.length < 1) {
+				element.cellWidth = cellWidth;
 				this.templatesArray[index] = element;
 			}
-			
+
 		}
 	}
 
@@ -471,7 +472,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 		);
 	}
 
-	onDomChange(width: number): void {
+	onDomChange(element: ElementRef): void {
+		let width = element.nativeElement.offsetWidth - element.nativeElement.clientWidth;
+
 		this.scrollWidth = width;
 	}
 
@@ -528,7 +531,16 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 		this.generateCells();
 	}
 
-	SaveTable() {
+	onMainDomChange(element: ElementRef): void {
+		if (this.autoSize) {
+			let width = element.nativeElement.clientWidth;
+			this.autoSizeCells(width);
+			this.generateCells();
+		}
+	}
+
+	onsaveTable() {
+
 		this.listcellsInfo = null;
 		this.listcellsInfo = new Array<CellsInfo>();
 		for (let i = 0; i < this.templatesArray.length; i++) {
