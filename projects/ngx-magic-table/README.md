@@ -25,6 +25,7 @@ Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 - Save table style
 - Load table style
 - Auto Size table
+- Row Class Renderer
 
 ## Preview
 ![Preview](https://imgur.com/V5Sy0HN.jpg)
@@ -88,33 +89,16 @@ Use `<ngx-magic-table>`
   (saveTable)="saveTable($event)"
   buttonListColumnStyle="btn btn-outline-info" 
   buttonSaveTableStyle="btn btn-outline-info"
-  [autoSize] = "true">
+  [autoSize] = "true"
+  [rowClassRenderer]="getRowClass">
  
+<ngx-column-template 
 
-  <ngx-magic-table 
-    [isRTL]="false" 
-    [rows]="data" 
-    [customSort]="false" 
-    sort="Phone" 
-    sortDirection="SortDirection.Ascending" 
-    [paginated]="true"
-    [pageSize]="3" 
-    [customPaginate]="false"
-    [currentPage]="2" 
-    [pageSizes]="[3, 5, 20, 50, 100]" 
-    (pageSizesChange)="pageSizesChange($event)"
-    (pageChange)="pageChange($event)" tcellClass="text-center" 
-    trowClass="table-primary"
-    (selectedChange)="selectChanged($event)"
-    selectedClass="table-secondary" 
-    (columnsArrangeChange)="columnsArrangeChange($event)">
-
-    <ngx-column-template 
       name="Numbers" 
       index="1"
       cellWidth="600"
       [sortable]="false">
-      
+
       <ng-template 
         let-cell="cell" 
         let-direction="direction" 
@@ -123,24 +107,13 @@ Use `<ngx-magic-table>`
       </ng-template>
 
     </ngx-column-template>
- 
+
     <ngx-column-template
       name="Phone"
       parent="Numbers"
       index="2"
       cellWidth="150"
       [visible]="true">
- 
-
-
-    </ngx-column-template>
-
-    <ngx-column-template
-      name="Phone"
-      parent="Numbers"
-      index="2"
-      cellWidth="150"
-      visible="true">
 
       <ng-template 
         let-cell="cell" 
@@ -165,7 +138,7 @@ Use `<ngx-magic-table>`
       index="1" 
       [draggable]="false" 
       cellWidth="150" 
-      visible="true">
+      [visible]="true">
       <ng-template 
         let-row="row" 
         let-cell="cell" 
@@ -180,31 +153,6 @@ Use `<ngx-magic-table>`
         {{cell.name}}
         <i class="fa" [setDirection]="direction"></i>
       </ng-template>
- 
-      <ng-template 
-        let-row="row" 
-        let-cell="cell" 
-        name="body">
-        {{row.Phone}}
-      </ng-template>
- 
-    </ngx-column-template>
- 
-    <ngx-column-template 
-      name="Id" 
-      parent="Numbers" 
-      index="1" 
-      [draggable]="false" 
-      cellWidth="150" 
-      [visible]="true">
-      <ng-template 
-        let-row="row" 
-        let-cell="cell" 
-        name="body">
-        {{row.Id}}
-      </ng-template>
- 
-
 
     </ngx-column-template>
 
@@ -215,7 +163,7 @@ Use `<ngx-magic-table>`
       index="1" 
       [draggable]="false" 
       cellWidth="150" 
-      visible="true">
+      [visible]="true">
 
       <ng-template 
         let-row="row" 
@@ -225,7 +173,6 @@ Use `<ngx-magic-table>`
         {{row.Type[index]}}
       </ng-template>
 
-
       <ng-template 
         let-cell="cell" 
         let-direction="direction" 
@@ -233,20 +180,6 @@ Use `<ngx-magic-table>`
         {{cell.name}}
         <i class="fa" [setDirection]="direction"></i>
       </ng-template>
-
- 
-    </ngx-column-template>
- 
-    <ngx-column-template 
-      name="Type" 
-      parent="Numbers" 
-      collection="Type" 
-      index="1" 
-      [draggable]="false" 
-      cellWidth="150" 
-      [visible]="true">
- 
-
 
     </ngx-column-template>
 
@@ -257,21 +190,15 @@ Use `<ngx-magic-table>`
       index="1" 
       [draggable]="false" 
       cellWidth="150" 
-      visible="true">
-
+      [visible]="true">
 
       <ng-template 
         let-row="row" 
         let-cell="cell" 
         let-index="index" 
         name="body">
-        {{row.Type[index]}}
-      </ng-template>
- 
-
         {{row.Size[index]}}
       </ng-template>
-
 
       <ng-template 
         let-cell="cell" 
@@ -281,30 +208,6 @@ Use `<ngx-magic-table>`
         <i class="fa" [setDirection]="direction"></i>
       </ng-template>
 
- 
-    </ngx-column-template>
- 
-    <ngx-column-template 
-      name="Size" 
-      parent="Numbers" 
-      collection="Size"
-      index="1" 
-      [draggable]="false" 
-      cellWidth="150" 
-      [visible]="true">
- 
-      <ng-template 
-        let-row="row" 
-        let-cell="cell" 
-        let-index="index" 
-        name="body">
-        {{row.Size[index]}}
-      </ng-template>
- 
-      <ng-template 
-        let-cell="cell" 
-
-
     </ngx-column-template>
 
     <ngx-column-template 
@@ -312,7 +215,7 @@ Use `<ngx-magic-table>`
       index="1"
       [draggable]="false" 
       cellWidth="200" 
-      visible="true">
+      [visible]="true">
 
       <ng-template 
         let-row="row" 
@@ -323,47 +226,18 @@ Use `<ngx-magic-table>`
 
       <ng-template 
         let-cell="cell"  
-
         let-direction="direction" 
         name="header">
         {{cell.name}}
         <i class="fa" [setDirection]="direction"></i>
       </ng-template>
 
- 
-    </ngx-column-template>
- 
-    <ngx-column-template 
-      name="Name" 
-      index="1"
-      [draggable]="false" 
-      cellWidth="200" 
-      [visible]="true">
- 
-      <ng-template 
-        let-row="row" 
-        let-cell="cell" 
-        name="body">
-        {{row.Name}}
-      </ng-template>
- 
-      <ng-template 
-        let-cell="cell"  
-        let-direction="direction" 
-        name="header">
-        {{cell.name}}
-        <i class="fa" [setDirection]="direction"></i>
-      </ng-template>
- 
     </ngx-column-template>
  
   </ngx-magic-table>
  
 
 
-    </ngx-column-template>
-
-  </ngx-magic-table>
 
 
 ```

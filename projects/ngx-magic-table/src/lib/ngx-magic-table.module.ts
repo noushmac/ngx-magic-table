@@ -49,7 +49,7 @@ import { ClickOutsideDirective } from './ngx-multiselect-dropdown/click-outside.
     NgxBooleanFilterComponent,
     NgxMultiselectDropdownComponent,
     NgxEnumFilterComponent],
-   
+
   schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class NgxMagicTableModule { }

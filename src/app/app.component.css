@@ -1,0 +1,11 @@
+.rowClass1 {
+  /* background-color: green; */
+}
+
+.rowClass2 {
+  background-color: bisque;
+}
+
+.rowClass2 td {
+  border:1px solid gray !important;
+}
