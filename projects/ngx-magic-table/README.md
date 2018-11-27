@@ -26,6 +26,8 @@ Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 - Load table style
 - Auto Size table
 - Row Class Renderer
+- add pagination
+
 
 ## Preview
 ![Preview](https://imgur.com/V5Sy0HN.jpg)

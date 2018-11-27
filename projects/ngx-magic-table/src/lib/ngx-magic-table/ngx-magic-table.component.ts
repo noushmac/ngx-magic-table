@@ -46,6 +46,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.templatesArray = value.toArray();
   }
 
+  @ContentChild('pagination')
+  pagination: TemplateRef<ElementRef>;
+
   constructor(private renderer: Renderer2, private el: ElementRef) {
     this.unsubscribeMouseMove = null;
     this.unsubscribeMouseUp = null;
@@ -58,6 +61,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.buttonSaveTableStyle = 'btn btn-outline-info';
     this.autoSize = true;
     this.rowClassRenderer = (row) => '';
+    this.MinWidth = 80;
   }
 
   @Input()
@@ -173,6 +177,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   unsubscribeMouseMove: () => void;
   unsubscribeMouseUp: () => void;
   pixcelXAfter: number;
+  MinWidth: number;
+
+
 
   ngAfterContentInit() {
     this.onLoadTable();
@@ -253,14 +260,15 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.cells = [];
     this.lowerCells = [];
     this.createHeaderCells(this.head, 0, this.depth);
+
   }
 
   mainSize(): number {
     let htmlElement = document.getElementById('MainMagicTableId');
     return htmlElement.clientWidth;
   }
-  protected autoSizeCells(clientWidth: number) {
 
+  protected autoSizeCells(clientWidth: number) {
     let rowCount = 0;
     for (let index = 0; index < this.templatesArray.length; index++) {
       const element = this.templatesArray[index];
@@ -273,6 +281,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
 
     let cellWidth = clientWidth / rowCount;
+    if (cellWidth < this.MinWidth) {
+      cellWidth = this.MinWidth;
+    }
     for (let index = 0; index < this.templatesArray.length; index++) {
       const element = this.templatesArray[index];
       let childs = this.templatesArray
@@ -378,6 +389,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   public selectRow(row: T) {
     this.selectedRow = row;
     this.selectedChange.emit(this.selectedRow);
+    console.log(this.lowerCells);
   }
 
   public changePerPage(pageSize: number) {
@@ -553,7 +565,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
     for (let index = 0; index < this.templatesArray.length; index++) {
       const element = this.templatesArray[index];
-      this.dropdownList.push({ item_id: element.index, item_text: element.name, parent: element.parent });
+      this.dropdownList.push({ item_id: element.index, item_text: element.title, parent: element.parent });
     }
 
     this.dropdownSettings = {
@@ -600,7 +612,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
           WidthAdd = this.pixcelXBefore - event.x;
         }
 
-        if (lastCell.cellWidth >= 50) {
+        if (lastCell.cellWidth >= this.MinWidth) {
           cell.cellWidth = this.widthBefore + (WidthAdd);
           lastCell.cellWidth = widthLastCell + (WidthAdd);
           this.tableWidth = tableWidthTemp + (WidthAdd);
@@ -610,13 +622,13 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
     this.unsubscribeMouseUp = this.renderer.listen('document', 'mouseup', event => {
       event.preventDefault();
-      if (lastCell.cellWidth < 50) {
-        lastCell.cellWidth = 50;
+      if (lastCell.cellWidth < this.MinWidth) {
+        lastCell.cellWidth = this.MinWidth;
       }
       lastCell.template.cellWidth = lastCell.cellWidth;
 
-      if (cell.cellWidth < 50) {
-        cell.cellWidth = 50;
+      if (cell.cellWidth < this.MinWidth) {
+        cell.cellWidth = this.MinWidth;
       }
       cell.template.cellWidth = cell.cellWidth;
 

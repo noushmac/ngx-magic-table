@@ -11,14 +11,14 @@ export class DirectionDirective {
     @Input('setDirection')
     set direction(direction: number) {
         this._direction = direction;
-        this.renderer.removeClass(this.el.nativeElement, 'fa-arrow-down');
-        this.renderer.removeClass(this.el.nativeElement, 'fa-arrow-up');
+        this.renderer.removeClass(this.el.nativeElement, 'ion-arrow-down-b');
+        this.renderer.removeClass(this.el.nativeElement, 'ion-arrow-up-b');
         if (this._direction != null) {
             if (this._direction === OrderDirection.Descending) {
-                this.renderer.addClass(this.el.nativeElement, 'fa-arrow-up');
+                this.renderer.addClass(this.el.nativeElement, 'ion-arrow-up-b');
             }
             if (this._direction === OrderDirection.Ascending) {
-                this.renderer.addClass(this.el.nativeElement, 'fa-arrow-down');
+                this.renderer.addClass(this.el.nativeElement, 'ion-arrow-down-b');
             }
         }
     }

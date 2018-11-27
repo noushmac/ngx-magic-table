@@ -267,8 +267,11 @@ export class AppComponent {
   }
 
   saveTable(array: CellsInfo) {
+
+
     console.log(array);
   }
+
   selectChanged(row: any) {
     alert(JSON.stringify(row));
   }
