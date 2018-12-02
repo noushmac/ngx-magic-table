@@ -62,6 +62,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.autoSize = true;
     this.rowClassRenderer = (row) => '';
     this.MinWidth = 80;
+    if (this.pageSize == null) {
+      this.pageSize = 10;
+    }
   }
 
   @Input()
@@ -90,7 +93,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Input()
   totalCount: Number = 0;
   @Input()
-  pageSize: Number = 10;
+  pageSize?: Number = 10;
   @Input()
   currentPage: Number = 1;
   @Input()

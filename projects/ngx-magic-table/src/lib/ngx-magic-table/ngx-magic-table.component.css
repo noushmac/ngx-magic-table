@@ -106,13 +106,17 @@ table.rz-table th .rz-handle:hover {
 .mainMagicTable {
   overflow: auto;
   /* float: inherit; */
+  min-height: 300px
+
 }
 
 .paging {
   width: 100%;
-  padding-left: 10px;
+  /* padding-left: 10px;
   padding-right: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 10px; */
+  padding: 10px;
+
 }
 
 .paddingDiv {
