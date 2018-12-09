@@ -74,7 +74,7 @@ table.rz-table th .rz-handle {
     transparent 2px,
     rgba(0, 0, 0, 0.15) 2px,
     rgba(0, 0, 0, 0.15) 4px);
-  z-index: 99999999;
+  z-index: 999;
 }
 
 
@@ -107,7 +107,6 @@ table.rz-table th .rz-handle:hover {
   overflow: auto;
   /* float: inherit; */
   min-height: 300px
-
 }
 
 .paging {
