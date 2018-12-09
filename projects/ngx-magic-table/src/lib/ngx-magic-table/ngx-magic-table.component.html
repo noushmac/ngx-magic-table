@@ -69,7 +69,7 @@
       </table>
     </div>
   </div>
-  <div class="btn-group paging" *ngIf="paginated">
+  <div class="btn-group paging">
     <lib-ngx-multiselect-dropdown class="pagingInline" [buttonListColumnStyle]="buttonSaveTableStyle" (change)="onItemSelect($event)"
       [placeholder]="'Select Columns'" [data]="dropdownList" [(ngModel)]="dropdownselectedItems" [settings]="dropdownSettings"
       (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)">
