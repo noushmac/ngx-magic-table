@@ -74,7 +74,9 @@ table.rz-table th .rz-handle {
     transparent 2px,
     rgba(0, 0, 0, 0.15) 2px,
     rgba(0, 0, 0, 0.15) 4px);
+
   z-index: 999;
+
 }
 
 
@@ -160,6 +162,7 @@ table.rz-table th .rz-handle:hover {
   white-space: nowrap !important;
   /* word-break: break-all !important;
   white-space: normal !important; */
+
 }
 
 .table.rz-table th {
@@ -167,6 +170,7 @@ table.rz-table th .rz-handle:hover {
   /* border: 1px solid #797b7e; */
   text-align: center;
 }
+
 
 
 .table.rz-table td {
@@ -219,6 +223,7 @@ ul.ngx-pagination {
 
 .ltr .paging {
   direction: ltr !important;
+
 }
 
 .pagingInline {

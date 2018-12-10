@@ -62,9 +62,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.autoSize = true;
     this.rowClassRenderer = (row) => '';
     this.MinWidth = 80;
+
     if (this.pageSize == null) {
       this.pageSize = 10;
     }
+
   }
 
   @Input()
@@ -94,6 +96,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   totalCount: Number = 0;
   @Input()
   pageSize?: Number = 10;
+
   @Input()
   currentPage: Number = 1;
   @Input()
@@ -546,18 +549,22 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     // if (this.loadTable.length > 0) {
     for (let i = 0; i < this.loadTable.length; i++) {
       const element = this.loadTable[i];
+
       let template = this.templatesArray.filter(x => x.name === element.name);
       let index = this.templatesArray.indexOf(template[0]);
 
       template[0].index = element.index;
+
       template[0].cellWidth = element.cellWidth;
       template[0].sortable = element.sortable;
       template[0].draggable = element.draggble;
       template[0].visible = element.visible;
 
+
       this.templatesArray[index] = template[0];
     }
     this.templatesArray = this.templatesArray.sort(x => x.index);
+
     // this.generateCells();
     // }
 
