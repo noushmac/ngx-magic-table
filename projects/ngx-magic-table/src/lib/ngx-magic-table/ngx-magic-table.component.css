@@ -219,6 +219,10 @@ ul.ngx-pagination {
 
 .ltr .paging {
   direction: ltr !important;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8cf1ced369649d9e5f827ce404bf78eb1361a26b
 }
 
 .pagingInline {
