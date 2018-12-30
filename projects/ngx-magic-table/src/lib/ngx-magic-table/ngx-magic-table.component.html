@@ -9,6 +9,10 @@
               [attr.visible]="cell.visible" [name]="cell.name" [id]="uid+'-'+cell.name+'-head'" [draggable]="cell.template.draggable"
               (drop)="drop(cell)" (dragover)="allowDrop($event)" (dragstart)="drag(cell)" [attr.colspan]="cell.colSpan"
               [attr.rowspan]="cell.rowSpan" data-toggle="tooltip" data-placement="bottom" [attr.title]="cell.title">
+<<<<<<< HEAD
+=======
+
+>>>>>>> 149100eac133f5d0e966c5b346a75f572bb28f4c
               <div [id]="cell.name+'resizable'" (mousedown)="resizeHandle(cell,$event,'tbody1')" class="rz-handle">
               </div>
               <div class="th-title" (click)="sortToggle(cell)">

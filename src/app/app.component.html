@@ -45,7 +45,6 @@
         <i class="fa" [setDirection]="direction"></i>
       </ng-template>
     </ngx-column-template>
-
     <ngx-column-template name="Name" index="1" title="Name" [draggable]="false" [visible]="true">
       <ng-template let-row="row" let-cell="cell" name="body">{{row.Name}}</ng-template>
       <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}}
