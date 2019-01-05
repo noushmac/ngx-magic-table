@@ -1,6 +1,6 @@
-<div (domChange)="onMainDomChange($event)" [ngClass]="[isRTL ? 'rtl' : 'ltr']">
-  <div id="MainMagicTableId" class="mainMagicTable">
-    <div class="paddingDiv" [style.width.px]="tableWidth">
+<div (domChange)="onMainDomChange($event)" [ngClass]="[isRTL ? 'rtl' : 'ltr']" style="height: 100%; overflow: hidden;">
+  <div id="MainMagicTableId" class="mainMagicTable" style="height: 90%;">
+    <div class="paddingDiv" [style.width.px]="tableWidth" style="height: inherit;">
       <table [ngClass]="tableClass" class="rz-table">
         <thead class="ngxThead" [ngClass]="theadClass">
           <tr *ngFor="let cellRow of cells">
@@ -41,13 +41,11 @@
         id: uid }">
             <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row == selectedRow ? selectedClass : rowClassRenderer(row)]">
               <ng-container *ngFor="let cell of inverseArray(lowerCells); let lowerIndex = index">
-
                 <td [ngStyle]="{'display': cell.visible === 'false' ? 'none' : ''}" [style.min-width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                   [style.max-width.px]="resizeCell(cell.cellWidth,lowerIndex)" [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                   *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
                   [attr.rowspan]="getLcm(row) / (cell.template.collection !== '' ? Math.max(row[cell.template.collection].length, 1) : 1)"
                   data-toggle="tooltip" data-placement="bottom" [attr.title]="row[cell.name]">
-
                   <ng-template [ngTemplateOutlet]="cell.template.body" [ngTemplateOutletContext]="{row: row, cell: cell, index: ((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) / getLcm(row)}"></ng-template>
                 </td>
               </ng-container>
@@ -63,7 +61,6 @@
                   *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
                   [attr.rowspan]="getLcm(row) / (cell.template.collection !== '' ? Math.max(row[cell.template.collection].length, 1) : 1)"
                   data-toggle="tooltip" data-placement="bottom" [attr.title]="row[cell.name]">
-
                   <ng-template [ngTemplateOutlet]="cell.template.body" [ngTemplateOutletContext]="{row: row, cell: cell, index: ((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) / getLcm(row)}"></ng-template>
                 </td>
               </ng-container>
@@ -73,9 +70,7 @@
       </table>
     </div>
   </div>
-
   <div class="btn-group paging">
-
     <lib-ngx-multiselect-dropdown class="pagingInline" [buttonListColumnStyle]="buttonSaveTableStyle" (change)="onItemSelect($event)"
       [placeholder]="'Select Columns'" [data]="dropdownList" [(ngModel)]="dropdownselectedItems" [settings]="dropdownSettings"
       (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)">
@@ -99,6 +94,5 @@
       </div>
     </div>
   </div>
-
 
 </div>
