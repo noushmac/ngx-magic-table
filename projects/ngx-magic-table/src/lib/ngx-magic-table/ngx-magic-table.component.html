@@ -1,6 +1,6 @@
-<div (domChange)="onMainDomChange($event)" [ngClass]="[isRTL ? 'rtl' : 'ltr']">
-  <div id="MainMagicTableId" class="mainMagicTable">
-    <div class="paddingDiv" [style.width.px]="tableWidth">
+<div (domChange)="onMainDomChange($event)" [ngClass]="[isRTL ? 'rtl' : 'ltr']" style="height: 100%; overflow: hidden;">
+  <div id="MainMagicTableId" class="mainMagicTable" style="height: 90%;">
+    <div class="paddingDiv" [style.width.px]="tableWidth" style="height: inherit;">
       <table [ngClass]="tableClass" class="rz-table">
         <thead class="ngxThead" [ngClass]="theadClass">
           <tr *ngFor="let cellRow of cells">

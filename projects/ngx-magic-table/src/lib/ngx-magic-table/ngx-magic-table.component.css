@@ -219,10 +219,6 @@ ul.ngx-pagination {
 
 .ltr .paging {
   direction: ltr !important;
-<<<<<<< HEAD
-=======
-
->>>>>>> 8cf1ced369649d9e5f827ce404bf78eb1361a26b
 }
 
 .pagingInline {
@@ -240,7 +236,15 @@ ul.ngx-pagination {
   direction: rtl !important;
 }
 
+/* .rtl .table.rz-table td:first-child {
+  padding-right: 30px;
+} */
+
 .ltr .th-title,
 .ltr .table.rz-table td {
-  direction: ltr !important;
+  /* direction: ltr !important; */
 }
+
+/* .ltr .table.rz-table td:first-child {
+  padding-left: 30px;
+} */

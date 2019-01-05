@@ -1,4 +1,4 @@
-<div class="container" style=" width:100%; height: 400px;">
+<div class="container" style=" width:100%; height: 500px;">
 
   <ngx-magic-table [isRTL]="true" [rows]="data" buttonListColumnStyle="btn btn-outline-info" buttonSaveTableStyle="btn btn-outline-info"
     [customSort]="false" sort="Phone" [sortDirection]="0" [paginated]="true" [pageSize]="3" [customPaginate]="false"
@@ -6,7 +6,7 @@
     (selectedChange)="selectChanged($event)" selectedClass="table-secondary"
     [autoSize]="true" (saveTable)="saveTable($event)" [loadTable]="" [rowClassRenderer]="getRowClass" (columnsArrangeChange)="columnsArrangeChange($event)">
 
-    <ngx-column-template [visible]="true" name="Numbers" index="1" [sortable]="false">
+    <ngx-column-template [visible]="true" name="Numbers" title="Numbers" index="1" [sortable]="false">
       <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}} </ng-template> -->
 
       <!-- <ng-template let-rows="rows" let-cell="cell" name="filter">

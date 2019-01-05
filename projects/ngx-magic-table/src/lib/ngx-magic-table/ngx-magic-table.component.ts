@@ -59,6 +59,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.listcellsInfo = new Array<CellsInfo>();
     this.buttonListColumnStyle = 'btn btn-outline-info';
     this.buttonSaveTableStyle = 'btn btn-outline-info';
+    this.templatesArray = new Array<NgxColumnTemplateComponent>();
     this.autoSize = true;
     this.rowClassRenderer = (row) => '';
     this.MinWidth = 80;
@@ -244,6 +245,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
         };
       })
     );
+    this.setDropdownList();
   }
 
   public drag(x: HeaderCell) {
@@ -538,52 +540,62 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   }
 
   onLoadTable() {
-    NgxColumnTemplateComponent.normalizeIndexes(this.templatesArray);
-    this.templatesArray.forEach(i =>
-      i.changed.subscribe(() => this.generateCells())
-    );
+    if (this.templatesArray.length > 0) {
+      NgxColumnTemplateComponent.normalizeIndexes(this.templatesArray);
+      this.templatesArray.forEach(i =>
+        i.changed.subscribe(() => this.generateCells())
+      );
 
-    // if (this.loadTable.length > 0) {
-    for (let i = 0; i < this.loadTable.length; i++) {
-      const element = this.loadTable[i];
-      let template = this.templatesArray.filter(x => x.name === element.name);
-      let index = this.templatesArray.indexOf(template[0]);
 
-      template[0].index = element.index;
-      template[0].cellWidth = element.cellWidth;
-      template[0].sortable = element.sortable;
-      template[0].draggable = element.draggble;
-      template[0].visible = element.visible;
+      // if (this.loadTable.length > 0) {
+      for (let i = 0; i < this.loadTable.length; i++) {
+        const element = this.loadTable[i];
+        let template = this.templatesArray.filter(x => x.name === element.name);
+        let index = this.templatesArray.indexOf(template[0]);
 
-      this.templatesArray[index] = template[0];
+        template[0].index = element.index;
+        template[0].cellWidth = element.cellWidth;
+        template[0].sortable = element.sortable;
+        template[0].draggable = element.draggble;
+        template[0].visible = element.visible;
+
+        this.templatesArray[index] = template[0];
+      }
+      this.templatesArray = this.templatesArray.sort(x => x.index);
+      // this.generateCells();
+      // }
+
+
+      if (this.autoSize) {
+        this.autoSizeCells(this.mainSize());
+      }
+
+      this.dropdownselectedItems = [];
+
+
+      this.setDropdownList();
+
+      this.dropdownSettings = {
+        singleSelection: false,
+        idField: 'item_id',
+        textField: 'item_text',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 2,
+        allowSearchFilter: true,
+      };
+      this.generateCells();
     }
-    this.templatesArray = this.templatesArray.sort(x => x.index);
-    // this.generateCells();
-    // }
+  }
 
 
-    if (this.autoSize) {
-      this.autoSizeCells(this.mainSize());
-    }
-
-    this.dropdownselectedItems = [];
+  public setDropdownList() {
     this.dropdownList = [];
 
     for (let index = 0; index < this.templatesArray.length; index++) {
       const element = this.templatesArray[index];
       this.dropdownList.push({ item_id: element.index, item_text: element.title, parent: element.parent });
     }
-
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      allowSearchFilter: true,
-    };
-    this.generateCells();
   }
 
   public resizeHandle(cell: HeaderCell, mEvent: MouseEvent, idTbody: string) {
