@@ -66,19 +66,21 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     if (this.pageSize == null) {
       this.pageSize = 10;
     }
+    this.rows = [];
   }
 
-  @Input()
-  set rows(rows: Array<T>) {
-    if (!rows) {
-      this._rows = [];
-    } else {
-      this._rows = rows;
-    }
-  }
-  get rows(): Array<T> {
-    return this._rows;
-  }
+  @Input() rows = Array<T>();
+
+  // set rows(rows: Array<T>) {
+  //   if (!rows) {
+  //     this.rows = [];
+  //   } else {
+  //     this.rows = rows;
+  //   }
+  // }
+  // get rows(): Array<T> {
+  //   return this.rows;
+  // }
 
   @Input()
   autoSize: Boolean;
@@ -159,7 +161,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   public mainWidth: number;
 
   public _loadTable = Array<CellsInfo>();
-  public _rows = Array<T>();
+
   public _rowsFilter = Array<T>();
   public Math = Math;
   public Arr = Array;

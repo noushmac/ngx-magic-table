@@ -1,5 +1,5 @@
-<div (domChange)="onMainDomChange($event)" [ngClass]="[isRTL ? 'rtl' : 'ltr']" style="height: 100%; overflow: hidden;">
-  <div id="MainMagicTableId" class="mainMagicTable" style="height: 90%;">
+<div (domChange)="onMainDomChange($event)" [ngClass]="[isRTL ? 'rtl' : 'ltr']" style="height: inherit; overflow: hidden;">
+  <div id="MainMagicTableId" class="mainMagicTable" style="height: inherit; overflow-y: overlay">
     <div class="paddingDiv" [style.width.px]="tableWidth" style="height: inherit;">
       <table [ngClass]="tableClass" class="rz-table">
         <thead class="ngxThead" [ngClass]="theadClass">
@@ -70,7 +70,7 @@
       </table>
     </div>
   </div>
-  <div class="btn-group paging">
+  <div id="MainMagicPagingId" class="btn-group paging">
     <lib-ngx-multiselect-dropdown class="pagingInline" [buttonListColumnStyle]="buttonSaveTableStyle" (change)="onItemSelect($event)"
       [placeholder]="'Select Columns'" [data]="dropdownList" [(ngModel)]="dropdownselectedItems" [settings]="dropdownSettings"
       (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)">
