@@ -74,79 +74,79 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.buttonListColumnStyle = 'btn btn-outline-info';
     this.buttonSaveTableStyle = 'btn btn-outline-info';
     this.templatesArray = new Array<NgxColumnTemplateComponent>();
-    this.templatesArrayBase = null;
-    this.autoSize = true;
+      this.templatesArrayBase = null;
+      this.autoSize = true;
     this.message = '';
-    this.rowClassRenderer = (row) => '';
-    this.MinWidth = 80;
+      this.rowClassRenderer = (row) => '';
+      this.MinWidth = 80;
     if (this.pageSize == null) {
-      this.pageSize = 10;
-    }
+        this.pageSize = 10;
+      }
     this.rows = new Array<T>();
-  }
+    }
 
-  @Input() rows = Array<T>();
+    @Input() rows = Array<T>();
 
-  // set rows(rows: Array<T>) {
-  //   if (!rows) {
-  //     this.rows = [];
-  //   } else {
-  //     this.rows = rows;
-  //   }
+    // set rows(rows: Array<T>) {
+    //   if  (!rows) {
+    //     this.rows = [];
+    //   } else {
+    //     this.rows = rows;
+    //   }
   // }
-  // get rows(): Array<T> {
-  //   return this.rows;
-  // }
+    // get rows(): Array<T> {
+    //   return this.rows;
+    // }
 
   @Input()
-  autoSize: Boolean;
+    autoSize: Boolean;
 
-  @Input() buttonSaveTableStyle: string;
-  @Input() buttonListColumnStyle: string;
+    @Input() buttonSaveTableStyle: string;
+    @Input() buttonListColumnStyle: string;
   @Input()
-  paginated: Boolean = false;
-  @Input()
-  customSort: Boolean = true;
-  @Input()
-  customPaginate: Boolean = false;
-  @Input()
+    paginated: Boolean = false;
+    @Input()
+    customSort: Boolean = true;
+    @Input()
+    customPaginate: Boolean = false;
+    @Input()
   totalCount: Number = 0;
+    @Input()
+    pageSize?: Number = 10;
+    @Input()
+    currentPage: Number = 1;
   @Input()
-  pageSize?: Number = 10;
-  @Input()
-  currentPage: Number = 1;
-  @Input()
-  pageSizes: number[] = [10, 20, 50, 100];
+    pageSizes: number[] = [10, 20, 50, 100];
 
-  @Input()
-  sort: String = '';
-  @Input()
-  sortDirection: OrderDirection = OrderDirection.Ascending;
+    @Input()
+    sort: String = '';
+      npt()
+        Direction: OrderDirection = OrderDirection.Ascending;
 
-  @Input()
-  hidden: Boolean = false;
-  @Input()
-  selectedClass: String = 'table-secondary';
+        ut()
+        en: Boolean = false;
+      nput()
+    selectedClass: String = 'table-secondary';
 
-  @Input() rowSelected: T;
+  @Input() rowSelected:  T ;
 
-  @Output()
+      @Output()
   pageChange = new EventEmitter<IPagingInput>();
   @Output()
   sortChange = new EventEmitter<ISortInput>();
-  @Output()
-  pageSizeChange = new EventEmitter<IPagingInput>();
+    @Output()
+    pageSizeChange = new EventEmitter<IPagingInput>();
 
-  @Output()
-  selectedChange = new EventEmitter<T>();
-  @Output()
-  columnsArrangeChange = new EventEmitter();
+    @Output()
+    selectedChange = new EventEmitter<T>();
+    @Output()
+    columnsArrangeChange = new EventEmitter();
 
-  @Output() saveTable = new EventEmitter<Array<CellsInfo>>();
+    @Output() saveTable = new EventEmitter<Array<CellsInfo>>();
   @Output() resetTable = new EventEmitter<boolean>();
 
-  @Input()
-  set loadTable(loadTable: Array<CellsInfo>) {
+    @Input()
+    set loadTable(loadTable: Array<CellsInfo>) {
     if (!loadTable) {
       this._loadTable = [];
     } else {
@@ -636,15 +636,14 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       }
       this.templatesArray = this.templatesArray.sort(x => x.index);
       // this.generateCells();
-      // }
+// }
 
 
-      if (this.autoSize) {
-        this.autoSizeCells(this.mainSize());
-      }
+  if (this.autoSize) {
+    this.autoSizeCells(this.mainSize());
+  }
 
       this.dropdownselectedItems = [];
-
 
       this.setDropdownList();
 
