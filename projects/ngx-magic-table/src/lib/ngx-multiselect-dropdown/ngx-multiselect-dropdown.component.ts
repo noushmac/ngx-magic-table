@@ -1,4 +1,7 @@
-import { Component, OnInit, HostListener, Input, Output, EventEmitter, forwardRef, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component, OnInit, HostListener, Input, Output, EventEmitter,
+  forwardRef, ChangeDetectorRef, ChangeDetectionStrategy
+} from '@angular/core';
 import { ListItemDropdown, IDropdownSettings } from '../models/multiselect.model';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
@@ -49,6 +52,7 @@ export class NgxMultiselectDropdownComponent implements ControlValueAccessor {
   @Output('onDeSelect') onDeSelect: EventEmitter<Array<ListItemDropdown>> = new EventEmitter<Array<any>>();
   @Output('onSelectAll') onSelectAll: EventEmitter<Array<ListItemDropdown>> = new EventEmitter<Array<any>>();
   @Output('onDeSelectAll') onDeSelectAll: EventEmitter<Array<ListItemDropdown>> = new EventEmitter<Array<any>>();
+  // @Output('onResetTable') onResetTable: EventEmitter<Array<ListItemDropdown>> = new EventEmitter<Array<any>>();
 
   private onTouchedCallback: () => void = noop;
   private onChangeCallback: (_: any) => void = noop;
@@ -210,6 +214,10 @@ export class NgxMultiselectDropdownComponent implements ControlValueAccessor {
     }
     this.onChangeCallback(this.emittedValue(this.selectedItems));
   }
+
+  // resetTable() {
+  //   this.onResetTable.emit(this.emittedValue(true));
+  // }
 
   isAllItemsSelected(): boolean {
     return this._data.length === this.selectedItems.length;

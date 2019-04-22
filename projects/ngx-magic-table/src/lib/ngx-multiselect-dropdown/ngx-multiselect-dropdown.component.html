@@ -21,19 +21,27 @@
   </div>
   <div class="dropdown-list" [hidden]="!isDropdownOpen">
     <ul class="item1">
-      <li (click)="toggleSelectAll()" *ngIf="_data.length > 0 && !_settings.singleSelection && _settings.enableCheckAll && _settings.limitSelection===-1"
+      <!-- <li>
+        <div class="text-center">
+          <button (click)="resetTable()" class="btn btn-warning btnReset" title="Reset Table" type="button"><i class="ion-ios-undo"></i> Reset Table</button>
+        </div>
+      </li> -->
+      <li (click)="toggleSelectAll()"
+        *ngIf="_data.length > 0 && !_settings.singleSelection && _settings.enableCheckAll && _settings.limitSelection===-1"
         class="multiselect-item-checkbox" style="border-bottom: 1px solid #ccc;padding:10px">
         <input type="checkbox" [checked]="isAllItemsSelected()" [disabled]="disabled || isLimitSelectionReached()" />
         <div>{{ _settings.selectAllText}}</div>
       </li>
       <li class="filter-textbox" *ngIf="_data.length>0 && _settings.allowSearchFilter">
-        <input type="text" [readOnly]="disabled" [placeholder]="_settings.searchPlaceholderText" [(ngModel)]="filter.text"
-          (ngModelChange)="onFilterTextChange($event)">
+        <input type="text" [readOnly]="disabled" [placeholder]="_settings.searchPlaceholderText"
+          [(ngModel)]="filter.text" (ngModelChange)="onFilterTextChange($event)">
       </li>
     </ul>
     <ul class="item2" [style.maxHeight]="_settings.maxHeight+'px'">
-      <li *ngFor="let item of _data | ng2ListFilter:filter; let i = index;" (click)="onItemClick($event,item)" class="multiselect-item-checkbox">
-        <input type="checkbox" [checked]="isSelected(item)" [disabled]="disabled || (isLimitSelectionReached() && !isSelected(item))" />
+      <li *ngFor="let item of _data | ng2ListFilter:filter; let i = index;" (click)="onItemClick($event,item)"
+        class="multiselect-item-checkbox">
+        <input type="checkbox" [checked]="isSelected(item)"
+          [disabled]="disabled || (isLimitSelectionReached() && !isSelected(item))" />
         <div>{{item.text}}</div>
       </li>
       <li class='no-data' *ngIf="_data.length == 0">
