@@ -1,5 +1,5 @@
-<div (domChange)="onMainDomChange($event)" [ngClass]="[isRTL ? 'rtl' : 'ltr']" style="height: 100%; overflow: hidden;">
-  <div id="MainMagicTableId" class="mainMagicTable" style="height: 90%;">
+<div (domChange)="onMainDomChange($event)" [ngClass]="[isRTL ? 'rtl' : 'ltr']" style="height: inherit; overflow: hidden;">
+  <div id="MainMagicTableId" class="mainMagicTable" style="height: inherit; overflow-y: overlay">
     <div class="paddingDiv" [style.width.px]="tableWidth" style="height: inherit;">
       <table [ngClass]="tableClass" class="rz-table">
         <thead class="ngxThead" [ngClass]="theadClass">
@@ -39,7 +39,7 @@
         currentPage: currentPage,
         totalItems: customPaginate ? totalCount : rows.length,
         id: uid }">
-            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row == selectedRow ? selectedClass : rowClassRenderer(row)]">
+            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row == rowSelected ? selectedClass : rowClassRenderer(row)]">
               <ng-container *ngFor="let cell of inverseArray(lowerCells); let lowerIndex = index">
                 <td [ngStyle]="{'display': cell.visible === 'false' ? 'none' : ''}" [style.min-width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                   [style.max-width.px]="resizeCell(cell.cellWidth,lowerIndex)" [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)"
@@ -54,7 +54,7 @@
         </tbody>
         <tbody id="tbody1" (domChange)="onDomChange($event)" class="ngxTbody" [ngClass]="tbodyClass" *ngIf="!paginated">
           <ng-container *ngFor="let row of rows | sort:{field: sort, direction: sortDirection, active: !customSort}">
-            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row == selectedRow ? selectedClass : rowClassRenderer(row)]">
+            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row == rowSelected ? selectedClass : rowClassRenderer(row)]">
               <ng-container *ngFor="let cell of inverseArray(lowerCells); let lowerIndex = index">
                 <td [ngStyle]="{'display': cell.visible === 'false' ? 'none' : ''}" [style.min-width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                   [style.max-width.px]="resizeCell(cell.cellWidth,lowerIndex)" [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)"
@@ -70,19 +70,26 @@
       </table>
     </div>
   </div>
-  <div class="btn-group paging">
+  <div id="MainMagicPagingId" class="btn-group paging">
     <lib-ngx-multiselect-dropdown class="pagingInline" [buttonListColumnStyle]="buttonSaveTableStyle" (change)="onItemSelect($event)"
       [placeholder]="'Select Columns'" [data]="dropdownList" [(ngModel)]="dropdownselectedItems" [settings]="dropdownSettings"
-      (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)">
+      (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" >
     </lib-ngx-multiselect-dropdown>
     <div class="pagingInline" style="margin-left: 2px; margin-right: 2px">
       <button (click)="onsaveTable()" [ngClass]="buttonSaveTableStyle" title="Save Table">
         <i class="fa fa-floppy-o"></i>
       </button>
     </div>
+    <div class="pagingInline" style="margin-left: 2px; margin-right: 2px">
+      <button (click)="onResetTable()" [ngClass]="buttonSaveTableStyle" title="Reset Table" type="button">
+        <i class="fa fa-undo"></i></button>
+    </div>
     <div style="display: contents;" *ngIf="paginated && pagination">
       <ng-container [ngTemplateOutlet]="pagination">
       </ng-container>
+    </div>
+    <div class="magicMessage pagingInline">
+      <span>{{message}}</span>
     </div>
     <div class="pagingInline" *ngIf="paginated && !pagination">
       <pagination-controls class="pagingInline" (pageChange)="selectPage($event)" previousLabel="" nextLabel="" [id]="uid"></pagination-controls>

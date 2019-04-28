@@ -24,9 +24,11 @@ Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 - List columns
 - Save table style
 - Load table style
-- Auto Size table
-- Row Class Renderer
-- add pagination
+- Auto size table
+- Row class renderer
+- Add pagination
+- Reset table style
+- Show message
 
 
 ## Preview
@@ -92,7 +94,8 @@ Use `<ngx-magic-table>`
   buttonListColumnStyle="btn btn-outline-info" 
   buttonSaveTableStyle="btn btn-outline-info"
   [autoSize] = "true"
-  [rowClassRenderer]="getRowClass">
+  [rowClassRenderer]="getRowClass"
+  (onResetTable)="onResetTable($event)">
  
 <ngx-column-template 
 
