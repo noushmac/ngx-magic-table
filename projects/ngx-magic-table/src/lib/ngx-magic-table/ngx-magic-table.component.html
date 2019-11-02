@@ -39,7 +39,7 @@
         currentPage: currentPage,
         totalItems: customPaginate ? totalCount : rows.length,
         id: uid }">
-            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row == rowSelected ? selectedClass : rowClassRenderer(row)]">
+            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (dblclick)="doubleSelectRow(row)" (click)="selectRow(row)" [ngClass]="[row == rowSelected ? selectedClass : rowClassRenderer(row)]">
               <ng-container *ngFor="let cell of inverseArray(lowerCells); let lowerIndex = index">
                 <td [ngStyle]="{'display': cell.visible === 'false' ? 'none' : ''}" [style.min-width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                   [style.max-width.px]="resizeCell(cell.cellWidth,lowerIndex)" [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)"
@@ -54,7 +54,7 @@
         </tbody>
         <tbody id="tbody1" (domChange)="onDomChange($event)" class="ngxTbody" [ngClass]="tbodyClass" *ngIf="!paginated">
           <ng-container *ngFor="let row of rows | sort:{field: sort, direction: sortDirection, active: !customSort}">
-            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (click)="selectRow(row)" [ngClass]="[row == rowSelected ? selectedClass : rowClassRenderer(row)]">
+            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (dblclick)="doubleSelectRow(row)" (click)="selectRow(row)" [ngClass]="[row == rowSelected ? selectedClass : rowClassRenderer(row)]">
               <ng-container *ngFor="let cell of inverseArray(lowerCells); let lowerIndex = index">
                 <td [ngStyle]="{'display': cell.visible === 'false' ? 'none' : ''}" [style.min-width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                   [style.max-width.px]="resizeCell(cell.cellWidth,lowerIndex)" [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)"

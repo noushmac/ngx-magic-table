@@ -4,7 +4,7 @@
     [customSort]="false" sort="Phone" [sortDirection]="0" [paginated]="true" [pageSize]="3" [customPaginate]="false"
     [currentPage]="2" [pageSizes]="[3, 5, 20, 50, 100]" (pageSizesChange)="pageSizesChange($event)" (pageChange)="pageChange($event)"
     (selectedChange)="selectChanged($event)" selectedClass="table-secondary"
-    [autoSize]="false" (saveTable)="saveTable($event)" [loadTable]="" [rowClassRenderer]="getRowClass" (columnsArrangeChange)="columnsArrangeChange($event)">
+    [autoSize]="false" (saveTable)="saveTable($event)" [loadTable]="" (doubleClick)= "doubleClick($event)" [rowClassRenderer]="getRowClass" (columnsArrangeChange)="columnsArrangeChange($event)">
 
     <ngx-column-template [visible]="true" name="Numbers" title="Numbers" index="1" [sortable]="false">
       <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}} </ng-template> -->

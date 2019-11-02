@@ -59,7 +59,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
   }
 
-  @ContentChild('pagination')
+  @ContentChild('pagination', {static: false})
   pagination: TemplateRef<ElementRef>;
 
   constructor(private renderer: Renderer2, private el: ElementRef) {
@@ -109,11 +109,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Input()
   customPaginate: Boolean = false;
   @Input()
-  totalCount: Number = 0;
+  totalCount: number = 0;
   @Input()
-  pageSize?: Number = 10;
+  pageSize?: number = 10;
   @Input()
-  currentPage: Number = 1;
+  currentPage: number = 1;
   @Input()
   pageSizes: number[] = [10, 20, 50, 100];
 
@@ -137,6 +137,8 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
   @Output()
   selectedChange = new EventEmitter<T>();
+  @Output()
+  doubleClick = new EventEmitter<T>();
   @Output()
   columnsArrangeChange = new EventEmitter();
 
@@ -418,6 +420,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.selectedRow = row;
     this.rowSelected = row;
     this.selectedChange.emit(this.selectedRow);
+  }
+  public doubleSelectRow(row: T) {
+    this.selectedRow = row;
+    this.rowSelected = row;
+    this.doubleClick.emit(this.selectedRow);
   }
 
   public changePerPage(pageSize: number) {
