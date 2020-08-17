@@ -4,7 +4,7 @@
     [customSort]="false" sort="Phone" [sortDirection]="0" [paginated]="true" [pageSize]="3" [customPaginate]="false"
     [currentPage]="2" [pageSizes]="[3, 5, 20, 50, 100]" (pageSizesChange)="pageSizesChange($event)" (pageChange)="pageChange($event)"
     (selectedChange)="selectChanged($event)" selectedClass="table-secondary"
-    [autoSize]="false" (saveTable)="saveTable($event)" [loadTable]="" [rowClassRenderer]="getRowClass" (columnsArrangeChange)="columnsArrangeChange($event)">
+    [autoSize]="false" (saveTable)="saveTable($event)" [loadTable]="" (doubleClick)= "doubleClick($event)" [rowClassRenderer]="getRowClass" (columnsArrangeChange)="columnsArrangeChange($event)">
 
     <ngx-column-template [visible]="true" name="Numbers" title="Numbers" index="1" [sortable]="false">
       <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}} </ng-template> -->
@@ -20,6 +20,8 @@
         <i class="fa" [setDirection]="direction"></i>
       </ng-template>
       <ng-template let-row="row" let-cell="cell" name="body" >{{row.Phone}}</ng-template>
+
+
 
     </ngx-column-template>
 
@@ -50,6 +52,11 @@
       <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}}
         <i class="fa" [setDirection]="direction"></i>
       </ng-template>
+
+  <ng-template let-rows="rows" let-cell="cell" name="filter">
+                <ngx-string-filter [rows]="rows" [cell]="cell" (filterChange)="logAll($event)"></ngx-string-filter>
+            </ng-template>
+
     </ngx-column-template>
   </ngx-magic-table>
 

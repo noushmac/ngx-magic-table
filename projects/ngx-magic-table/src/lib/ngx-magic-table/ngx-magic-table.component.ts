@@ -34,6 +34,7 @@ import guid from 'angular-uid';
 import { IPagingInput, ISortInput } from '../models/interface';
 import { CellsInfo } from '../models/cells-info';
 import { delay } from 'q';
+import { ReturnStatement } from '@angular/compiler';
 
 @Component({
   selector: 'ngx-magic-table',
@@ -59,7 +60,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
   }
 
-  @ContentChild('pagination')
+  @ContentChild('pagination', {static: false})
   pagination: TemplateRef<ElementRef>;
 
   constructor(private renderer: Renderer2, private el: ElementRef) {
@@ -109,11 +110,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Input()
   customPaginate: Boolean = false;
   @Input()
-  totalCount: Number = 0;
+  totalCount: number = 0;
   @Input()
-  pageSize?: Number = 10;
+  pageSize?: number = 10;
   @Input()
-  currentPage: Number = 1;
+  currentPage: number = 1;
   @Input()
   pageSizes: number[] = [10, 20, 50, 100];
 
@@ -137,6 +138,8 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
   @Output()
   selectedChange = new EventEmitter<T>();
+  @Output()
+  doubleClick = new EventEmitter<T>();
   @Output()
   columnsArrangeChange = new EventEmitter();
 
@@ -419,6 +422,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.rowSelected = row;
     this.selectedChange.emit(this.selectedRow);
   }
+  public doubleSelectRow(row: T) {
+    this.selectedRow = row;
+    this.rowSelected = row;
+    this.doubleClick.emit(this.selectedRow);
+  }
 
   public changePerPage(pageSize: number) {
     if (this.pageSize === pageSize) {
@@ -605,23 +613,58 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
         i.changed.subscribe(() => this.generateCells())
       );
 
-      // if (this.loadTable.length > 0) {
-      for (let i = 0; i < this.loadTable.length; i++) {
-        const element = this.loadTable[i];
-        let template = this.templatesArray.filter(x => x.name === element.name);
-        let index = this.templatesArray.indexOf(template[0]);
+      let changedTable = false;
 
-        template[0].index = element.index;
-        template[0].cellWidth = element.cellWidth;
-        template[0].sortable = element.sortable;
-        template[0].draggable = element.draggble;
-        template[0].visible = element.visible;
+      if (this.loadTable != null && this.loadTable.length > 0) {
+        for (let i = 0; i < this.templatesArray.length; i++) {
+          let template = this.loadTable.filter(x => x.name === this.templatesArray[i].name);
+          if (template == null || template.length == 0) {
+            if (this.autoSize) {
+              this.autoSizeCells(this.mainSize());
+            }
+            this.dropdownselectedItems = [];
+            this.setDropdownList();
 
-        this.templatesArray[index] = template[0];
+            this.dropdownSettings = {
+              singleSelection: false,
+              idField: 'item_id',
+              textField: 'item_text',
+              selectAllText: 'Select All',
+              unSelectAllText: 'UnSelect All',
+              itemsShowLimit: 2,
+              allowSearchFilter: true
+            };
+            this.generateCells();
+            this.setMessage('  The table has changed. Consider the changes you need again   ');
+            changedTable = true;
+            return;
+          }
+        }
       }
-      this.templatesArray = this.templatesArray.sort(x => x.index);
-      // this.generateCells();
-      // }
+
+
+
+
+      if (!changedTable) {
+        for (let i = 0; i < this.loadTable.length; i++) {
+          const element = this.loadTable[i];
+          let template = this.templatesArray.filter(x => x.name === element.name);
+          if (template != null && template.length > 0) {
+            const index = this.templatesArray.indexOf(template[0]);
+
+            template[0].index = element.index;
+            template[0].cellWidth = element.cellWidth;
+            template[0].sortable = element.sortable;
+            template[0].draggable = element.draggble;
+            template[0].visible = element.visible;
+
+            this.templatesArray[index] = template[0];
+          }
+
+        }
+        this.templatesArray = this.templatesArray.sort(x => x.index);
+        // this.generateCells();
+      }
 
       if (this.autoSize) {
         this.autoSizeCells(this.mainSize());

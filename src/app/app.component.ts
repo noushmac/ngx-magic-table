@@ -272,8 +272,15 @@ export class AppComponent {
     console.log(array);
   }
 
+  logAll(row: any) {
+     alert(JSON.stringify(row));
+  }
+
   selectChanged(row: any) {
-    alert(JSON.stringify(row));
+    // alert(JSON.stringify(row));
+  }
+  doubleClick(row: any) {
+     alert(JSON.stringify(row));
   }
   pageSizesChange(data: IPagingInput) {
     console.log('page:' + data.page + ' pageSize:' + data.pageSize);
