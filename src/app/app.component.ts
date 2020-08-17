@@ -272,6 +272,10 @@ export class AppComponent {
     console.log(array);
   }
 
+  logAll(row: any) {
+     alert(JSON.stringify(row));
+  }
+
   selectChanged(row: any) {
     // alert(JSON.stringify(row));
   }

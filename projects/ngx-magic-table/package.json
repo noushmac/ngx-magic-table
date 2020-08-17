@@ -1,7 +1,7 @@
 {
   "name": "ngx-magic-table",
   "author": "rezakhan",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "keywords": [
     "angular",
     "datatable",
@@ -22,5 +22,13 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/noushmac/ngx-magic-table.git"
+  },
+  "bugs": {
+    "url": "https://github.com/noushmac/ngx-magic-table/issues"
+  },
+  "homepage": "https://github.com/noushmac/ngx-magic-table#readme",
+  "main": "karma.conf.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
