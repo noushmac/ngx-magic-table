@@ -260,3 +260,8 @@ ul.ngx-pagination {
   margin-right: 5px
 }
 
+.footerTd {
+  background-color: lightgray;
+    font-weight: bold;
+}
+

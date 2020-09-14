@@ -30,6 +30,7 @@ Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 - Reset table style
 - Show message
 - Set Double Click
+- Show summery in footer table
 
 ## Preview
 ![Preview](https://imgur.com/V5Sy0HN.jpg)

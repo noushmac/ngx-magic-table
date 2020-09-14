@@ -4,6 +4,7 @@ import { DirectionDirective} from './ngx-magic-table/ngx-direction-column.direct
 import { DomChangeDirective} from './ngx-magic-table/ngx-magic-table-change.directive';
 import { NamedTemplateDirective } from './ngx-named-template/ngx-named-template.directive';
 import { SortPipe } from './sort/sort.pipe';
+import { ReverseArray } from './pipe/reverse-array';
 import { NgxColumnTemplateComponent } from './ngx-column-template/ngx-column-template.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CommonModule } from '@angular/common';
@@ -28,6 +29,7 @@ import { ClickOutsideDirective } from './ngx-multiselect-dropdown/click-outside.
   declarations: [NgxMagicTableComponent,
     NamedTemplateDirective,
     SortPipe,
+    ReverseArray,
     NgxColumnTemplateComponent,
     NgxNumericFilterComponent,
     NgxStringFilterComponent,

@@ -4,7 +4,7 @@
       <table [ngClass]="tableClass" class="rz-table">
         <thead class="ngxThead" [ngClass]="theadClass">
           <tr *ngFor="let cellRow of cells">
-            <th *ngFor="let cell of inverseArray(cellRow)" [style.max-width.px]="cell.cellWidth" [style.min-width.px]="cell.cellWidth"
+            <th *ngFor="let cell of cellRow | reverse " [style.max-width.px]="cell.cellWidth" [style.min-width.px]="cell.cellWidth"
               [style.width.px]="cell.cellWidth" [ngStyle]="{'display': cell.visible === 'false' ? 'none' : ''}"
               [attr.visible]="cell.visible" [name]="cell.name" [id]="uid+'-'+cell.name+'-head'" [draggable]="cell.template.draggable"
               (drop)="drop(cell)" (dragover)="allowDrop($event)" (dragstart)="drag(cell)" [attr.colspan]="cell.colSpan"
@@ -40,7 +40,7 @@
         totalItems: customPaginate ? totalCount : rows.length,
         id: uid }">
             <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (dblclick)="doubleSelectRow(row)" (click)="selectRow(row)" [ngClass]="[row == rowSelected ? selectedClass : rowClassRenderer(row)]">
-              <ng-container *ngFor="let cell of inverseArray(lowerCells); let lowerIndex = index">
+              <ng-container *ngFor="let cell of lowerCells | reverse; let lowerIndex = index">
                 <td [ngStyle]="{'display': cell.visible === 'false' ? 'none' : ''}" [style.min-width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                   [style.max-width.px]="resizeCell(cell.cellWidth,lowerIndex)" [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                   *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
@@ -55,7 +55,7 @@
         <tbody id="tbody1" (domChange)="onDomChange($event)" class="ngxTbody" [ngClass]="tbodyClass" *ngIf="!paginated">
           <ng-container *ngFor="let row of rows | sort:{field: sort, direction: sortDirection, active: !customSort}">
             <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index" (dblclick)="doubleSelectRow(row)" (click)="selectRow(row)" [ngClass]="[row == rowSelected ? selectedClass : rowClassRenderer(row)]">
-              <ng-container *ngFor="let cell of inverseArray(lowerCells); let lowerIndex = index">
+              <ng-container *ngFor="let cell of lowerCells | reverse; let lowerIndex = index">
                 <td [ngStyle]="{'display': cell.visible === 'false' ? 'none' : ''}" [style.min-width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                   [style.max-width.px]="resizeCell(cell.cellWidth,lowerIndex)" [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)"
                   *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
@@ -67,6 +67,26 @@
             </tr>
           </ng-container>
         </tbody>
+
+        <tbody id="tbodyFooter" (domChange)="onDomChange($event)" [ngClass]="tbodyClass">
+
+          <ng-container *ngFor="let row of footerRows">
+            <tr *ngFor="let i of Arr(getLcm(row)).fill(1); let in = index"  [ngClass]="[row == rowSelected ? selectedClass : rowClassRenderer(row)]">
+              <ng-container *ngFor="let cell of lowerCells | reverse; let lowerIndex = index">
+                <td [ngClass]="footerCssClass" [ngStyle]="{'display': cell.visible === 'false' ? 'none' : ''}" [style.min-width.px]="resizeCell(cell.cellWidth,lowerIndex)"
+                  [style.max-width.px]="resizeCell(cell.cellWidth,lowerIndex)" [style.width.px]="resizeCell(cell.cellWidth,lowerIndex)"
+                  *ngIf="((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection] == null ? 1 : row[cell.template.collection].length)) % getLcm(row) === 0"
+                  [attr.rowspan]="getLcm(row) / (cell.template.collection !== '' ? row[cell.template.collection] != null ? Math.max(row[cell.template.collection].length, 1) : 1 : 1)"
+                  data-toggle="tooltip" data-placement="bottom" [attr.title]="row[cell.name]">
+                  <ng-template [ngTemplateOutlet]="cell.template.footer" [ngTemplateOutletContext]="{row: row, cell: cell, index: ((in) * (cell.template.collection === '' ? 1 : row[cell.template.collection] != null ? row[cell.template.collection].length : 1)) / getLcm(row)}"></ng-template>
+                </td>
+              </ng-container>
+            </tr>
+          </ng-container>
+
+        </tbody>
+
+
       </table>
     </div>
   </div>

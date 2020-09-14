@@ -35,6 +35,8 @@ import { IPagingInput, ISortInput } from '../models/interface';
 import { CellsInfo } from '../models/cells-info';
 import { delay } from 'q';
 import { ReturnStatement } from '@angular/compiler';
+import { ReverseArray } from '../pipe/reverse-array';
+
 
 @Component({
   selector: 'ngx-magic-table',
@@ -60,7 +62,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
   }
 
-  @ContentChild('pagination', {static: false})
+  @ContentChild('pagination')
   pagination: TemplateRef<ElementRef>;
 
   constructor(private renderer: Renderer2, private el: ElementRef) {
@@ -83,9 +85,34 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       this.pageSize = 10;
     }
     this.rows = new Array<T>();
+    this.footerRows = new Array<T>();
   }
 
   @Input() rows = Array<T>();
+
+  // @Input() footerRows = Array<any>();
+
+  public _footerRows = Array<any>();
+
+  @Input()
+  set footerRows(footerRows: Array<any>) {
+    if (!footerRows) {
+      this._footerRows = [];
+    } else {
+      this._footerRows = footerRows;
+      // this.onLoadTable();
+    }
+    // this.onLoadTable();
+  }
+
+  get footerRows(): Array<any> {
+    return this._footerRows;
+  }
+
+
+
+
+
 
   // set rows(rows: Array<T>) {
   //   if  (!rows) {
@@ -172,6 +199,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Input()
   tbodyClass: String = '';
 
+  @Input()
+  footerCssClass: String = 'footerTd';
+
   dropdownList = [];
   dropdownselectedItems = [];
   dropdownSettings = {};
@@ -182,7 +212,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
   public _loadTable = Array<CellsInfo>();
 
-  public _rowsFilter = Array<T>();
+  // public _rowsFilter = Array<T>();
   public Math = Math;
   public Arr = Array;
   public templatesArray: NgxColumnTemplateComponent[];
@@ -216,7 +246,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       this.lowerCells.map(i => {
         return i.template.collection === ''
           ? 1
-          : Math.max(row[i.template.collection.toString()].length, 1);
+          : row[i.template.collection.toString()] != null
+          ?  Math.max(row[i.template.collection.toString()].length, 1)
+          : 1;
       })
     );
     return lcm;
@@ -505,6 +537,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     } else {
       return width;
     }
+
   }
 
   onItemSelect(items: any) {
@@ -517,6 +550,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
     // this.setTableSetting();
     this.generateCells();
+
   }
   onItemDeSelect(items: any) {
     for (let j = 0; j < this.templatesArray.length; j++) {

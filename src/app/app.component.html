@@ -1,63 +1,89 @@
-<div class="container" style=" width:100%; height: 500px;">
+<button (click)="reload()"  type="button">
+  reload</button>
 
-  <ngx-magic-table [isRTL]="true" [rows]="data" buttonListColumnStyle="btn btn-outline-info" buttonSaveTableStyle="btn btn-outline-info"
-    [customSort]="false" sort="Phone" [sortDirection]="0" [paginated]="true" [pageSize]="3" [customPaginate]="false"
-    [currentPage]="2" [pageSizes]="[3, 5, 20, 50, 100]" (pageSizesChange)="pageSizesChange($event)" (pageChange)="pageChange($event)"
-    (selectedChange)="selectChanged($event)" selectedClass="table-secondary"
-    [autoSize]="false" (saveTable)="saveTable($event)" [loadTable]="" (doubleClick)= "doubleClick($event)" [rowClassRenderer]="getRowClass" (columnsArrangeChange)="columnsArrangeChange($event)">
+<div style="flex-grow: 1;
+overflow: auto;
+padding: 20px 20px 0;
+border: 1px solid rgba(55,58,60,.3);
+margin-bottom: 20px;
+border-radius: 3px;">
+  <div class="container" style=" min-height: 200px;
+  width: 100%;
+  height: 100%;">
 
-    <ngx-column-template [visible]="true" name="Numbers" title="Numbers" index="1" [sortable]="false">
-      <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}} </ng-template> -->
+    <ngx-magic-table [isRTL]="true" [rows]="data" buttonListColumnStyle="btn btn-outline-info" buttonSaveTableStyle="btn btn-outline-info"
+      [customSort]="false" sort="Phone" [sortDirection]="0" [paginated]="true" [pageSize]="3" [customPaginate]="false"
+      [currentPage]="2" [pageSizes]="[3, 5, 20, 50, 100]" (pageSizesChange)="pageSizesChange($event)" (pageChange)="pageChange($event)"
+      (selectedChange)="selectChanged($event)" selectedClass="table-secondary"
+      [autoSize]="false" [footerRows]="dataFooter" (saveTable)="saveTable($event)" [loadTable]="" (doubleClick)= "doubleClick($event)" [rowClassRenderer]="getRowClass" (columnsArrangeChange)="columnsArrangeChange($event)">
 
-      <!-- <ng-template let-rows="rows" let-cell="cell" name="filter">
-                <ngx-string-filter [rows]="rows" [cell]="cell" (filterChange)="logAll($event)"></ngx-string-filter>
-            </ng-template> -->
+      <ngx-column-template [visible]="true" name="Numbers" title="Numbers" index="1" [sortable]="false">
+        <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}} </ng-template> -->
 
-    </ngx-column-template>
+        <!-- <ng-template let-rows="rows" let-cell="cell" name="filter">
+                  <ngx-string-filter [rows]="rows" [cell]="cell" (filterChange)="logAll($event)"></ngx-string-filter>
+              </ng-template> -->
 
-    <ngx-column-template cellWidth="400"  name="Phone" parent="Numbers" title="Phone" index="2" [visible]="true">
-      <ng-template let-cell="cell" let-direction="direction" name="header">تلفن همراه
-        <i class="fa" [setDirection]="direction"></i>
-      </ng-template>
-      <ng-template let-row="row" let-cell="cell" name="body" >{{row.Phone}}</ng-template>
+      </ngx-column-template>
 
 
 
-    </ngx-column-template>
+      <ngx-column-template cellWidth="400"  name="Phone" parent="Numbers" title="Phone" index="2" [visible]="true">
+        <ng-template let-cell="cell" let-direction="direction" name="header">تلفن همراه
+          <i class="fa" [setDirection]="direction"></i>
+        </ng-template>
+        <ng-template let-row="row" let-cell="cell" name="body" >{{row.Phone}}</ng-template>
 
-    <ngx-column-template  cellWidth="400"  name="Id" parent="Numbers" index="1"  title="Id" [draggable]="false" [visible]="true">
-      <ng-template let-row="row" let-cell="cell" name="body">
-        {{row.Id}}
-      </ng-template>
-      <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}}
-        <i class="fa" [setDirection]="direction"></i>
-      </ng-template>
-    </ngx-column-template>
 
-    <ngx-column-template cellWidth="400"  name="Type" parent="Numbers" title="Type"  collection="Type" index="1" [draggable]="false" [visible]="true">
-      <ng-template let-row="row" let-cell="cell" let-index="index" name="body">{{row.Type[index]}}</ng-template>
-      <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}}
-        <i class="fa" [setDirection]="direction"></i>
-      </ng-template>
-    </ngx-column-template>
 
-    <ngx-column-template cellWidth="400"  name="Size" parent="Numbers" title="Size" collection="Size" index="1" [draggable]="false" [visible]="true">
-      <ng-template let-row="row" let-cell="cell" let-index="index" name="body">{{row.Size[index]}}</ng-template>
-      <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}}
-        <i class="fa" [setDirection]="direction"></i>
-      </ng-template>
-    </ngx-column-template>
-    <ngx-column-template cellWidth="400"  name="Name" index="1" title="Name" [draggable]="false" [visible]="true">
-      <ng-template let-row="row" let-cell="cell" name="body">{{row.Name}}</ng-template>
-      <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}}
-        <i class="fa" [setDirection]="direction"></i>
-      </ng-template>
+      </ngx-column-template>
 
-  <ng-template let-rows="rows" let-cell="cell" name="filter">
-                <ngx-string-filter [rows]="rows" [cell]="cell" (filterChange)="logAll($event)"></ngx-string-filter>
-            </ng-template>
+      <ngx-column-template  cellWidth="400"  name="Id" parent="Numbers" index="1"  title="Id" [draggable]="false" [visible]="true">
+        <ng-template let-row="row" let-cell="cell" name="body">
+          {{row.Id}}
+        </ng-template>
+        <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}}
+          <i class="fa" [setDirection]="direction"></i>
+        </ng-template>
 
-    </ngx-column-template>
-  </ngx-magic-table>
+      </ngx-column-template>
+
+      <ngx-column-template cellWidth="400"  name="Type" parent="Numbers" title="Type"  collection="Type" index="1" [draggable]="false" [visible]="true">
+        <ng-template let-row="row" let-cell="cell" let-index="index" name="body">{{row.Type[index]}}</ng-template>
+        <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}}
+          <i class="fa" [setDirection]="direction"></i>
+        </ng-template>
+
+      </ngx-column-template>
+
+      <ngx-column-template cellWidth="400"  name="Size" parent="Numbers" title="Size" collection="Size" index="1" [draggable]="false" [visible]="true">
+        <ng-template let-row="row" let-cell="cell" let-index="index" name="body">{{row.Size[index]}}</ng-template>
+        <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}}
+          <i class="fa" [setDirection]="direction"></i>
+        </ng-template>
+        <ng-template let-row="row" let-cell="cell" name="footer">
+          {{row.Sum}}
+        </ng-template>
+      </ngx-column-template>
+      <ngx-column-template cellWidth="400"  name="Name" index="1" title="Name" [draggable]="false" [visible]="true">
+        <ng-template let-row="row" let-cell="cell" name="body">{{row.Name}}</ng-template>
+        <ng-template let-cell="cell" let-direction="direction" name="header">{{cell.name}}
+          <i class="fa" [setDirection]="direction"></i>
+        </ng-template>
+
+    <ng-template let-rows="rows" let-cell="cell" name="filter">
+                  <ngx-string-filter [rows]="rows" [cell]="cell" (filterChange)="logAll($event)"></ngx-string-filter>
+              </ng-template>
+
+              <ng-template let-row="row" let-cell="cell" name="footer">
+                {{row.Title}}
+              </ng-template>
+
+      </ngx-column-template>
+    </ngx-magic-table>
+
+  </div>
 
 </div>
+
+
