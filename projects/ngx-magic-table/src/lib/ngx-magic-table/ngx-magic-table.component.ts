@@ -35,8 +35,8 @@ import { IPagingInput, ISortInput } from '../models/interface';
 import { CellsInfo } from '../models/cells-info';
 import { delay } from 'q';
 import { ReturnStatement } from '@angular/compiler';
-import { ReverseArray } from '../pipe/reverse-array';
 
+import { ReverseArray } from '../pipe/reverse-array';
 
 @Component({
   selector: 'ngx-magic-table',
@@ -62,7 +62,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
   }
 
-  @ContentChild('pagination')
+  @ContentChild('pagination', {static: false})
   pagination: TemplateRef<ElementRef>;
 
   constructor(private renderer: Renderer2, private el: ElementRef) {
@@ -83,6 +83,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.MinWidth = 80;
     if (this.pageSize == null) {
       this.pageSize = 10;
+
     }
     this.rows = new Array<T>();
     this.footerRows = new Array<T>();
@@ -108,11 +109,6 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   get footerRows(): Array<any> {
     return this._footerRows;
   }
-
-
-
-
-
 
   // set rows(rows: Array<T>) {
   //   if  (!rows) {
