@@ -166,6 +166,7 @@ export class AppComponent {
   }
 
   logAll(row: any) {
+
     // alert(JSON.stringify(row));
   }
 
