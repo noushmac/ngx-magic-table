@@ -187,6 +187,11 @@ table.rz-table th .rz-handle:hover {
   background-color: rgb(242, 249, 254);
 }
 
+/* .table.rz-table th,
+.table.rz-table td {
+    white-space: nowrap;
+    width: 1% !important;
+} */
 
 .savetable {
   position: absolute;
@@ -253,5 +258,10 @@ ul.ngx-pagination {
   direction: ltr !important;
   margin-left: 5px;
   margin-right: 5px
+}
+
+.footerTd {
+  background-color: lightgray;
+    font-weight: bold;
 }
 

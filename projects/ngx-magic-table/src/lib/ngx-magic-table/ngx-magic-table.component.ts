@@ -34,6 +34,8 @@ import guid from 'angular-uid';
 import { IPagingInput, ISortInput } from '../models/interface';
 import { CellsInfo } from '../models/cells-info';
 import { delay } from 'q';
+import { ReturnStatement } from '@angular/compiler';
+import { ReverseArray } from '../pipe/reverse-array';
 
 
 @Component({
@@ -74,79 +76,105 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.buttonListColumnStyle = 'btn btn-outline-info';
     this.buttonSaveTableStyle = 'btn btn-outline-info';
     this.templatesArray = new Array<NgxColumnTemplateComponent>();
-      this.templatesArrayBase = null;
-      this.autoSize = true;
+    this.templatesArrayBase = null;
+    this.autoSize = true;
     this.message = '';
-      this.rowClassRenderer = (row) => '';
-      this.MinWidth = 80;
+    this.rowClassRenderer = row => '';
+    this.MinWidth = 80;
     if (this.pageSize == null) {
-        this.pageSize = 10;
-      }
-    this.rows = new Array<T>();
+      this.pageSize = 10;
     }
+    this.rows = new Array<T>();
+    this.footerRows = new Array<T>();
+  }
 
-    @Input() rows = Array<T>();
+  @Input() rows = Array<T>();
 
-    // set rows(rows: Array<T>) {
-    //   if  (!rows) {
-    //     this.rows = [];
-    //   } else {
-    //     this.rows = rows;
-    //   }
+  // @Input() footerRows = Array<any>();
+
+  public _footerRows = Array<any>();
+
+  @Input()
+  set footerRows(footerRows: Array<any>) {
+    if (!footerRows) {
+      this._footerRows = [];
+    } else {
+      this._footerRows = footerRows;
+      // this.onLoadTable();
+    }
+    // this.onLoadTable();
+  }
+
+  get footerRows(): Array<any> {
+    return this._footerRows;
+  }
+
+
+
+
+
+
+  // set rows(rows: Array<T>) {
+  //   if  (!rows) {
+  //     this.rows = [];
+  //   } else {
+  //     this.rows = rows;
+  //   }
   // }
-    // get rows(): Array<T> {
-    //   return this.rows;
-    // }
+  // get rows(): Array<T> {
+  //   return this.rows;
+  // }
 
   @Input()
-    autoSize: Boolean;
+  autoSize: Boolean;
 
-    @Input() buttonSaveTableStyle: string;
-    @Input() buttonListColumnStyle: string;
+  @Input() buttonSaveTableStyle: string;
+  @Input() buttonListColumnStyle: string;
   @Input()
-    paginated: Boolean = false;
-    @Input()
-    customSort: Boolean = true;
-    @Input()
-    customPaginate: Boolean = false;
-    @Input()
-  totalCount: Number = 0;
-    @Input()
-    pageSize?: Number = 10;
-    @Input()
-    currentPage: Number = 1;
+  paginated: Boolean = false;
   @Input()
-    pageSizes: number[] = [10, 20, 50, 100];
+  customSort: Boolean = true;
+  @Input()
+  customPaginate: Boolean = false;
+  @Input()
+  totalCount: number = 0;
+  @Input()
+  pageSize?: number = 10;
+  @Input()
+  currentPage: number = 1;
+  @Input()
+  pageSizes: number[] = [10, 20, 50, 100];
 
-    @Input()
-    sort: String = '';
-      npt()
-        Direction: OrderDirection = OrderDirection.Ascending;
+  @Input()
+  sort: String = '';
+  @Input()
+  sortDirection: OrderDirection = OrderDirection.Ascending;
+  @Input()
+  hidden: Boolean = false;
+  @Input()
+  selectedClass: String = 'table-secondary';
 
-        ut()
-        en: Boolean = false;
-      nput()
-    selectedClass: String = 'table-secondary';
+  @Input() rowSelected: T;
 
-  @Input() rowSelected:  T ;
-
-      @Output()
+  @Output()
   pageChange = new EventEmitter<IPagingInput>();
   @Output()
   sortChange = new EventEmitter<ISortInput>();
-    @Output()
-    pageSizeChange = new EventEmitter<IPagingInput>();
+  @Output()
+  pageSizeChange = new EventEmitter<IPagingInput>();
 
-    @Output()
-    selectedChange = new EventEmitter<T>();
-    @Output()
-    columnsArrangeChange = new EventEmitter();
+  @Output()
+  selectedChange = new EventEmitter<T>();
+  @Output()
+  doubleClick = new EventEmitter<T>();
+  @Output()
+  columnsArrangeChange = new EventEmitter();
 
-    @Output() saveTable = new EventEmitter<Array<CellsInfo>>();
+  @Output() saveTable = new EventEmitter<Array<CellsInfo>>();
   @Output() resetTable = new EventEmitter<boolean>();
 
-    @Input()
-    set loadTable(loadTable: Array<CellsInfo>) {
+  @Input()
+  set loadTable(loadTable: Array<CellsInfo>) {
     if (!loadTable) {
       this._loadTable = [];
     } else {
@@ -160,7 +188,6 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     return this._loadTable;
   }
 
-
   @Input()
   isRTL: boolean;
   @Input()
@@ -172,6 +199,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Input()
   tbodyClass: String = '';
 
+  @Input()
+  footerCssClass: String = 'footerTd';
+
   dropdownList = [];
   dropdownselectedItems = [];
   dropdownSettings = {};
@@ -182,7 +212,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
   public _loadTable = Array<CellsInfo>();
 
-  public _rowsFilter = Array<T>();
+  // public _rowsFilter = Array<T>();
   public Math = Math;
   public Arr = Array;
   public templatesArray: NgxColumnTemplateComponent[];
@@ -207,8 +237,6 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   MinWidth: number;
   message: string;
 
-
-
   ngAfterContentInit() {
     this.onLoadTable();
   }
@@ -218,7 +246,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       this.lowerCells.map(i => {
         return i.template.collection === ''
           ? 1
-          : Math.max(row[i.template.collection.toString()].length, 1);
+          : row[i.template.collection.toString()] != null
+          ?  Math.max(row[i.template.collection.toString()].length, 1)
+          : 1;
       })
     );
     return lcm;
@@ -276,9 +306,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.draggingCell = x;
   }
   protected generateCells() {
-
     this.head = this.generateHeaders();
-    this.tableWidth = this.head.map(i => +i.Width)
+    this.tableWidth = this.head
+      .map(i => +i.Width)
       .reduce<number>((sum, current) => sum + current, 0);
     this.depth = Math.max(
       ...this.head.map(item => {
@@ -289,7 +319,6 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.cells = [];
     this.lowerCells = [];
     this.createHeaderCells(this.head, 0, this.depth);
-
   }
 
   mainSize(): number {
@@ -301,10 +330,8 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     let rowCount = 0;
     for (let index = 0; index < this.templatesArray.length; index++) {
       const element = this.templatesArray[index];
-      let childs = this.templatesArray
-        .filter(t => t.parent === element.name);
+      let childs = this.templatesArray.filter(t => t.parent === element.name);
       if (childs.length < 1) {
-
         rowCount++;
       }
     }
@@ -315,13 +342,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
     for (let index = 0; index < this.templatesArray.length; index++) {
       const element = this.templatesArray[index];
-      let childs = this.templatesArray
-        .filter(t => t.parent === element.name);
+      let childs = this.templatesArray.filter(t => t.parent === element.name);
       if (childs.length < 1) {
         element.cellWidth = cellWidth;
         this.templatesArray[index] = element;
       }
-
     }
   }
 
@@ -348,12 +373,20 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
         item.Template = t;
         item.Visible = t.visible;
         item.Childs = this.generateHeaders(t.name);
-        item.Width = item.Childs.length === 0 && item.Visible === true ? +t.cellWidth : item.Childs.map(i => +i.Width)
-          .reduce<number>((sum, current) => sum + current, 0);
+        item.Width =
+          item.Childs.length === 0 && item.Visible === true
+            ? +t.cellWidth
+            : item.Childs.map(i => +i.Width).reduce<number>(
+                (sum, current) => sum + current,
+                0
+              );
         item.Name = t.name;
         result.push(item);
-        this.dropdownselectedItems.push({ item_id: item.Index, item_text: item.Name, parent: headerName });
-
+        this.dropdownselectedItems.push({
+          item_id: item.Index,
+          item_text: item.Name,
+          parent: headerName
+        });
       });
     return result;
   }
@@ -367,7 +400,8 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       this.cells.push(new Array<HeaderCell>());
     }
     const row = this.cells[level];
-    items.sort((first, second) => first.Index.valueOf() - second.Index.valueOf())
+    items
+      .sort((first, second) => first.Index.valueOf() - second.Index.valueOf())
       .map(h => {
         const c = new HeaderCell();
         c.name = h.Name;
@@ -419,7 +453,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.selectedRow = row;
     this.rowSelected = row;
     this.selectedChange.emit(this.selectedRow);
-
+  }
+  public doubleSelectRow(row: T) {
+    this.selectedRow = row;
+    this.rowSelected = row;
+    this.doubleClick.emit(this.selectedRow);
   }
 
   public changePerPage(pageSize: number) {
@@ -434,9 +472,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
     this.pagingInput.page = this.currentPage as number;
     this.pagingInput.pageSize = pageSize;
-    this.pageSizeChange.emit(
-      this.pagingInput
-    );
+    this.pageSizeChange.emit(this.pagingInput);
   }
 
   public selectPage(page: number) {
@@ -452,9 +488,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.pagingInput.page = page;
     this.pagingInput.pageSize = this.pageSize as number;
 
-    this.pageChange.emit(
-      this.pagingInput
-    );
+    this.pageChange.emit(this.pagingInput);
   }
 
   public sortToggle(cell: HeaderCell) {
@@ -479,13 +513,12 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
     this.sortInput.sort = cell.name as string;
     this.sortInput.direction = newDirection;
-    this.sortChange.emit(
-      this.sortInput
-    );
+    this.sortChange.emit(this.sortInput);
   }
 
   onDomChange(element: ElementRef): void {
-    let width = element.nativeElement.offsetWidth - element.nativeElement.clientWidth;
+    let width =
+      element.nativeElement.offsetWidth - element.nativeElement.clientWidth;
 
     this.scrollWidth = width;
   }
@@ -498,36 +531,34 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     return inverse;
   }
 
-
   public resizeCell(width: number, index: number): number {
     if (index == this.lowerCells.length - 1) {
       return width - this.scrollWidth;
     } else {
       return width;
     }
+
   }
 
   onItemSelect(items: any) {
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
-      let template = this.templatesArray
-        .find(t => t.index === item.item_id);
+      let template = this.templatesArray.find(t => t.index === item.item_id);
       let index = this.templatesArray.indexOf(item);
       template.visible = true;
       this.templatesArray[index] = template;
     }
     // this.setTableSetting();
     this.generateCells();
+
   }
   onItemDeSelect(items: any) {
-
     for (let j = 0; j < this.templatesArray.length; j++) {
       let item = items.filter(t => t.item_id === this.templatesArray[j].index);
       if (item.length <= 0) {
         this.templatesArray[j].visible = false;
         this.templatesArray[j] = this.templatesArray[j];
       }
-
     }
     // this.setTableSetting();
     this.generateCells();
@@ -544,9 +575,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   }
   onResetTable() {
     this.message = '  Reseting Table ...  ';
-    this.resetTable.emit(
-      true
-    );
+    this.resetTable.emit(true);
     this.setMessage('  Table Reset Successfully  ');
   }
 
@@ -558,20 +587,23 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
   }
 
-
   setTableSetting() {
     this.listcellsInfo = null;
     this.listcellsInfo = new Array<CellsInfo>();
     for (let i = 0; i < this.templatesArray.length; i++) {
       const element = this.templatesArray[i];
       this.listcellsInfo.push({
-        index: element.index, name: element.name, cellWidth: element.cellWidth,
-        parent: element.parent, sortable: element.sortable, draggble: element.draggable, visible: element.visible
+        index: element.index,
+        name: element.name,
+        cellWidth: element.cellWidth,
+        parent: element.parent,
+        sortable: element.sortable,
+        draggble: element.draggable,
+        visible: element.visible
       });
     }
     this.loadTable = this.listcellsInfo;
   }
-
 
   onsaveTable() {
     this.message = '  Saving Table ...  ';
@@ -586,22 +618,18 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     //   });
     // }
     // this.loadTable = this.listcellsInfo;
-    this.saveTable.emit(
-      this.listcellsInfo
-    );
+    this.saveTable.emit(this.listcellsInfo);
     this.setMessage('  Table Saved Successfully  ');
   }
 
-  async  setMessage(message: string): Promise<void> {
+  async setMessage(message: string): Promise<void> {
     await delay(3000);
     this.message = message;
     await delay(3000);
     this.message = '';
   }
 
-
   onLoadTable() {
-
     if (this.templatesArrayBase != null) {
       for (let index = 0; index < this.templatesArrayBase.length; index++) {
         const element = this.templatesArrayBase[index];
@@ -619,29 +647,62 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
         i.changed.subscribe(() => this.generateCells())
       );
 
+      let changedTable = false;
 
-      // if (this.loadTable.length > 0) {
-      for (let i = 0; i < this.loadTable.length; i++) {
-        const element = this.loadTable[i];
-        let template = this.templatesArray.filter(x => x.name === element.name);
-        let index = this.templatesArray.indexOf(template[0]);
+      if (this.loadTable != null && this.loadTable.length > 0) {
+        for (let i = 0; i < this.templatesArray.length; i++) {
+          let template = this.loadTable.filter(x => x.name === this.templatesArray[i].name);
+          if (template == null || template.length == 0) {
+            if (this.autoSize) {
+              this.autoSizeCells(this.mainSize());
+            }
+            this.dropdownselectedItems = [];
+            this.setDropdownList();
 
-        template[0].index = element.index;
-        template[0].cellWidth = element.cellWidth;
-        template[0].sortable = element.sortable;
-        template[0].draggable = element.draggble;
-        template[0].visible = element.visible;
-
-        this.templatesArray[index] = template[0];
+            this.dropdownSettings = {
+              singleSelection: false,
+              idField: 'item_id',
+              textField: 'item_text',
+              selectAllText: 'Select All',
+              unSelectAllText: 'UnSelect All',
+              itemsShowLimit: 2,
+              allowSearchFilter: true
+            };
+            this.generateCells();
+            this.setMessage('  The table has changed. Consider the changes you need again   ');
+            changedTable = true;
+            return;
+          }
+        }
       }
-      this.templatesArray = this.templatesArray.sort(x => x.index);
-      // this.generateCells();
-// }
 
 
-  if (this.autoSize) {
-    this.autoSizeCells(this.mainSize());
-  }
+
+
+      if (!changedTable) {
+        for (let i = 0; i < this.loadTable.length; i++) {
+          const element = this.loadTable[i];
+          let template = this.templatesArray.filter(x => x.name === element.name);
+          if (template != null && template.length > 0) {
+            const index = this.templatesArray.indexOf(template[0]);
+
+            template[0].index = element.index;
+            template[0].cellWidth = element.cellWidth;
+            template[0].sortable = element.sortable;
+            template[0].draggable = element.draggble;
+            template[0].visible = element.visible;
+
+            this.templatesArray[index] = template[0];
+          }
+
+        }
+        this.templatesArray = this.templatesArray.sort(x => x.index);
+        // this.generateCells();
+      }
+
+      if (this.autoSize) {
+        this.autoSizeCells(this.mainSize());
+      }
 
       this.dropdownselectedItems = [];
 
@@ -654,18 +715,21 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
         selectAllText: 'Select All',
         unSelectAllText: 'UnSelect All',
         itemsShowLimit: 2,
-        allowSearchFilter: true,
+        allowSearchFilter: true
       };
       this.generateCells();
     }
   }
 
-
   public setDropdownList() {
     this.dropdownList = [];
     for (let index = 0; index < this.templatesArray.length; index++) {
       const element = this.templatesArray[index];
-      this.dropdownList.push({ item_id: element.index, item_text: element.title, parent: element.parent });
+      this.dropdownList.push({
+        item_id: element.index,
+        item_text: element.title,
+        parent: element.parent
+      });
     }
   }
 
@@ -681,9 +745,12 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     while (lastHeaderItem.Childs.length > 0) {
       lastHeaderItem = lastHeaderItem.Childs[lastHeaderItem.Childs.length - 1];
     }
-    const allCells = this.cells.reduce(function (a, b) { return a.concat(b); });
-    const lastCell = allCells.filter(t => t.visible === true).find(i => i.name === lastHeaderItem.Name);
-
+    const allCells = this.cells.reduce(function(a, b) {
+      return a.concat(b);
+    });
+    const lastCell = allCells
+      .filter(t => t.visible === true)
+      .find(i => i.name === lastHeaderItem.Name);
 
     const widthLastCell = +lastCell.cellWidth;
     this.unsubscribeMouseMove = this.renderer.listen(
@@ -702,41 +769,45 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
         }
 
         if (lastCell.cellWidth >= this.MinWidth) {
-          cell.cellWidth = this.widthBefore + (WidthAdd);
-          lastCell.cellWidth = widthLastCell + (WidthAdd);
-          this.tableWidth = tableWidthTemp + (WidthAdd);
+          cell.cellWidth = this.widthBefore + WidthAdd;
+          lastCell.cellWidth = widthLastCell + WidthAdd;
+          this.tableWidth = tableWidthTemp + WidthAdd;
         }
       }
     );
 
-    this.unsubscribeMouseUp = this.renderer.listen('document', 'mouseup', event => {
-      event.preventDefault();
-      if (lastCell.cellWidth < this.MinWidth) {
-        lastCell.cellWidth = this.MinWidth;
-      }
-      lastCell.template.cellWidth = lastCell.cellWidth;
+    this.unsubscribeMouseUp = this.renderer.listen(
+      'document',
+      'mouseup',
+      event => {
+        event.preventDefault();
+        if (lastCell.cellWidth < this.MinWidth) {
+          lastCell.cellWidth = this.MinWidth;
+        }
+        lastCell.template.cellWidth = lastCell.cellWidth;
 
-      if (cell.cellWidth < this.MinWidth) {
-        cell.cellWidth = this.MinWidth;
-      }
-      cell.template.cellWidth = cell.cellWidth;
+        if (cell.cellWidth < this.MinWidth) {
+          cell.cellWidth = this.MinWidth;
+        }
+        cell.template.cellWidth = cell.cellWidth;
 
-      cell.template.draggable = draggable;
-      cell.template.sortable = sortable;
+        cell.template.draggable = draggable;
+        cell.template.sortable = sortable;
 
-      let htmlElement = document.getElementById(tbodyId);
-      this.scrollWidth = htmlElement.offsetWidth - htmlElement.clientWidth;
-      if (this.unsubscribeMouseMove) {
-        this.unsubscribeMouseMove();
-        this.unsubscribeMouseMove = null;
-        this.generateCells();
-      }
+        let htmlElement = document.getElementById(tbodyId);
+        this.scrollWidth = htmlElement.offsetWidth - htmlElement.clientWidth;
+        if (this.unsubscribeMouseMove) {
+          this.unsubscribeMouseMove();
+          this.unsubscribeMouseMove = null;
+          this.generateCells();
+        }
 
-      if (this.unsubscribeMouseUp) {
-        this.unsubscribeMouseUp();
-        this.unsubscribeMouseUp = null;
+        if (this.unsubscribeMouseUp) {
+          this.unsubscribeMouseUp();
+          this.unsubscribeMouseUp = null;
+        }
       }
-    });
+    );
   }
 }
 

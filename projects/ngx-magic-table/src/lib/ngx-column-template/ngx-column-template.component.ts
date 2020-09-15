@@ -29,6 +29,7 @@ export class NgxColumnTemplateComponent implements AfterContentInit, OnChanges {
   public header: TemplateRef<any>;
   public body: TemplateRef<any>;
   public filter: TemplateRef<any>;
+  public footer: TemplateRef<any>;
 
   public constructor() {
     this.name = '';
@@ -62,6 +63,8 @@ export class NgxColumnTemplateComponent implements AfterContentInit, OnChanges {
     this.body = b ? b.template : undefined;
     const f = this.templates.find(t => t.name === 'filter');
     this.filter = f ? f.template : undefined;
+    const fo = this.templates.find(t => t.name === 'footer');
+    this.footer = fo ? fo.template : undefined;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -29,7 +29,7 @@ Angular 6 smart DataGrid based on `bootstrap` and `font-awesome`
 - Add pagination
 - Reset table style
 - Show message
-
+- Set Double Click
 
 ## Preview
 ![Preview](https://imgur.com/V5Sy0HN.jpg)
@@ -95,7 +95,8 @@ Use `<ngx-magic-table>`
   buttonSaveTableStyle="btn btn-outline-info"
   [autoSize] = "true"
   [rowClassRenderer]="getRowClass"
-  (onResetTable)="onResetTable($event)">
+  (onResetTable)="onResetTable($event)"
+  (doubleClick)= "doubleClick($event)">
  
 <ngx-column-template 
 
