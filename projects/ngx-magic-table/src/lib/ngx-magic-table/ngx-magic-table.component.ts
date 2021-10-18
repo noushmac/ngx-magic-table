@@ -1,6 +1,6 @@
-import { element } from 'protractor';
-import { PagingInput } from '../models/Paging-input';
-import { SortInput } from '../models/sort-input';
+import { element } from "protractor";
+import { PagingInput } from "../models/Paging-input";
+import { SortInput } from "../models/sort-input";
 import {
   Component,
   OnInit,
@@ -21,27 +21,27 @@ import {
   Renderer,
   HostListener,
   Renderer2,
-  ViewChildren
-} from '@angular/core';
-import { HeaderItem } from '../models/header-item';
-import { HeaderCell } from '../models/header-cell';
-import { NgxColumnTemplateComponent } from '../ngx-column-template/ngx-column-template.component';
-import { NamedTemplateDirective } from '../ngx-named-template/ngx-named-template.directive';
-import { NgxMultiselectDropdownComponent } from '../ngx-multiselect-dropdown/ngx-multiselect-dropdown.component';
-import { OrderDirection } from '../models/enum';
+  ViewChildren,
+} from "@angular/core";
+import { HeaderItem } from "../models/header-item";
+import { HeaderCell } from "../models/header-cell";
+import { NgxColumnTemplateComponent } from "../ngx-column-template/ngx-column-template.component";
+import { NamedTemplateDirective } from "../ngx-named-template/ngx-named-template.directive";
+import { NgxMultiselectDropdownComponent } from "../ngx-multiselect-dropdown/ngx-multiselect-dropdown.component";
+import { OrderDirection } from "../models/enum";
 
-import guid from 'angular-uid';
-import { IPagingInput, ISortInput } from '../models/interface';
-import { CellsInfo } from '../models/cells-info';
-import { delay } from 'q';
-import { ReturnStatement } from '@angular/compiler';
+import { v4 as uuidv4 } from "uuid";
+import { IPagingInput, ISortInput } from "../models/interface";
+import { CellsInfo } from "../models/cells-info";
+import { delay } from "q";
+import { ReturnStatement } from "@angular/compiler";
 
-import { ReverseArray } from '../pipe/reverse-array';
+import { ReverseArray } from "../pipe/reverse-array";
 
 @Component({
-  selector: 'ngx-magic-table',
-  templateUrl: './ngx-magic-table.component.html',
-  styleUrls: ['./ngx-magic-table.component.css']
+  selector: "ngx-magic-table",
+  templateUrl: "./ngx-magic-table.component.html",
+  styleUrls: ["./ngx-magic-table.component.css"],
 })
 export class NgxMagicTableComponent<T> implements AfterContentInit {
   @ContentChildren(NgxColumnTemplateComponent)
@@ -62,7 +62,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
   }
 
-  @ContentChild('pagination', {static: false})
+  @ContentChild("pagination")
   pagination: TemplateRef<ElementRef>;
 
   constructor(private renderer: Renderer2, private el: ElementRef) {
@@ -73,17 +73,16 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.isRTL = false;
     this.scrollWidth = 0;
     this.listcellsInfo = new Array<CellsInfo>();
-    this.buttonListColumnStyle = 'btn btn-outline-info';
-    this.buttonSaveTableStyle = 'btn btn-outline-info';
+    this.buttonListColumnStyle = "btn btn-outline-info";
+    this.buttonSaveTableStyle = "btn btn-outline-info";
     this.templatesArray = new Array<NgxColumnTemplateComponent>();
     this.templatesArrayBase = null;
     this.autoSize = true;
-    this.message = '';
-    this.rowClassRenderer = row => '';
+    this.message = "";
+    this.rowClassRenderer = (row) => "";
     this.MinWidth = 80;
     if (this.pageSize == null) {
       this.pageSize = 10;
-
     }
     this.rows = new Array<T>();
     this.footerRows = new Array<T>();
@@ -142,13 +141,13 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   pageSizes: number[] = [10, 20, 50, 100];
 
   @Input()
-  sort: String = '';
+  sort: String = "";
   @Input()
   sortDirection: OrderDirection = OrderDirection.Ascending;
   @Input()
   hidden: Boolean = false;
   @Input()
-  selectedClass: String = 'table-secondary';
+  selectedClass: String = "table-secondary";
 
   @Input() rowSelected: T;
 
@@ -189,14 +188,14 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   @Input()
   rowClassRenderer: (data: T) => string;
   @Input()
-  tableClass: String = 'table';
+  tableClass: String = "table";
   @Input()
-  theadClass: String = 'thead-light';
+  theadClass: String = "thead-light";
   @Input()
-  tbodyClass: String = '';
+  tbodyClass: String = "";
 
   @Input()
-  footerCssClass: String = 'footerTd';
+  footerCssClass: String = "footerTd";
 
   dropdownList = [];
   dropdownselectedItems = [];
@@ -217,7 +216,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   public head: Array<HeaderItem> = new Array<HeaderItem>();
   public lowerCells: Array<HeaderCell> = new Array<HeaderCell>();
   public depth = 0;
-  public uid = guid();
+  public uid = uuidv4();
   public selectedRow: T;
   public draggingCell: HeaderCell;
   public sortInput: SortInput = new SortInput();
@@ -239,11 +238,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
   public getLcm(row: any): number {
     const lcm = this.lcmOfList(
-      this.lowerCells.map(i => {
-        return i.template.collection === ''
+      this.lowerCells.map((i) => {
+        return i.template.collection === ""
           ? 1
           : row[i.template.collection.toString()] != null
-          ?  Math.max(row[i.template.collection.toString()].length, 1)
+          ? Math.max(row[i.template.collection.toString()].length, 1)
           : 1;
       })
     );
@@ -287,11 +286,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
     this.generateCells();
     this.columnsArrangeChange.emit(
-      this.templatesArray.map(t => {
+      this.templatesArray.map((t) => {
         return {
           name: t.name,
           parent: t.parent,
-          index: t.index
+          index: t.index,
         };
       })
     );
@@ -304,10 +303,10 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   protected generateCells() {
     this.head = this.generateHeaders();
     this.tableWidth = this.head
-      .map(i => +i.Width)
+      .map((i) => +i.Width)
       .reduce<number>((sum, current) => sum + current, 0);
     this.depth = Math.max(
-      ...this.head.map(item => {
+      ...this.head.map((item) => {
         return this.Depth(item);
       })
     );
@@ -318,7 +317,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   }
 
   mainSize(): number {
-    let htmlElement = document.getElementById('MainMagicTableId');
+    let htmlElement = document.getElementById("MainMagicTableId");
     return htmlElement.clientWidth;
   }
 
@@ -326,7 +325,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     let rowCount = 0;
     for (let index = 0; index < this.templatesArray.length; index++) {
       const element = this.templatesArray[index];
-      let childs = this.templatesArray.filter(t => t.parent === element.name);
+      let childs = this.templatesArray.filter((t) => t.parent === element.name);
       if (childs.length < 1) {
         rowCount++;
       }
@@ -338,7 +337,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
     for (let index = 0; index < this.templatesArray.length; index++) {
       const element = this.templatesArray[index];
-      let childs = this.templatesArray.filter(t => t.parent === element.name);
+      let childs = this.templatesArray.filter((t) => t.parent === element.name);
       if (childs.length < 1) {
         element.cellWidth = cellWidth;
         this.templatesArray[index] = element;
@@ -346,11 +345,11 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     }
   }
 
-  protected generateHeaders(headerName: String = ''): Array<HeaderItem> {
+  protected generateHeaders(headerName: String = ""): Array<HeaderItem> {
     const result = new Array<HeaderItem>();
     this.templatesArray
-      .filter(t => t.parent === headerName)
-      .filter(t => t.visible === true)
+      .filter((t) => t.parent === headerName)
+      .filter((t) => t.visible === true)
       .sort((first, second) => {
         if (first.index > second.index) {
           return -1;
@@ -360,7 +359,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
         }
         return 0;
       })
-      .forEach(t => {
+      .forEach((t) => {
         let item: HeaderItem;
         item = new HeaderItem();
         item.Title = t.title;
@@ -372,7 +371,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
         item.Width =
           item.Childs.length === 0 && item.Visible === true
             ? +t.cellWidth
-            : item.Childs.map(i => +i.Width).reduce<number>(
+            : item.Childs.map((i) => +i.Width).reduce<number>(
                 (sum, current) => sum + current,
                 0
               );
@@ -381,7 +380,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
         this.dropdownselectedItems.push({
           item_id: item.Index,
           item_text: item.Name,
-          parent: headerName
+          parent: headerName,
         });
       });
     return result;
@@ -398,7 +397,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     const row = this.cells[level];
     items
       .sort((first, second) => first.Index.valueOf() - second.Index.valueOf())
-      .map(h => {
+      .map((h) => {
         const c = new HeaderCell();
         c.name = h.Name;
         c.index = h.Index;
@@ -423,7 +422,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
   protected countHeaders(item: HeaderItem): number {
     if (item.Childs.length) {
-      const headerCount = item.Childs.map(child => {
+      const headerCount = item.Childs.map((child) => {
         return this.countHeaders(child);
       });
       return headerCount.reduce((a, b) => a + b, 0);
@@ -435,7 +434,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
   protected Depth(item: HeaderItem): number {
     if (item.Childs.length) {
       const depth = Math.max(
-        ...item.Childs.map(child => {
+        ...item.Childs.map((child) => {
           return this.Depth(child);
         })
       );
@@ -533,24 +532,24 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     } else {
       return width;
     }
-
   }
 
   onItemSelect(items: any) {
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
-      let template = this.templatesArray.find(t => t.index === item.item_id);
+      let template = this.templatesArray.find((t) => t.index === item.item_id);
       let index = this.templatesArray.indexOf(item);
       template.visible = true;
       this.templatesArray[index] = template;
     }
     // this.setTableSetting();
     this.generateCells();
-
   }
   onItemDeSelect(items: any) {
     for (let j = 0; j < this.templatesArray.length; j++) {
-      let item = items.filter(t => t.item_id === this.templatesArray[j].index);
+      let item = items.filter(
+        (t) => t.item_id === this.templatesArray[j].index
+      );
       if (item.length <= 0) {
         this.templatesArray[j].visible = false;
         this.templatesArray[j] = this.templatesArray[j];
@@ -570,9 +569,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     this.generateCells();
   }
   onResetTable() {
-    this.message = '  Reseting Table ...  ';
+    this.message = "  Reseting Table ...  ";
     this.resetTable.emit(true);
-    this.setMessage('  Table Reset Successfully  ');
+    this.setMessage("  Table Reset Successfully  ");
   }
 
   onMainDomChange(element: ElementRef): void {
@@ -595,14 +594,14 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
         parent: element.parent,
         sortable: element.sortable,
         draggble: element.draggable,
-        visible: element.visible
+        visible: element.visible,
       });
     }
     this.loadTable = this.listcellsInfo;
   }
 
   onsaveTable() {
-    this.message = '  Saving Table ...  ';
+    this.message = "  Saving Table ...  ";
     this.setTableSetting();
     // this.listcellsInfo = null;
     // this.listcellsInfo = new Array<CellsInfo>();
@@ -615,14 +614,14 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     // }
     // this.loadTable = this.listcellsInfo;
     this.saveTable.emit(this.listcellsInfo);
-    this.setMessage('  Table Saved Successfully  ');
+    this.setMessage("  Table Saved Successfully  ");
   }
 
   async setMessage(message: string): Promise<void> {
     await delay(3000);
     this.message = message;
     await delay(3000);
-    this.message = '';
+    this.message = "";
   }
 
   onLoadTable() {
@@ -639,7 +638,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
     if (this.templatesArray.length > 0) {
       NgxColumnTemplateComponent.normalizeIndexes(this.templatesArray);
-      this.templatesArray.forEach(i =>
+      this.templatesArray.forEach((i) =>
         i.changed.subscribe(() => this.generateCells())
       );
 
@@ -647,7 +646,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
       if (this.loadTable != null && this.loadTable.length > 0) {
         for (let i = 0; i < this.templatesArray.length; i++) {
-          let template = this.loadTable.filter(x => x.name === this.templatesArray[i].name);
+          let template = this.loadTable.filter(
+            (x) => x.name === this.templatesArray[i].name
+          );
           if (template == null || template.length == 0) {
             if (this.autoSize) {
               this.autoSizeCells(this.mainSize());
@@ -657,28 +658,29 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
             this.dropdownSettings = {
               singleSelection: false,
-              idField: 'item_id',
-              textField: 'item_text',
-              selectAllText: 'Select All',
-              unSelectAllText: 'UnSelect All',
+              idField: "item_id",
+              textField: "item_text",
+              selectAllText: "Select All",
+              unSelectAllText: "UnSelect All",
               itemsShowLimit: 2,
-              allowSearchFilter: true
+              allowSearchFilter: true,
             };
             this.generateCells();
-            this.setMessage('  The table has changed. Consider the changes you need again   ');
+            this.setMessage(
+              "  The table has changed. Consider the changes you need again   "
+            );
             changedTable = true;
             return;
           }
         }
       }
 
-
-
-
       if (!changedTable) {
         for (let i = 0; i < this.loadTable.length; i++) {
           const element = this.loadTable[i];
-          let template = this.templatesArray.filter(x => x.name === element.name);
+          let template = this.templatesArray.filter(
+            (x) => x.name === element.name
+          );
           if (template != null && template.length > 0) {
             const index = this.templatesArray.indexOf(template[0]);
 
@@ -690,9 +692,8 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
             this.templatesArray[index] = template[0];
           }
-
         }
-        this.templatesArray = this.templatesArray.sort(x => x.index);
+        this.templatesArray = this.templatesArray.sort((x) => x.index);
         // this.generateCells();
       }
 
@@ -706,12 +707,12 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
 
       this.dropdownSettings = {
         singleSelection: false,
-        idField: 'item_id',
-        textField: 'item_text',
-        selectAllText: 'Select All',
-        unSelectAllText: 'UnSelect All',
+        idField: "item_id",
+        textField: "item_text",
+        selectAllText: "Select All",
+        unSelectAllText: "UnSelect All",
         itemsShowLimit: 2,
-        allowSearchFilter: true
+        allowSearchFilter: true,
       };
       this.generateCells();
     }
@@ -724,7 +725,7 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
       this.dropdownList.push({
         item_id: element.index,
         item_text: element.title,
-        parent: element.parent
+        parent: element.parent,
       });
     }
   }
@@ -741,18 +742,18 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     while (lastHeaderItem.Childs.length > 0) {
       lastHeaderItem = lastHeaderItem.Childs[lastHeaderItem.Childs.length - 1];
     }
-    const allCells = this.cells.reduce(function(a, b) {
+    const allCells = this.cells.reduce(function (a, b) {
       return a.concat(b);
     });
     const lastCell = allCells
-      .filter(t => t.visible === true)
-      .find(i => i.name === lastHeaderItem.Name);
+      .filter((t) => t.visible === true)
+      .find((i) => i.name === lastHeaderItem.Name);
 
     const widthLastCell = +lastCell.cellWidth;
     this.unsubscribeMouseMove = this.renderer.listen(
-      'document',
-      'mousemove',
-      event => {
+      "document",
+      "mousemove",
+      (event) => {
         // if (this.isLastColumnMouse) {
         // 	return;
         // }
@@ -773,9 +774,9 @@ export class NgxMagicTableComponent<T> implements AfterContentInit {
     );
 
     this.unsubscribeMouseUp = this.renderer.listen(
-      'document',
-      'mouseup',
-      event => {
+      "document",
+      "mouseup",
+      (event) => {
         event.preventDefault();
         if (lastCell.cellWidth < this.MinWidth) {
           lastCell.cellWidth = this.MinWidth;

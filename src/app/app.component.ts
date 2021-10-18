@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
-import { IPagingInput, ISortInput, CellsInfo } from "ngx-magic-table";
-// import { CellsInfo } from 'ngx-magic-table/lib/models/cells-info';
+import { CellsInfo, IPagingInput, ISortInput } from "projects/ngx-magic-table/src/public_api";
 
 @Component({
   selector: "app-root",
